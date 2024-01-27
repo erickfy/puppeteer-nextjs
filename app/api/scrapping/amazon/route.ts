@@ -1,11 +1,14 @@
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import AdBlocker from 'puppeteer-extra-plugin-adblocker';
+import AnonymizeUA from 'puppeteer-extra-plugin-anonymize-ua';
 
 import * as cheerio from "cheerio";
 import { JSDOM } from 'jsdom'
 import { NextApiRequest } from "next";
 import { NextRequest } from "next/server";
+import proxyChain from 'proxy-chain';
+import { ZenRows } from 'zenrows';
 
 /**
  * Scrapping values from Amazon
@@ -34,18 +37,41 @@ export async function POST(req: NextRequest) {
     if (!searchInput) {
       return Response.json({ error: "No params provided", hasError: true })
     }
-    StealthPlugin()
-    console.log("evasion", StealthPlugin().enabledEvasions)
 
-    const enableEvasion =StealthPlugin().enabledEvasions
-    const browser = await puppeteer
-      .use(StealthPlugin())
-      .use(AdBlocker())
-      .launch({
-        headless: false,
-        executablePath: process.env.EXECUTABLE_GC as string ?? '/usr/bin/google-chrome',
-        args: ['--no-sandbox']
-      });
+    // const client = new ZenRows("676ac9c7c3b9bbfef05e5da30341d326153fa516");
+    // const url = "https://www.amazon.com";
+
+    const oldProxyUrl = ''
+    const newProxyUrl = await proxyChain.anonymizeProxy(oldProxyUrl);
+
+    const browserProxy = await puppeteer.launch({
+      args: [`--proxy-server=${newProxyUrl}`]
+    })
+
+    // const browser = await puppeteer
+    //   .use(StealthPlugin())
+    //   .use(AdBlocker())
+    //   .use(AnonymizeUA())
+    //   .launch({
+    //     headless: false,
+    //     executablePath: process.env.EXECUTABLE_GC as string ?? '/usr/bin/google-chrome',
+    //     args: ['--no-sandbox']
+    //   });
+
+    const browser = await puppeteer.connect({
+      // browserWSEndpoint: process.env.API_PROXIE as string
+      // browserWSEndpoint: "https://api.zenrows.com/v1/?apikey=676ac9c7c3b9bbfef05e5da30341d326153fa516&js_render=true&premium_proxy=true&autoparse=true"
+      browserWSEndpoint: "http://676ac9c7c3b9bbfef05e5da30341d326153fa516:js_render=true&wait_for=.content@proxy.zenrows.com:8001"
+    })
+
+
+
+
+
+
+
+
+
 
     const page = await browser.newPage();
     // await page.setViewport({ width: 1080, height: 1024 });
@@ -55,11 +81,11 @@ export async function POST(req: NextRequest) {
     await page.waitForNavigation(),
 
 
-    // const which = await page.content()
-    // console.log(which)
+      // const which = await page.content()
+      // console.log(which)
 
-    // await page.waitForNavigation()
-    await page.type('#twotabsearchtextbox', searchInput);
+      // await page.waitForNavigation()
+      await page.type('#twotabsearchtextbox', searchInput);
     await page.keyboard.press("Enter");
     await page.waitForNavigation();
 
