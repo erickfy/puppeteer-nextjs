@@ -29,6 +29,7 @@ const FormSchema = z.object({
 type Props = {}
 
 const page = (props: Props) => {
+  // console.log(props)
   const [title, setTitle] = useState<string>();
   const [image, setImage] = useState<string>();
 
@@ -80,13 +81,13 @@ const page = (props: Props) => {
 
 
         <div>
-          {image &&
+          {/* {image &&
             <Image
               src={image}
               width={200}
               height={200}
             />
-          }
+          } */}
         </div>
       </div>
     </div>
