@@ -73,3 +73,23 @@
 
     // Print the full title
     // console.log('The title of this blog post is "%s".', fullTitle);
+
+    // const browserProxy = await puppeteer.launch({
+    //   args: [`--proxy-server=${newProxyUrl}`]
+    // })
+
+    // const browser = await puppeteer
+    //   .use(StealthPlugin())
+    //   .use(AdBlocker())
+    //   .use(AnonymizeUA())
+    //   .launch({
+    //     headless: false,
+    //     executablePath: process.env.EXECUTABLE_GC as string ?? '/usr/bin/google-chrome',
+    //     args: ['--no-sandbox']
+    //   });
+
+        // const browser = await puppeteer.launch({
+    //   // args: ['--proxy-server=23.26.236.11'], 
+    //   args: ['--no-sandbox',],
+    //   headless: false,
+    // });

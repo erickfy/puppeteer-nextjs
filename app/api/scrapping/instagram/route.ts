@@ -1,19 +1,9 @@
-// import puppeteer from "puppeteer-extra";
 import puppeteer from "puppeteer";
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import AdBlocker from 'puppeteer-extra-plugin-adblocker';
-import AnonymizeUA from 'puppeteer-extra-plugin-anonymize-ua';
-
-import * as cheerio from "cheerio";
-import { JSDOM } from 'jsdom'
-import { NextApiRequest } from "next";
 import { NextRequest } from "next/server";
-import proxyChain from 'proxy-chain';
-import { ZenRows } from 'zenrows';
-import { AMAZON_ADDRESS, DIR_IMAGES } from "@/lib/constants";
+import { DIR_IMAGES, INSTAGRAM } from "@/lib/constants";
 
 /**
- * Scrapping values from Amazon
+ * Scrapping values from Instagram
  * return {cards} has contains
  * @returns {
  * title: string;
@@ -41,7 +31,7 @@ export async function POST(req: NextRequest) {
       args: ['--no-sandbox',],
 
       //? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
-      headless: 'new',
+      headless: false,
     });
 
     const page = await browser.newPage();
@@ -49,58 +39,63 @@ export async function POST(req: NextRequest) {
     // to monitors (only available)
     await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 1, isLandscape: true });
 
-    // to mobiles (change the input twotabsearchtextbox id)
+    // to mobiles is the same the input ?
     // await page.setViewport({ width: 375, height: 667, deviceScaleFactor: 1, isMobile: true });
 
-    await page.goto(AMAZON_ADDRESS, { waitUntil: "load" });
-
-    await page.type('#twotabsearchtextbox', searchInput);
-    await page.keyboard.press("Enter");
-    await page.waitForNavigation();
+    // timeout to 7 seconds
+    const timeoutAfterLoad = 7000
+    await page.goto(`${INSTAGRAM}/${searchInput}`, { waitUntil: "domcontentloaded", timeout: timeoutAfterLoad });
+    await new Promise(resolve => setTimeout(resolve, timeoutAfterLoad));
 
     // place to save the image
     await page.screenshot({
-      path: `${DIR_IMAGES}/amazon/${searchInput}.webp`,
+      path: `${DIR_IMAGES}/instagram/${searchInput}.webp`,
       type: 'webp',
       fullPage: true
     })
 
     const cards = await page.$$eval(
-      '.s-search-results .s-card-container',
+      'header',
       (resultItems) => {
         return resultItems.map((resultItem) => {
-          const url = resultItem.querySelector('a')?.href;
-          const title = resultItem.querySelector(
-            '.s-title-instructions-style span',
-          )?.textContent;
-          const price = resultItem.querySelector(
-            '.a-price .a-offscreen',
+          const username = resultItem.querySelector(
+            'section .x6s0dn4 h2'
           )?.textContent;
 
-          const src = resultItem.querySelector('img')?.getAttribute("src")
-          const review = resultItem.querySelector('span.a-size-base.s-underline-text')?.textContent;
+          const ulSelector = '.x78zum5.x1q0g3np.xieb3on';
+          const list = document.querySelectorAll(`${ulSelector} li`)
+          const itemsUsername = Array.from(list).map(li => {
+            const item = li.querySelector('.html-span')?.textContent?.trim();
+            return item;
+          })
 
-          if (title && price && url) {
+          const posts = itemsUsername[0] ?? ''
+          const followers = itemsUsername[1] ?? ''
+          const following = itemsUsername[2] ?? ''
+
+          const src = resultItem.querySelector('.x78zum5 img')?.getAttribute("src")
+
+          if (username && src) {
             return {
-              url,
-              title,
-              price,
+              username,
               src,
-              review
+              posts,
+              followers,
+              following,
             };
           }
           return {
-            url: '',
-            title: '',
-            price: '',
+            username: '',
             src: '',
-            review: ''
+            posts: '',
+            followers: '',
+            following: '',
           }
         });
       },
     );
 
-    const cleanData = cards.filter(val => val.title !== '')
+    const cleanData = cards.filter(val => val.username !== '')
 
     await page.close();
     if (!page.isClosed()) await page.close()

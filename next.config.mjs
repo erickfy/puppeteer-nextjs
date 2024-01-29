@@ -7,6 +7,7 @@ const nextConfig = {
       "puppeteer-extra-plugin-recaptcha",
       "puppeteer-extra-plugin-adblocker",
       "puppeteer-extra-plugin-anonymize-ua",
+      "puppeteer-core",
     ],
   },
 };

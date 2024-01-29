@@ -10,7 +10,7 @@ import { NextApiRequest } from "next";
 import { NextRequest } from "next/server";
 import proxyChain from 'proxy-chain';
 import { ZenRows } from 'zenrows';
-import { AMAZON_ADDRESS, DIR_IMAGES } from "@/lib/constants";
+import { AMAZON_ADDRESS, DIR_IMAGES, MERCADO_LIBRE } from "@/lib/constants";
 
 /**
  * Scrapping values from Amazon
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       args: ['--no-sandbox',],
 
       //? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
-      headless: 'new',
+      headless: false,
     });
 
     const page = await browser.newPage();
@@ -49,36 +49,39 @@ export async function POST(req: NextRequest) {
     // to monitors (only available)
     await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 1, isLandscape: true });
 
-    // to mobiles (change the input twotabsearchtextbox id)
+    // to mobiles is the same the input cb1-edit id
     // await page.setViewport({ width: 375, height: 667, deviceScaleFactor: 1, isMobile: true });
 
-    await page.goto(AMAZON_ADDRESS, { waitUntil: "load" });
+    await page.goto(MERCADO_LIBRE, { waitUntil: "load" });
 
-    await page.type('#twotabsearchtextbox', searchInput);
+    await page.type('#cb1-edit', searchInput);
     await page.keyboard.press("Enter");
     await page.waitForNavigation();
 
     // place to save the image
     await page.screenshot({
-      path: `${DIR_IMAGES}/amazon/${searchInput}.webp`,
+      path: `${DIR_IMAGES}/mercado-libre/${searchInput}.webp`,
       type: 'webp',
       fullPage: true
     })
 
     const cards = await page.$$eval(
-      '.s-search-results .s-card-container',
+      '.ui-search-results .ui-search-result__wrapper',
       (resultItems) => {
         return resultItems.map((resultItem) => {
-          const url = resultItem.querySelector('a')?.href;
           const title = resultItem.querySelector(
-            '.s-title-instructions-style span',
+            '.ui-search-item__group h2'
           )?.textContent;
           const price = resultItem.querySelector(
-            '.a-price .a-offscreen',
+            '.ui-search-item__group .andes-money-amount__fraction'
           )?.textContent;
+          const condition = resultItem.querySelector(
+            '.ui-search-item__group .ui-search-item__details'
+          )?.textContent ?? '';
 
-          const src = resultItem.querySelector('img')?.getAttribute("src")
-          const review = resultItem.querySelector('span.a-size-base.s-underline-text')?.textContent;
+
+          const url = resultItem.querySelector('a')?.href;
+          const src = resultItem.querySelector('.ui-search-result__image img')?.getAttribute("src")
 
           if (title && price && url) {
             return {
@@ -86,7 +89,7 @@ export async function POST(req: NextRequest) {
               title,
               price,
               src,
-              review
+              condition,
             };
           }
           return {
@@ -94,12 +97,12 @@ export async function POST(req: NextRequest) {
             title: '',
             price: '',
             src: '',
-            review: ''
+            condition: '',
           }
         });
       },
     );
-
+    console.log(cards.length)
     const cleanData = cards.filter(val => val.title !== '')
 
     await page.close();
