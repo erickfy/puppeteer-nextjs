@@ -1,0 +1,12 @@
+prisma commands
+# migrations
+pnpm prisma migrate dev --name myprimeramigration
+pnpmprisma migrate dev --name myprimeramigration
+
+# push changes without migration
+# it's dangerous because is a bad practive without first do migrate not recommended to use it
+pnpm prisma migrate db push
+
+
+# generate secret key
+openssl rand -base64 32

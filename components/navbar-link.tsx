@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import React from 'react'
-import { hrefs } from './navbar'
+import { hrefs } from './test.navbar'
 import { usePathname } from 'next/navigation'
 
 type Props = { href: string, title: string }

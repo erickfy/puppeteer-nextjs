@@ -1,0 +1,151 @@
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  authRoutes,
+  publicRoutes,
+} from "@/routes";
+import { USER_ROLE } from "@prisma/client";
+import { withAuth } from "next-auth/middleware"
+import { NextResponse } from "next/server";
+
+
+
+let redirectionDone = false;
+
+export default withAuth(
+
+  function middleware(req) {
+    console.log("well", req.nextUrl)
+
+
+    console.log("por fin")
+    if (!redirectionDone) {
+      const { token } = req.nextauth
+      if (token?.role) {
+        if (token.role === USER_ROLE.ADMIN) {
+          redirectionDone = true;
+          // when it has in route it's unnecesary to redirect
+          if (req.url.includes('/api' || req.url.includes('/'))) {
+            return
+          }
+          return NextResponse.redirect(new URL('/instagram', req.url));
+        }
+        else
+          if (token.role === USER_ROLE.CLIENT) {
+            redirectionDone = true;
+
+            // when it has in route it's unnecesary to redirect
+            if (req.url.includes('/api') || req.url.includes('/')) {
+              return
+            }
+            return NextResponse.redirect(new URL('/instagram', req.url));
+          }
+      }
+      // redirectionDone = false
+      return NextResponse.redirect(new URL('/', req.url));
+    };
+
+    const { nextUrl } = req;
+    const isLoggedIn = !!req.nextauth;
+
+    const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+    const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+    const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+    if (isApiAuthRoute) {
+      return null;
+    }
+
+    if (isAuthRoute) {
+      if (isLoggedIn) {
+        return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+      }
+      return null;
+    }
+
+    if (!isLoggedIn && !isPublicRoute) {
+      let callbackUrl = nextUrl.pathname;
+      if (nextUrl.search) {
+        callbackUrl += nextUrl.search;
+      }
+
+      const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+
+      return Response.redirect(new URL(
+        `/auth/login?callbackUrl=${encodedCallbackUrl}`,
+        nextUrl
+      ));
+    }
+
+    return null;
+
+    // redirectionDone = false
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => {
+        if (token) {
+          console.log("middtoken", token)
+          if (token.role === USER_ROLE.ADMIN ||
+            token.role === USER_ROLE.CLIENT) {
+            return true;
+          }
+        }
+
+        // PREVENT REDIRECT TO VEHICLES AGAIN WHEN IT HAS THE COOKIE
+        redirectionDone = false
+        return false;
+      },
+    },
+
+    pages: {
+      signIn: '/',
+      newUser: '/instagram',
+      signOut: '/',
+    }
+  }
+)
+
+
+// Optionally, don't invoke Middleware on some paths
+// export const config = {
+//   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+// }
+
+export const config = {
+  matcher: [
+      "/",
+      "/api/scrapping",
+  ]
+}
+
+
+// import type { NextAuthConfig } from 'next-auth';
+// import NextAuth from 'next-auth';
+
+// export const authConfig = {
+//   pages: {
+//     signIn: '/',
+//   },
+//   callbacks: {
+//     authorized({ auth, request: { nextUrl } }) {
+//       const isLoggedIn = !!auth?.user;
+//       const isOnDashboard = nextUrl.pathname.startsWith('/instagram');
+//       if (isOnDashboard) {
+//         if (isLoggedIn) return true;
+//         return false; // Redirect unauthenticated users to login page
+//       } else if (isLoggedIn) {
+//         return Response.redirect(new URL('/instagram', nextUrl));
+//       }
+//       return true;
+//     },
+//   },
+//   providers: [], // Add providers with an empty array for now
+// } satisfies NextAuthConfig;
+
+// export default NextAuth(authConfig).auth;
+
+// export const config = {
+//   // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+//   matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+// };

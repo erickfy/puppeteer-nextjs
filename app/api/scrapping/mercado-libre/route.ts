@@ -1,16 +1,7 @@
-// import puppeteer from "puppeteer-extra";
 import puppeteer from "puppeteer";
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import AdBlocker from 'puppeteer-extra-plugin-adblocker';
-import AnonymizeUA from 'puppeteer-extra-plugin-anonymize-ua';
 
-import * as cheerio from "cheerio";
-import { JSDOM } from 'jsdom'
-import { NextApiRequest } from "next";
 import { NextRequest } from "next/server";
-import proxyChain from 'proxy-chain';
-import { ZenRows } from 'zenrows';
-import { AMAZON_ADDRESS, DIR_IMAGES, MERCADO_LIBRE } from "@/lib/constants";
+import {  DIR_IMAGES, MERCADO_LIBRE } from "@/lib/constants";
 
 /**
  * Scrapping values from Amazon

@@ -1,56 +1,18 @@
-import React from 'react'
-import './styles.css'
-import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import { Skeleton } from './ui/skeleton'
+import { SideBarProps } from "./sidebar";
+import ClientOnly from "./client-only";
+import { MobileSidebar } from "./mobile-sidebar";
+import { NavbarRoutes } from "./navbar-routes";
 
-type Props = {}
 
-const NavbarLink = dynamic(
-  () => import('./navbar-link'),
-  {
-    loading: () => <li>
-      <Skeleton className="w-[100px] h-[60px] rounded-full" />
-    </li>,
-    ssr: false
-  }
-)
-
-export const hrefs = ['instagram', 'amazon', 'mercado-libre', 'book-store', 'bot-detect']
-
-const routes = [
-  {
-    href: hrefs[0],
-    title: 'Instagram'
-  },
-  {
-    href: hrefs[1],
-    title: 'Amazon'
-  },
-  {
-    href: hrefs[2],
-    title: 'Mercado Libre'
-  },
-  {
-    href: hrefs[3],
-    title: 'Book Store'
-  },
-  {
-    href: hrefs[4],
-    title: 'Bot Detect'
-  },
-]
-
-const Navbar = (props: Props) => {
-  // const currentRoute = 
-  console.log(props, 'this is')
-  return (
-    <ul>
-      {routes.map(({ href, title }) => (
-        <NavbarLink key={href} href={href} title={title} />
-      ))}
-    </ul>
-  )
+const Navbar = ({ user }: SideBarProps) => {
+    return (
+        <div className="p-4 border-b h-full flex items-center bg-white shadow-sm">
+            <ClientOnly>
+                <MobileSidebar user={user} />
+                <NavbarRoutes user={user} />
+            </ClientOnly>
+        </div>
+    )
 }
 
-export default Navbar
+export default Navbar;

@@ -1,0 +1,94 @@
+import { NextAuthConfig, } from "next-auth"
+import Credentials from "next-auth/providers/credentials"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { db } from "@/lib/db"
+import { USER_ROLE } from "@prisma/client"
+import { verifyHash } from "@/lib/hashPassword"
+import { APP_ENV, NEXTAUTH_SECRET } from "../lib/constants"
+import { getUserByUsername } from "@/data/user"
+
+console.log('resrer')
+export const authConfig = {
+  adapter: PrismaAdapter(db),
+  providers: [
+    Credentials({
+      name: 'credentials',
+      credentials: {
+        username: { label: 'username', type: 'text', placeholder: 'username' },
+        password: { label: 'password', type: 'password', placeholder: "password" },
+        role: { label: 'role', type: 'text' },
+      },
+
+      async authorize(credentials) {
+
+        console.log("wewelwlelwlelwelwle")
+        if (!credentials?.username || !credentials?.password) {
+          throw new Error('Invalid credentials');
+        }
+        const user = await getUserByUsername(credentials.username as string)
+
+        console.log("trearkljasdlkfjasldkfjalsdkf")
+
+        if (!user || !user?.hashedPassword) {
+          throw new Error('Invalid credentials');
+        }
+
+        const passwordMatches = await verifyHash(
+          user.hashedPassword,
+          credentials.password as string,
+        );
+
+        if (!passwordMatches) {
+          throw new Error('Invalid credentials');
+        }
+
+        console.log("al fin user", user)
+
+        return {
+          id: user.id.toString() as string,
+          name: user.username as string, // name like username
+          image: user.image as string,
+          role: user.role as USER_ROLE,
+        }
+
+      }
+    })
+  ],
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, account, profile, user }) {
+      console.log({ token }, { account }, { profile });
+      if (account && account.type === "credentials") {
+        token.userId = account.providerAccountId; // this is Id that coming from authorize() callback 
+      }
+      return token;
+    },
+
+    async session({ token, session }) {
+      if (session.user) {
+        // const { name, role, id } = token
+        // const user = { ...session.user, name, role, id }
+        // session.user = user
+      }
+      return session
+    }
+
+  },
+
+
+  pages: {
+    signIn: "/",
+    signOut: "/",
+    // newUser: '/instagram',
+  },
+  debug: APP_ENV === 'development',
+  jwt: {
+    // secret: "NEXTAUTH_SECRET",
+    maxAge: 3600 * 8 // 8 hours
+  },
+  secret: NEXTAUTH_SECRET
+} satisfies NextAuthConfig
+
+// export const getServerAuthSession = () => getServerSession(authOptions);

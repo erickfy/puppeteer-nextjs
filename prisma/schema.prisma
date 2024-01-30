@@ -1,0 +1,70 @@
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+  extensions   = [pgcrypto]
+}
+
+model User {
+  // CRUCIAL DOCS:
+  // https://www.prisma.io/docs/orm/prisma-schema/data-model/unsupported-database-features
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username       String    @unique @db.VarChar(100)
+  hashedPassword String    @db.VarChar(106)
+  fullNames      String?   @db.VarChar(40)
+  image          String?   @db.Text
+  role           USER_ROLE @default(CLIENT)
+  active         Boolean
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  sessions DateTime[]
+
+  instagramHistory    InstagramHistory?
+  bookStoreHistory    BookStoreHistory?
+  amazonHistory       AmazonHistory?
+  mercadoLibreHistory MercadoLibreHistory?
+}
+
+model InstagramHistory {
+  id   Int      @id @default(autoincrement()) @db.SmallInt
+  list String[]
+
+  user   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+}
+
+model AmazonHistory {
+  id   Int      @id @default(autoincrement()) @db.SmallInt
+  list String[]
+
+  user   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+}
+
+model MercadoLibreHistory {
+  id   Int      @id @default(autoincrement()) @db.SmallInt
+  list String[]
+
+  user   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+}
+
+model BookStoreHistory {
+  id   Int      @id @default(autoincrement()) @db.SmallInt
+  list String[]
+
+  user   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+}
+
+enum USER_ROLE {
+  ADMIN
+  CLIENT
+}
