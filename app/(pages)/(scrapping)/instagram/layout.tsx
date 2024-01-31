@@ -13,10 +13,11 @@ export const metadata = {
   description: `Created by ${OWNER}`,
 }
 
-export default function Layout({ children, dialog }: {
+export default function Layout({ children, dialog, ...rest }: {
   children: React.ReactNode;
   dialog: React.ReactNode;
 }) {
+  console.log("gimme rest", rest)
 
   return (
     <ResizablePanelGroup
@@ -32,10 +33,8 @@ export default function Layout({ children, dialog }: {
 
       <ResizablePanel defaultSize={30} minSize={20}>
         <div className="flex h-full items-center justify-center p-6">
-          <span className="font-semibold">
-            <Logo />
-            {dialog}
-          </span>
+          <Logo />
+          {dialog}
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>

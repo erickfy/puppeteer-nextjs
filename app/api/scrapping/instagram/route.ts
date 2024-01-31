@@ -6,11 +6,11 @@ import { DIR_IMAGES, INSTAGRAM } from "@/lib/constants";
  * Scrapping values from Instagram
  * return {cards} has contains
  * @returns {
- * title: string;
- * url: string;
- * price: string;
+ * username: string;
  * src: string;
- * reviews: string;
+ * posts: string;
+ * followers: string;
+ * following: string;
  * }
  * when it has error 
  * * @returns {
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       args: ['--no-sandbox',],
 
       //? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
-      headless: false,
+      headless: 'new',
     });
 
     const page = await browser.newPage();

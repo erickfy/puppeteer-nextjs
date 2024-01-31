@@ -9,7 +9,11 @@ const nextConfig = {
     ],
   },
   images: {
-    domains: ["japanoncloudnine.com"],
+    domains: [
+      "japanoncloudnine.com",
+      "instagram.fuio19-1.fna.fbcdn.net"
+    
+    ],
   },
 };
 

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -10,43 +11,41 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Image from "next/image"
 
 type Props = {
   searchParams: { image: string }
 }
 
 export default function InterceptDialog({ searchParams }: Props) {
-  console.log("sdfksjldfksdj")
-  console.log("dialog search", searchParams)
+  const { image } = searchParams
+  const src = `/public/instagram/${image}.webp`
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
+        <Button variant="outline">Ver imagen de Scrapping</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Imagen de Instagram</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Scrapeado desde la web
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+        <Card>
+          <CardContent className="relative flex aspect-square items-center justify-center p-6 max-w-sm min-w-72">
+            <div className="w-full h-full">
+              <Image
+                src={src}
+                objectFit="cover"
+                layout="fill"
+                alt="Descripción de la imagen"
+                className="z-0"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
       </DialogContent>
     </Dialog>
   )
