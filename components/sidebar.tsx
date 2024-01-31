@@ -15,7 +15,7 @@ export type SideBarProps = {
 const Sidebar = ({ user }: SideBarProps) => {
     return (
         <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm">
-            <div className="p-4">
+            <div className="p-0">
                 <Logo />
             </div>
             <div className="flex flex-col w-full">

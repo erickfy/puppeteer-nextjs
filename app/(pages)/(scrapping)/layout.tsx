@@ -1,5 +1,5 @@
 import Container from "@/components/container";
-import Navbar from "@/components/test.navbar";
+import Toolbar from "@/components/toolbar/toolbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import getCurrentUser from "@/data/getCurrentUser";
 import { OWNER } from "@/lib/constants";
@@ -42,6 +42,7 @@ export default async function Layout({ children }: Readonly<{
       </div>
 
       <main className="md:pl-56 pt-[80px] h-full">
+        <Toolbar />
         <Container>
           {children}
         </Container>
@@ -56,13 +57,21 @@ export async function getUser() {
   // const hashPass = await hashedPassword(userName);
   const isActive = faker.helpers.shuffle([true, false])[0]
   const role = faker.helpers.shuffle(Object.keys(USER_ROLE))[0] as USER_ROLE
+  // return {
+  //   id,
+  //   username: userName,
+  //   fullNames: faker.person.fullName(),
+  //   image: faker.image.avatar(),
+  //   // hashedPassword: hashPass,
+  //   role,
+  //   active: isActive,
+  // }
   return {
-    id,
-    username: userName,
-    fullNames: faker.person.fullName(),
-    image: faker.image.avatar(),
-    // hashedPassword: hashPass,
-    role,
-    active: isActive,
+    id: '12',
+    username: 'johan34',
+    fullNames: 'Johan Julio',
+    image: 'https://images.fastcompany.net/image/upload/w_1280,f_auto,q_auto,fl_lossy/wp-cms/uploads/2022/12/p-1-90823104-the-next-lensa.jpg',
+    role: USER_ROLE.ADMIN,
+    active: true
   }
 }
