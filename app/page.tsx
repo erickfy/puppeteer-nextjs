@@ -22,7 +22,7 @@ import { USER_ROLE } from "@prisma/client"
 import { SignInSchema, TSignInSchema } from "@/schemas/form-schemas"
 import Link from "next/link"
 import Container from "@/components/container"
-import { signIn } from "@/auth/auth"
+// import { signIn } from "@/auth/auth"
 
 
 export default function SignInPage() {
@@ -33,29 +33,31 @@ export default function SignInPage() {
   })
 
   async function onSubmit(data: TSignInSchema) {
-    toast.promise(signIn('credentials', {
-      ...data,
-      // callbackUrl: "http://localhost:3000/",
-      redirect: false,
-    }), {
-      loading: "Verificando...",
-      success: async (callbackUrl) => {
-        if (callbackUrl && callbackUrl.status === 200) {
-          console.log(callbackUrl.status === 200)
-          const res = await axios.post("/api/auth/check-sign-in")
-          console.log("res.data", res.data)
-          if (res.data.role === USER_ROLE.ADMIN) {
-            router.push('/instagram')
-          }
-          if (res.data.role === USER_ROLE.CLIENT) {
-          }
-          router.push('/instagram')
-          return `Bienvenido! ${form.watch('username')}`
-        }
-        return "No se pudo ingresar"
-      },
-      error: "Error con los datos ingresados"
-    })
+    // toast.promise(signIn('credentials', {
+    //   ...data,
+    //   // callbackUrl: "http://localhost:3000/",
+    //   redirect: false,
+    // }), {
+    //   loading: "Verificando...",
+    //   success: async (callbackUrl) => {
+    //     if (callbackUrl && callbackUrl.status === 200) {
+    //       console.log(callbackUrl.status === 200)
+    //       const res = await axios.post("/api/auth/check-sign-in")
+    //       console.log("res.data", res.data)
+    //       if (res.data.role === USER_ROLE.ADMIN) {
+    //         router.push('/instagram')
+    //       }
+    //       if (res.data.role === USER_ROLE.CLIENT) {
+    //       }
+    //       router.push('/instagram')
+    //       return `Bienvenido! ${form.watch('username')}`
+    //     }
+    //     return "No se pudo ingresar"
+    //   },
+    //   error: "Error con los datos ingresados"
+    // })
+    toast.success(`Registro realizado ${data.username}`)
+    router.push('/instagram')
   }
 
   return (

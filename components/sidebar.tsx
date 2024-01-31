@@ -4,7 +4,7 @@ import { SidebarRoutes } from "./sidebar-routes";
 
 export type SideBarProps = {
     user: {
-        id: number;
+        id: string;
         username: string;
         fullNames: string | null;
         role: USER_ROLE;

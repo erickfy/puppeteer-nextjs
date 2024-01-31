@@ -46,17 +46,20 @@ export default function SignInPage() {
 
   async function onSubmit(data: TSignUpSchema) {
     setLoading(true)
-    toast.promise(axios.post(`/api/auth/register`, data), {
-      loading: "Verificando...",
-      success: (callbackUrl) => {
-        if (callbackUrl.status === 200) {
-          router.push(`/instagram`)
-          return "Registro exitoso!"
-        }
-        return ""
-      },
-      error: "Hubo un error con los datos ingresados"
-    })
+    // toast.promise(axios.post(`/api/auth/register`, data), {
+    //   loading: "Verificando...",
+    //   success: (callbackUrl) => {
+    //     if (callbackUrl.status === 200) {
+    //       router.push(`/instagram`)
+    //       return "Registro exitoso!"
+    //     }
+    //     return ""
+    //   },
+    //   error: "Hubo un error con los datos ingresados"
+    // })
+    toast.success(`Registro realizado ${data.username}`)
+    router.push('/instagram')
+
     setLoading(false)
   }
 
