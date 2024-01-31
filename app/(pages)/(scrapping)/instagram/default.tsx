@@ -1,10 +1,23 @@
 
-type Props = {}
+import React from 'react'
+import dynamic from 'next/dynamic'
+import { Skeleton } from '@/components/ui/skeleton'
 
-const InstagramPage = (props: Props) => {
+type Props = {params: any}
+
+const DynamicScrappingForm = dynamic(() => import('../_components/scrapping-form'),
+  {
+    loading: () => <Skeleton className="w-[100px] h-[60px] rounded-full" />,
+    ssr: false
+  })
+
+export default function DefaultInstagramPage({params }: Props) {
+  console.log('', params)
   return (
-<div>Some content children</div>
+    <DynamicScrappingForm
+      title="Scrapping Instagram"
+      description="Extrae datos de un usuario"
+      exampleInput="iamstipke"
+      routeHandler={'instagram'} />
   )
 }
-
-export default InstagramPage

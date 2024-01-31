@@ -14,12 +14,9 @@ export const metadata = {
   description: `Created by ${OWNER}`,
 };
 
-export default function RootLayout({ children, params, team }: Readonly<{
+export default function RootLayout({ children }: Readonly<{
   children: React.ReactNode;
-  team: React.ReactNode;
-  params: string
 }>) {
-  console.log("al fin", team)
   return (
     <html lang="en">
       <body className={cn(inter.className, 'min-h-screen min-w-screen')} >

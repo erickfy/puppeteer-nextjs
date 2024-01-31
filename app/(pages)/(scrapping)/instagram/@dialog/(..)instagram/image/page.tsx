@@ -11,7 +11,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export default function InterceptDialog() {
+type Props = {
+  searchParams: { image: string }
+}
+
+export default function InterceptDialog({ searchParams }: Props) {
+  console.log("sdfksjldfksdj")
+  console.log("dialog search", searchParams)
   return (
     <Dialog>
       <DialogTrigger asChild>

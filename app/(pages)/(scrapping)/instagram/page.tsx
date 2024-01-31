@@ -3,7 +3,7 @@ import React from 'react'
 import dynamic from 'next/dynamic'
 import { Skeleton } from '@/components/ui/skeleton'
 
-type Props = {}
+type Props = {params: any}
 
 const DynamicScrappingForm = dynamic(() => import('../_components/scrapping-form'),
   {
@@ -11,7 +11,7 @@ const DynamicScrappingForm = dynamic(() => import('../_components/scrapping-form
     ssr: false
   })
 
-export default function InstagramPage({ }: Props) {
+export default function InstagramPage({params }: Props) {
   return (
     <DynamicScrappingForm
       title="Scrapping Instagram"

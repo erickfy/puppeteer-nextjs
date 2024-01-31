@@ -26,6 +26,7 @@
     "clone-deep": "^4.0.1",
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
+    "embla-carousel-react": "^8.0.0-rc22",
     "http-proxy-agent": "^7.0.0",
     "https-proxy-agent": "^7.0.2",
     "lucide-react": "^0.319.0",
