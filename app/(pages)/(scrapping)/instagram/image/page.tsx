@@ -1,20 +1,26 @@
+'use client'
+
 import { Card, CardContent } from '@/components/ui/card'
+import { useImages } from '@/hooks/useImages'
 import Image from 'next/image'
 import React from 'react'
 
-type Props = {
-  searchParams: { image: string }
-}
+type Props = {}
 
-export default function ImagePage({ searchParams }: Props) {
-  const { image } = searchParams
-  const src = `/public/instagram/${image}.webp`
+export default function ImagePage({ }: Props) {
+  const { getSrcs } = useImages()
+  const { images: { instagram } } = getSrcs()
+
+  if (instagram === '') {
+    return <div>no hay image</div>
+  }
+
   return (
     <Card>
       <CardContent className="relative flex aspect-square items-center justify-center p-6 max-w-sm min-w-72">
         <div className="w-full h-full">
           <Image
-            src={src}
+            src={instagram}
             objectFit="cover"
             layout="fill"
             alt="Descripción de la imagen"

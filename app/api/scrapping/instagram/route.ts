@@ -22,7 +22,6 @@ import { DIR_IMAGES, INSTAGRAM } from "@/lib/constants";
 export async function POST(req: NextRequest) {
   try {
     const { searchInput } = await req.json()
-    console.log("there", searchInput)
 
     if (!searchInput) {
       return Response.json({ error: "No params provided", hasError: true })

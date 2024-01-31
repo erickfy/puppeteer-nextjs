@@ -15,12 +15,14 @@ import { Input } from '@/components/ui/input';
 import { SearchSchema, TSearchSchema } from '@/schemas/form-schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import ScrappingCard from './cards/card-ui';
 import InstagramCard from './cards/instagram-card';
+import { useImages } from '@/hooks/useImages';
+import { toast } from 'sonner';
 
 type Props = {
     title: string;
@@ -33,6 +35,7 @@ type Props = {
 
 export default function ScrappingForm({ title, description, exampleInput, routeHandler }: Props) {
     const route = useRouter()
+    const { resetInstragramImage, setInstagramImage } = useImages()
     const [data, setData] = useState<TInstagram[]>([])
     const [loading, setLoading] = useState<boolean>()
     const form = useForm<TSearchSchema>({
@@ -42,25 +45,29 @@ export default function ScrappingForm({ title, description, exampleInput, routeH
         },
     })
 
+    useEffect(() => {
+        resetInstragramImage()
+    }, [])
+
     async function onSubmit(dt: TSearchSchema) {
         setLoading(true)
-        const request = await axios.post(`/api/scrapping/instagram`,
+        toast.promise(axios.post(`/api/scrapping/${routeHandler}`,
             { searchInput: dt.search }
-        )
-
-        if (request.status === 200) {
-            setData(request.data.data)
-            console.log(request.data.data)
-        }
-
-        // clean values
+        ), {
+            loading: "Scrapeando...",
+            success: async (request) => {
+                if (request.status === 200) {
+                    setData(request.data.data)
+                    setInstagramImage(`/${routeHandler}/${dt.search}.webp`)
+                } else {
+                    form.reset()
+                }
+                return "Exitoso!"
+            },
+            error: "Error de sistema"
+        })
         setLoading(false)
     }
-
-    function handlerImage() {
-        route.push(`/instagram/image?image=${form.watch('search')}`)
-    }
-
 
     return (
         <div className="hidden md:flex h-full items-center justify-center p-6 ">
@@ -101,14 +108,6 @@ export default function ScrappingForm({ title, description, exampleInput, routeH
                                 </Form>
                             </CardContent>
 
-                            {data?.length !== 0 && loading === false &&
-                                <CardFooter>
-                                    <Button variant={'link'} onClick={() => handlerImage()}>
-                                        Ver documento scrapeado
-                                    </Button>
-                                </CardFooter>
-                            }
-                            
                         </Card>
                     </div>
                 </ResizablePanel>
@@ -124,7 +123,7 @@ export default function ScrappingForm({ title, description, exampleInput, routeH
                             : loading ?
                                 <Message msg="Cargando.." /> :
 
-                                data?.length === 0 ?
+                                !form.watch('search') ?
 
                                     < Message msg="Upps.. busqueda no encontrada!" /> :
 

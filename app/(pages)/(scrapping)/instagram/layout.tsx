@@ -33,7 +33,6 @@ export default function Layout({ children, dialog, ...rest }: {
 
       <ResizablePanel defaultSize={30} minSize={20}>
         <div className="flex h-full items-center justify-center p-6">
-          <Logo />
           {dialog}
         </div>
       </ResizablePanel>
