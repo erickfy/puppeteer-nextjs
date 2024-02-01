@@ -1,17 +1,37 @@
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
+
 import { OWNER } from "@/lib/constants";
-import { cookies, headers } from "next/headers";
 
 export const metadata = {
   title: "Amazon Scripping 🛍️",
   description: `Created by ${OWNER}`,
 }
 
-export default function Layout({ children }: Readonly<{
+export default function Layout({ children, dialog }: {
   children: React.ReactNode;
-}>) {
+  dialog: React.ReactNode;
+}) {
   return (
-    <>
-      {children}
-    </>
+    <ResizablePanelGroup
+      direction="vertical"
+      className="flex flex-grow min-h-[650px] h-full rounded-lg border"
+    >
+
+      <ResizablePanel defaultSize={85} minSize={30}>
+        {children}
+      </ResizablePanel>
+
+      <ResizableHandle withHandle />
+
+      <ResizablePanel defaultSize={15} minSize={10}>
+        <div className="flex h-full items-center justify-center">
+          {dialog}
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
   );
 }

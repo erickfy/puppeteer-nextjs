@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     // to mobiles is the same the input ?
     // await page.setViewport({ width: 375, height: 667, deviceScaleFactor: 1, isMobile: true });
 
-    // timeout to 7 seconds
+    // timeout to 7 seconds due to charge page
     const timeoutAfterLoad = 7000
     await page.goto(`${INSTAGRAM}/${searchInput}`, { waitUntil: "domcontentloaded", timeout: timeoutAfterLoad });
     await new Promise(resolve => setTimeout(resolve, timeoutAfterLoad));

@@ -8,7 +8,6 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
             className="
             relative
           max-w-[2520px]
-          min-h-screen
           mx-auto
           p-6
           xl:px-10 

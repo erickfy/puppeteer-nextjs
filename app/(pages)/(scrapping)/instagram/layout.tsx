@@ -17,22 +17,20 @@ export default function Layout({ children, dialog, ...rest }: {
   children: React.ReactNode;
   dialog: React.ReactNode;
 }) {
-  console.log("gimme rest", rest)
-
   return (
     <ResizablePanelGroup
       direction="vertical"
-      className="flex flex-grow min-h-[500px] h-screen w-screen rounded-lg border"
+      className="flex flex-grow min-h-[650px] h-full rounded-lg border"
     >
 
-      <ResizablePanel defaultSize={70} minSize={20}>
+      <ResizablePanel defaultSize={85} minSize={30}>
         {children}
       </ResizablePanel>
 
       <ResizableHandle withHandle />
 
-      <ResizablePanel defaultSize={30} minSize={20}>
-        <div className="flex h-full items-center justify-center p-6">
+      <ResizablePanel defaultSize={15} minSize={10}>
+        <div className="flex h-full items-center justify-center">
           {dialog}
         </div>
       </ResizablePanel>

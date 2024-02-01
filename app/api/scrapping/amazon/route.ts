@@ -7,11 +7,11 @@ import { AMAZON_ADDRESS, DIR_IMAGES } from "@/lib/constants";
  * Scrapping values from Amazon
  * return {cards} has contains
  * @returns {
- * title: string;
- * url: string;
- * price: string;
- * src: string;
- * reviews: string;
+ * title: string,
+ * price: string,
+ * src: string,
+ * url: string,
+ * review: string
  * }
  * when it has error 
  * * @returns {
@@ -73,18 +73,18 @@ export async function POST(req: NextRequest) {
 
           if (title && price && url) {
             return {
-              url,
               title,
               price,
+              review,
               src,
-              review
+              url,
             };
           }
           return {
-            url: '',
             title: '',
             price: '',
             src: '',
+            url: '',
             review: ''
           }
         });

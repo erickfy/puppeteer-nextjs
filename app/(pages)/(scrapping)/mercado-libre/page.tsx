@@ -1,11 +1,31 @@
-import React from 'react'
+'use client'
 
-type Props = {}
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { Skeleton } from '@/components/ui/skeleton';
+import MercadoLibreCard from '../_components/cards/mercado-libre-card';
 
-const MercadoLibrePage = (props: Props) => {
-  return (
-    <div>MercadoLibrePage</div>
-  )
+interface DynamicScrappingFormProps {
+  title: string;
+  description: string;
+  exampleInput: string;
+  routeHandler: 'instagram' | 'amazon' | 'bot-detect' | 'mercado-libre' | 'book-store';
+  cardScrapping: React.ComponentType<{ data: TMercadoLibre[] }>;
 }
 
-export default MercadoLibrePage
+const DynamicScrappingForm = dynamic<DynamicScrappingFormProps>(() => import('../_components/scrapping-form'), {
+  loading: () => <Skeleton className="w-[100px] h-[60px] rounded-full" />,
+  ssr: false
+});
+
+export default function MercadoLibrePage() {
+  const dynamicProps: DynamicScrappingFormProps = {
+    title: "Scrapping Mercado Libre",
+    description: "Extrae datos de productos",
+    exampleInput: "laptop",
+    routeHandler: 'mercado-libre',
+    cardScrapping: MercadoLibreCard,
+  };
+
+  return <DynamicScrappingForm {...dynamicProps} />;
+}

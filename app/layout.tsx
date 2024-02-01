@@ -19,11 +19,11 @@ export default function RootLayout({ children }: Readonly<{
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, 'min-h-screen min-w-screen')} >
+      <body className={cn(inter.className)} >
         <RootProvider />
-          <ClientOnly>
-            {children}
-          </ClientOnly>
+        <ClientOnly>
+          {children}
+        </ClientOnly>
       </body>
     </html>
   );

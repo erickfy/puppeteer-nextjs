@@ -5,7 +5,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel"
 import Image from "next/image"
-import CardUI from "./card-ui"
+import ScrappingCarrousel from "../scrapping-carrousel"
 
 type Props = {
   data: TInstagram[]
@@ -17,7 +17,7 @@ export default function InstagramCard({ data }: Props) {
       data.map((item, index) => (
         <CarouselItem key={item.username}>
           <Card>
-            <CardContent className="relative flex aspect-square items-center justify-center p-6 max-w-sm min-w-72">
+            <CardContent className="relative flex aspect-square items-center justify-center p-0 md:p-6 max-w-sm min-w-60 md:min-w-72">
               <div className="w-full h-full">
                 <Image
                   src={item.src}
@@ -43,6 +43,8 @@ export default function InstagramCard({ data }: Props) {
   </>)
 
   return (
-    <CardUI body={body} lengthData={data.length} />
-  )
+    <ScrappingCarrousel
+      body={body}
+      lengthData={data.length}
+    />)
 }

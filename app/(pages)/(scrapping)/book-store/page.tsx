@@ -1,11 +1,33 @@
-import React from 'react'
+'use client'
 
-type Props = {}
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { Skeleton } from '@/components/ui/skeleton';
+import BookStoreCard from '../_components/cards/book-store-card';
 
-const BookStorePage = (props: Props) => {
-  return (
-    <div>BookStorePage</div>
-  )
+interface DynamicScrappingFormProps {
+  title: string;
+  description: string;
+  exampleInput: string;
+  hiddenInput: boolean;
+  routeHandler: 'instagram' | 'amazon' | 'bot-detect' | 'mercado-libre' | 'book-store';
+  cardScrapping: React.ComponentType<{ data: TBookStore[] }>;
 }
 
-export default BookStorePage
+const DynamicScrappingForm = dynamic<DynamicScrappingFormProps>(() => import('../_components/scrapping-form'), {
+  loading: () => <Skeleton className="w-[100px] h-[60px] rounded-full" />,
+  ssr: false
+});
+
+export default function BookStorePage() {
+  const dynamicProps: DynamicScrappingFormProps = {
+    title: "Scrapping una tienda de libros",
+    description: "Extrae datos de la primera pagina",
+    exampleInput: "",
+    hiddenInput: true,
+    routeHandler: 'book-store',
+    cardScrapping: BookStoreCard,
+  };
+
+  return <DynamicScrappingForm {...dynamicProps} />;
+}

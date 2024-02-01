@@ -8,7 +8,7 @@ type Props = { src: string }
 
 export default function ImageCard({ src }: Props) {
     return (
-        <Card>
+        <Card className='flex justify-center items-center p-6'>
             <CardContent className="relative flex aspect-square items-center justify-center p-6 max-w-sm min-w-72">
                 <div className="w-full h-full">
                     <Image
@@ -20,5 +20,6 @@ export default function ImageCard({ src }: Props) {
                     />
                 </div>
             </CardContent>
-        </Card>)
+        </Card>
+    )
 }

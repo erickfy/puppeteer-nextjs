@@ -7,12 +7,12 @@ import { BOOKS_ADDRESS, DIR_IMAGES } from "@/lib/constants";
  * Scrapping values from Books to scrape
  * return {cards} has contains
  * @returns {
- * src: string;
  * title: string;
  * price: string;
  * url: string;
  * stock: string;
- * review: string;
+ * src: string;
+ * review:string;
  * }
  * when it has error 
  * * @returns {

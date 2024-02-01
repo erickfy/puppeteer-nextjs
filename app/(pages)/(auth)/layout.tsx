@@ -1,5 +1,4 @@
 import Container from "@/components/container";
-import Navbar from "@/components/toolbar";
 import { OWNER } from "@/lib/constants";
 
 export const metadata = {
