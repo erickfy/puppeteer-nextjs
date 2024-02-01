@@ -119,7 +119,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                             <CardContent>
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                                        {hiddenInput &&
+                                        {!hiddenInput &&
                                             <FormField
                                                 control={form.control}
                                                 name="search"
