@@ -2,9 +2,15 @@ import Link from "next/link";
 
 import { validateRequest } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Form } from "@/lib/form";
 
+import FormCard from "@/app/(pages)/(auth)/_components/form-card";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { signup } from "@/actions/authentication";
+import { FormLabel } from "@/components/ui/form";
+import CustomSelect from "@/components/select/custom-select";
+import { USER_ROLE } from "@prisma/client";
 
 export default async function Page() {
     const { user } = await validateRequest();
@@ -12,40 +18,55 @@ export default async function Page() {
         return redirect("/instagram");
     }
     return (
-        <>
-            <h1 className="text-3xl mb-8 text-center">Create an account</h1>
-            <Form action={signup} className="max-w-md mx-auto">
-                <label className="block mb-2" htmlFor="username">
-                    Username
-                </label>
-                <input
-                    className="w-full p-2 mb-4 border border-gray-300 rounded"
-                    type="text"
-                    name="username"
-                    id="username"
-                />
-                <label className="block mb-2" htmlFor="password">
-                    Password
-                </label>
-                <input
-                    className="w-full p-2 mb-4 border border-gray-300 rounded"
-                    type="password"
-                    name="password"
-                    id="password"
-                />
-                <button
-                    className="bg-green-500 text-white p-2 rounded w-full cursor-pointer"
-                    type="submit"
-                >
-                    Continue
-                </button>
-            </Form>
-            <p className="text-center mt-4">
-                <Link href="/lucia/login" className="text-blue-500">
-                    Sign in
-                </Link>
-            </p>
-        </>
-
+        <FormCard
+            title="Registro"
+            descriptionOne="Añadir un nuevo usuario"
+            descriptionTwo="👤"
+            action={signup}
+            content={
+                <>
+                    <div className="grid w-full max-w-sm items-center gap-2">
+                        <Label htmlFor="username">Usuario</Label>
+                        <Input type="text" id="username" name="username" placeholder="Ej: dejanstipke" />
+                    </div>
+                    <div className="grid w-full max-w-sm items-center gap-2">
+                        <Label htmlFor="password">Contrasena</Label>
+                        <Input type="password" name="password" id="password" placeholder="Ingresa la contrasena" />
+                    </div>
+                    <div className="grid w-full max-w-sm items-center gap-2 relative">
+                        <Label htmlFor="role">Rol</Label>
+                        <div className="relative inline-block text-left">
+                            <select id="role"
+                                name="role"
+                                className="appearance-none bg-transparent border border-gray-300 p-2 rounded-md leading-5 focus:outline-none focus:border-blue-500 transition ease-in-out duration-150 w-full"
+                                defaultValue={USER_ROLE.CLIENT}
+                            >
+                                <option value={USER_ROLE.ADMIN}>
+                                    Administrador
+                                </option>
+                                <option value={USER_ROLE.CLIENT}>
+                                    Usuario
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </>
+            }
+            footer={
+                <>
+                    <Button className="w-full" type="submit">
+                        Continuar
+                    </Button>
+                    <div className="text-sm text-muted-foreground flex gap-2">
+                        <p className="text-black">
+                            Ya tienes cuenta?
+                        </p>
+                        <Link className="text-blue-500 font-bold" href={'/lucia/login'}>
+                            Ingresar
+                        </Link>
+                    </div>
+                </>
+            }
+        />
     );
 }

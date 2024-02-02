@@ -27,6 +27,11 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
             errors: errorStrings
         }
     }
+    console.log(validatedFields.data)
+    return {
+        errors: ['']
+    }
+
 
     const { username, password } = validatedFields.data
     // if (
@@ -79,21 +84,26 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
 
 export async function signup(_: any, formData: FormData): Promise<ActionResult> {
     const validatedFields = SignUpSchema.safeParse({
-        email: formData.get('email'),
+        username: formData.get('username'),
         password: formData.get('password'),
         role: formData.get('role'),
     })
 
     if (!validatedFields.success) {
         const errors = validatedFields.error.flatten().fieldErrors
+        console.log(errors)
         const errorStrings = Object.values(errors).flat()
         return {
             errors: errorStrings
         }
     }
+    console.log(validatedFields.data)
+    return {
+        errors: ['']
+    }
+
 
     const { username, password, role } = validatedFields.data
-
     const hashedPassword = await new Argon2id({ secret: SECRET_HASH_PASS }).hash(password);
     const userId = generateId(15);
 

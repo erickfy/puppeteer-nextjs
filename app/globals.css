@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
  
+
+body {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background: linear-gradient(35deg, red, purple);
+}
 @layer base {
   :root {
     --background: 0 0% 100%;

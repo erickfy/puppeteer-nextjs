@@ -22,6 +22,7 @@ import { USER_ROLE } from "@prisma/client"
 import { SignInSchema, TSignInSchema } from "@/schemas/form-schemas"
 import Link from "next/link"
 import Container from "@/components/container"
+import { Label } from "@/components/ui/label"
 // import { signIn } from "@/auth/auth"
 
 
@@ -61,66 +62,64 @@ export default function SignInPage() {
   }
 
   return (
-    <Container>
-      <Card className="w-[350px]  absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-8">
-            <CardHeader className="items-center">
-              <CardTitle className="font-semibold">Ingresar a la cuenta</CardTitle>
-              <CardDescription>Web Scrapping</CardDescription>
-              <CardDescription>🛍️📚🤖</CardDescription>
-            </CardHeader>
-            <CardContent className="grid w-full items-center gap-4">
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Usuario</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='text'
-                        placeholder="Ingresa el nombre de usuario"
-                        {...field}
-                        value={field.value || ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <Card className="w-[350px]  absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-8">
+          <CardHeader className="items-center">
+            <CardTitle className="font-semibold text-xl">Ingresar a la cuenta</CardTitle>
+            <CardDescription>Web Scrapping</CardDescription>
+            <CardDescription>🛍️📚🤖</CardDescription>
+          </CardHeader>
+          <CardContent className="grid w-full items-center gap-4">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Usuario</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='text'
+                      placeholder="Ingresa el nombre de usuario"
+                      {...field}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Clave</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='password'
-                        placeholder="Ingresa la contrasenia"
-                        {...field}
-                        value={field.value || ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Clave</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='password'
+                      placeholder="Ingresa la contrasenia"
+                      {...field}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
 
-                )}
-              />
+              )}
+            />
 
-            </CardContent>
-            <CardFooter className="flex flex-col gap-4">
-              <Button
-                disabled={!form.formState.isValid}
-                className="w-full"
-                type="submit">Ingresar</Button>
-              <CardDescription className="flex gap-2"><p className="text-black">Aun no tienes cuenta? <Link className="text-blue-500 font-bold" href={'/sign-up'}>Registrarme</Link></p></CardDescription>
-            </CardFooter>
-          </form>
-        </Form>
-      </Card>
-    </Container>
+          </CardContent>
+          <CardFooter className="flex flex-col gap-4">
+            <Button
+              disabled={!form.formState.isValid}
+              className="w-full"
+              type="submit">Ingresar</Button>
+            <CardDescription className="flex gap-2"><p className="text-black">Aun no tienes cuenta? <Link className="text-blue-500 font-bold" href={'/sign-up'}>Registrarme</Link></p></CardDescription>
+          </CardFooter>
+        </form>
+      </Form>
+    </Card>
   )
 }

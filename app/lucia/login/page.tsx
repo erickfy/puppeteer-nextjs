@@ -1,9 +1,11 @@
-import Link from "next/link";
-
-import { redirect } from "next/navigation";
-
 import { validateRequest } from "@/lib/auth";
-import { Form } from "@/lib/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import FormCard from "@/app/(pages)/(auth)/_components/form-card";
+
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import { login } from "@/actions/authentication";
 
 export default async function Page() {
@@ -12,39 +14,38 @@ export default async function Page() {
         return redirect("/instagram");
     }
     return (
-        <>
-            <h1 className="text-3xl mb-8 text-center">Sign in</h1>
-            <Form action={login} className="max-w-md mx-auto">
-                <label className="block mb-2" htmlFor="username">
-                    Username
-                </label>
-                <input
-                    className="w-full p-2 mb-4 border border-gray-300 rounded"
-                    type="text"
-                    name="username"
-                    id="username"
-                />
-                <label className="block mb-2" htmlFor="password">
-                    Password
-                </label>
-                <input
-                    className="w-full p-2 mb-4 border border-gray-300 rounded"
-                    type="password"
-                    name="password"
-                    id="password"
-                />
-                <button
-                    className="bg-blue-500 text-white p-2 rounded w-full cursor-pointer"
-                    type="submit"
-                >
-                    Continue
-                </button>
-            </Form>
-            <p className="text-center mt-4">
-                <Link href="/lucia/signup" className="text-green-500">
-                    Create an account
-                </Link>
-            </p>
-        </>
+        <FormCard
+            title="Ingresar a la cuenta"
+            descriptionOne="Web Scrapping"
+            descriptionTwo="🛍️📚🤖"
+            action={login}
+            content={
+                <>
+                    <div className="grid w-full max-w-sm items-center gap-2">
+                        <Label htmlFor="username">Usuario</Label>
+                        <Input type="text" id="username" name="username" placeholder="Ej: dejanstipke" />
+                    </div>
+                    <div className="grid w-full max-w-sm items-center gap-2">
+                        <Label htmlFor="password">Contrasena</Label>
+                        <Input type="password" name="password" id="password" placeholder="Ingresa la contrasena" />
+                    </div>
+                </>
+            }
+            footer={
+                <>
+                    <Button className="w-full" type="submit">
+                        Continuar
+                    </Button>
+                    <div className="text-sm text-muted-foreground flex gap-2">
+                        <p className="text-black">
+                            Aun no tienes cuenta?
+                        </p>
+                        <Link className="text-blue-500 font-bold" href={'/lucia/signup'}>
+                            Registrarme
+                        </Link>
+                    </div>
+                </>
+            }
+        />
     );
 }

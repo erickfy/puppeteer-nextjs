@@ -6,7 +6,7 @@ import { OWNER } from "@/lib/constants";
 import { faker } from "@faker-js/faker";
 import { USER_ROLE } from "@prisma/client";
 import dynamic from "next/dynamic";
-
+import './style.css'
 
 const DynamicNavbar = dynamic(
   () => import('@/components/navbar'),
