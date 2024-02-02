@@ -11,6 +11,7 @@ import { USER_ROLE } from "@prisma/client";
 import { DropdownMenuUI } from "./dropdown-menu-ui";
 import SearchInput from "./search-input";
 import { SideBarProps } from "./sidebar";
+import axios from "axios";
 
 enum USER_MODE {
   ADMIN = "Administrador",
@@ -55,6 +56,12 @@ export const NavbarRoutes = ({ user }: SideBarProps) => {
             </Button>
           </Link>
         ) : null} */}
+        <Button onClick={async () => {
+          const r = await axios.get('/api/test')
+          console.log(r.data)
+        }}>
+          Test API
+        </Button>
         {isAdmin && (
           <Link href={isAdminPage ? "/driver/journeys" : "/admin/vehicles"}>
             <Button size="sm" variant="ghost">

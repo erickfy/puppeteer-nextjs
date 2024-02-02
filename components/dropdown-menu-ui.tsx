@@ -32,6 +32,9 @@ import {
 import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { useImages } from "@/hooks/useImages"
+import axios from "axios"
+import { validateRequest } from "@/lib/auth"
 
 type NavbarAvatarProps = {
     open?: boolean
@@ -42,20 +45,22 @@ type NavbarAvatarProps = {
 }
 export function DropdownMenuUI({ trigger, menuTitle, roleUser }: NavbarAvatarProps) {
     const router = useRouter()
-    // const { reset: resetInspection } = useDriverInspection()
-    // const { reset: resetRegister } = useDriverRegister()
-    // const { reset: resetMultiform } = useMultiForm()
-    // const { reset: resetJourney } = useJourney()
 
-    function clearStates() {
-        // resetInspection()
-        // resetJourney()
-        // resetMultiform()
-        // resetRegister()
-        // useDriverInspection.persist.clearStorage()
-        // useDriverRegister.persist.clearStorage()
-        // useJourney.persist.clearStorage()
-        // useMultiForm.persist.clearStorage()
+    const { reset } = useImages()
+
+    async function handleSignOut() {
+        // reset states
+        reset()
+        toast.promise(axios.post('/api/auth/sign-out', {
+            sessionId: ''
+        }), {
+            loading: "Cerrando sesion...",
+            success: (req) => {
+                console.log("req", req.data)
+                return "Session finalizada."
+            },
+            error: "Error al cerrar sesion"
+        })
     }
     return (
         <DropdownMenu>
@@ -78,17 +83,7 @@ export function DropdownMenuUI({ trigger, menuTitle, roleUser }: NavbarAvatarPro
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={async () => {
-                    clearStates()
-                    toast.promise(signOut({ callbackUrl: '/', redirect: true }), {
-                        loading: "Cerrando sesion...",
-                        success: (callbackUrl) => {
-                            console.log("exit callback", callbackUrl)
-                            return "Session finalizada."
-                        },
-                        error: "Error al cerrar sesion"
-                    })
-                }}>
+                <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Salir</span>
                     <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>

@@ -6,14 +6,14 @@ import { SECRET_HASH } from "./constants";
  *? DOCS: https://www.npmjs.com/package/argon2
  */
 
-const secret = Buffer.from(SECRET_HASH, 'utf8');
+export const SECRET_HASH_PASS = Buffer.from(SECRET_HASH, 'utf8') as Buffer;
 
 export const optionsArgon2: argon2.Options & { raw?: false | undefined } = {
   timeCost: 2,
   memoryCost: 4192,
   saltLength: 16,
   hashLength: 32,
-  secret: secret,
+  secret: SECRET_HASH_PASS,
   raw: false,
   type: argon2i
 }

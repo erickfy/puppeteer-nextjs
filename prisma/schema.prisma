@@ -11,6 +11,22 @@ datasource db {
   extensions   = [pgcrypto]
 }
 
+model TestUser {
+  id       String    @id
+  username String
+  password String
+  sessions Session[]
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      TestUser @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@index([userId])
+}
+
 model User {
   // CRUCIAL DOCS:
   // https://www.prisma.io/docs/orm/prisma-schema/data-model/unsupported-database-features
