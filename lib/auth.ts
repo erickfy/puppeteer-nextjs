@@ -3,16 +3,12 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 
 import type { Session, User } from "lucia";
-import { PrismaClient, TestUser } from "@prisma/client";
+import { Prisma, Session as SessionDB, User as UserDB } from "@prisma/client";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { APP_ENV } from "./constants";
+import { db } from "./db";
 
-// import { webcrypto } from "crypto";
-// globalThis.crypto = webcrypto as Crypto;
-
-const client = new PrismaClient();
-const adapter = new PrismaAdapter(client.session, client.user);
-
+const adapter = new PrismaAdapter(db.session, db.user);
 
 export const lucia = new Lucia(adapter, {
     sessionCookie: {
@@ -34,17 +30,20 @@ export const lucia = new Lucia(adapter, {
 
 });
 
+const nullResponse = {
+    user: null,
+    session: null
+};
+
 export const validateRequest = cache(
     async (): Promise<{ user: User; session: Session } | { user: null; session: null }> => {
         const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
-        if (!sessionId) {
-            return {
-                user: null,
-                session: null
-            };
-        }
+        if (!sessionId) return nullResponse
 
+
+        console.log(sessionId)
         const result = await lucia.validateSession(sessionId);
+        console.log(result)
         // next.js throws when you attempt to set cookie when rendering page
         try {
             if (result.session && result.session.fresh) {
@@ -55,7 +54,10 @@ export const validateRequest = cache(
                 const sessionCookie = lucia.createBlankSessionCookie();
                 cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
             }
-        } catch { }
+        } catch (e) {
+            // console.error(e)
+            if (e instanceof Prisma.PrismaClientKnownRequestError) return nullResponse
+        }
         return result;
     }
 );
@@ -63,6 +65,10 @@ export const validateRequest = cache(
 declare module "lucia" {
     interface Register {
         Lucia: typeof lucia;
-        DatabaseUserAttributes: Omit<TestUser, "id">;
+        DatabaseUserAttributes: Omit<UserDB,
+            "hashedPassword" | 'createdAt' | 'updatedAt' | 'role'
+        >;
+        // DatabaseSessionAttributes: Omit<SessionDB, ''>;
     }
 }
+

@@ -7,14 +7,18 @@ import { generateId } from 'lucia';
 const lengthUsers = 10;
 export async function generateUsers() {
     const usersPromises = Array.from({ length: lengthUsers }, async (_, _index) => {
-        const userName = faker.internet.userName();
-        const hashPass = await hashedPassword(userName);
+        const id = generateId(15)
+        const username = faker.internet.userName();
+        const hashPass = await hashedPassword(username);
+        const fullNames = faker.person.fullName()
+        const image = faker.image.avatar()
         const isActive = faker.helpers.shuffle([true, false])[0]
         const role = faker.helpers.shuffle(Object.keys(USER_ROLE))[0] as USER_ROLE
         return {
-            username: userName,
-            fullNames: faker.person.fullName(),
-            image: faker.image.avatar(),
+            id,
+            username,
+            fullNames,
+            image,
             hashedPassword: hashPass,
             role,
             active: isActive,

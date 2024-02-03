@@ -35,6 +35,7 @@ import { toast } from "sonner"
 import { useImages } from "@/hooks/useImages"
 import axios from "axios"
 import { validateRequest } from "@/lib/auth"
+import { routes } from "@/routes"
 
 type NavbarAvatarProps = {
     open?: boolean
@@ -50,17 +51,20 @@ export function DropdownMenuUI({ trigger, menuTitle, roleUser }: NavbarAvatarPro
 
     async function handleSignOut() {
         // reset states
-        reset()
         toast.promise(axios.post('/api/auth/sign-out', {
             sessionId: ''
         }), {
             loading: "Cerrando sesion...",
             success: (req) => {
-                console.log("req", req.data)
-                return "Session finalizada."
+                if (req.data.status === 'done') {
+                    reset()
+                    router.push(routes.login)
+                    return "Session finalizada."
+                }
             },
             error: "Error al cerrar sesion"
         })
+
     }
     return (
         <DropdownMenu>

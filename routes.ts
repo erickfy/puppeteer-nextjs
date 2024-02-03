@@ -1,9 +1,33 @@
 /**
+ * An Object of routes that are accessible of all application
+ * @type {
+*   login: string;
+*   signUp: string;
+*   instagram: string;
+*   amazon: string;
+*   mercadoLibre: string;
+*   bookStore: string;
+*   botDetect: string;
+* }
+*/
+
+export const routes = {
+  login: '/',
+  signUp: '/sign-up',
+  instagram: '/instagram',
+  amazon: '/amazon',
+  mercadoLibre: '/mercado-libre',
+  bookStore: '/book-store',
+  botDetect: '/bot-detect',
+}
+
+/**
  * An array of routes that are accessible to the public
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = [
+
+export const publicRoutes: string[] = [
   "/",
   "/sign-up",
 ];
@@ -23,10 +47,10 @@ export const authRoutes = [
  * Routes that start with this prefix are used for API authentication purposes
  * @type {string}
  */
-export const apiAuthPrefix = "/api/auth";
+export const apiAuthPrefix: string = "/api/auth";
 
 /**
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/";
+export const DEFAULT_LOGIN_REDIRECT: string = "/";

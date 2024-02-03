@@ -1,0 +1,13 @@
+.auth_background {
+  min-height: 100vh;
+  background: linear-gradient(35deg, red, purple);
+}
+
+.scrapping_background {
+  position: absolute;
+  min-height: 100vh;
+  width: 100%;
+  top: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, #ffffff, #ffe6f0);
+}

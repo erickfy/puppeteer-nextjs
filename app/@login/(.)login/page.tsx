@@ -8,7 +8,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { login } from "@/actions/authentication";
 
-export default async function RootLoginPage() {
+export default async function InterceptLoginPage() {
   const { user } = await validateRequest();
   if (user) {
     return redirect("/instagram");
@@ -40,7 +40,7 @@ export default async function RootLoginPage() {
             <p className="text-black">
               Aun no tienes cuenta?
             </p>
-            <Link className="text-blue-500 font-bold" href={'/sign-up'}>
+            <Link className="text-blue-500 font-bold" href={'/lucia/signup'}>
               Registrarme
             </Link>
           </div>

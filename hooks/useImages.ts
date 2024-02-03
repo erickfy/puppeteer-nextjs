@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage, devtools } from 'zustand/middleware'
-import { ImagesStore, defaultImages } from "./type-useImages";
+import { ImagesStore, defaultImages } from "./type-hooks";
 
 export const useImages = create<ImagesStore>()(
     devtools(

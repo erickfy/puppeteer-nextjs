@@ -21,7 +21,12 @@ export async function POST(req: Request) {
             return Response.json({ status: 'done' })
         }
 
-        await lucia.invalidateSession(user.id);
+        // by the moment I don't know how to get the sessionId
+        // await lucia.invalidateSession(sessionId);
+
+        //? invalidated all user sessions
+        await lucia.invalidateUserSessions(user.id);
+
 
         return Response.json({ status: 'done' })
 

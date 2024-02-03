@@ -11,26 +11,23 @@ datasource db {
   extensions   = [pgcrypto]
 }
 
-model TestUser {
-  id       String    @id
-  username String
-  password String
-  sessions Session[]
-}
-
 model Session {
   id        String   @id
-  userId    String
+  userId    String   @unique
   expiresAt DateTime
-  user      TestUser @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  user User? @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
 
 model User {
   // CRUCIAL DOCS:
+  ////  comment due to logic authentication
   // https://www.prisma.io/docs/orm/prisma-schema/data-model/unsupported-database-features
-  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  // id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  id             String    @id
   username       String    @unique @db.VarChar(100)
   hashedPassword String    @db.VarChar(106)
   fullNames      String?   @db.VarChar(40)
@@ -40,7 +37,7 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  sessions DateTime[]
+  sessions Session[]
 
   instagramHistory    InstagramHistory?
   bookStoreHistory    BookStoreHistory?
@@ -54,6 +51,8 @@ model InstagramHistory {
 
   user   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
+
+  @@index([userId])
 }
 
 model AmazonHistory {
@@ -62,6 +61,8 @@ model AmazonHistory {
 
   user   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
+
+  @@index([userId])
 }
 
 model MercadoLibreHistory {
@@ -70,6 +71,8 @@ model MercadoLibreHistory {
 
   user   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
+
+  @@index([userId])
 }
 
 model BookStoreHistory {
@@ -78,6 +81,8 @@ model BookStoreHistory {
 
   user   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
+
+  @@index([userId])
 }
 
 enum USER_ROLE {

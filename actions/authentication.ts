@@ -11,73 +11,66 @@ import { SignInSchema, SignUpSchema } from "@/schemas/form-schemas";
 import { Prisma } from "@prisma/client";
 import { SECRET_HASH_PASS } from "@/lib/hashPassword";
 
-
-
 export async function login(_: any, formData: FormData): Promise<ActionResult> {
 
     const validatedFields = SignInSchema.safeParse({
-        email: formData.get('email'),
+        username: formData.get('username'),
         password: formData.get('password'),
     })
 
     if (!validatedFields.success) {
         const errors = validatedFields.error.flatten().fieldErrors
         const errorStrings = Object.values(errors).flat()
+        console.log(errors)
         return {
             errors: errorStrings
         }
     }
     console.log(validatedFields.data)
-    return {
-        errors: ['']
-    }
-
 
     const { username, password } = validatedFields.data
-    // if (
-    //     typeof username !== "string" ||
-    //     username.length < 3 ||
-    //     username.length > 31 ||
-    //     !/^[a-z0-9_-]+$/.test(username)
-    // ) {
-    //     return {
-    //         errors: ["Invalid username"]
-    //     };
-    // }
-    // const password = formData.get("password");
-    // if (typeof password !== "string" || password.length < 6 || password.length > 255) {
-    //     return {
-    //         errors: ["Invalid password"]
-    //     };
-    // }
 
-    const existingUser = await db.testUser.findFirst({
-        where: {
-            username: username
+    try {
+        const existingUser = await db.user.findFirst({
+            where: {
+                username: username,
+                active: true
+            }
+        })
+
+        console.log(existingUser)
+
+        if (!existingUser) {
+            return {
+                errors: ["El usuario no existe!"]
+            };
         }
-    })
 
-    console.log(existingUser)
+        const validPassword = await new Argon2id({ secret: SECRET_HASH_PASS }).verify(existingUser.hashedPassword, password);
 
-    if (!existingUser) {
+        if (!validPassword) {
+            return {
+                // errors: ["La contrasena no coincide"]
+                errors: ["Campos ingresados incorrectos"]
+            };
+        }
+
+        const session = await lucia.createSession(existingUser.id, {});
+        const sessionCookie = lucia.createSessionCookie(session.id);
+        cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+
+    } catch (e) {
+        console.error(e)
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            return {
+                errors: ["Username already used"]
+            };
+        }
         return {
-            errors: ["Incorrect username or password"]
+            errors: ["An unknown error occurred"]
         };
     }
 
-    const validPassword = await new Argon2id().verify(existingUser.password, password);
-    if (!validPassword) {
-        return {
-            // error: "Incorrect username or password"
-            errors: ["Password does not match"]
-        };
-    }
-
-    const session = await lucia.createSession(existingUser.id, {
-
-    });
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
     return redirect("/instagram");
 }
 
@@ -86,6 +79,7 @@ export async function signup(_: any, formData: FormData): Promise<ActionResult> 
     const validatedFields = SignUpSchema.safeParse({
         username: formData.get('username'),
         password: formData.get('password'),
+        confirmPassword: formData.get('confirmPassword'),
         role: formData.get('role'),
     })
 
@@ -98,23 +92,24 @@ export async function signup(_: any, formData: FormData): Promise<ActionResult> 
         }
     }
     console.log(validatedFields.data)
-    return {
-        errors: ['']
-    }
-
+    // if (validatedFields.data.password !== validatedFields.data.confirmPassword) {
+    //     return { errors: ["Las contrasenas no coinciden"] }
+    // }
 
     const { username, password, role } = validatedFields.data
+
     const hashedPassword = await new Argon2id({ secret: SECRET_HASH_PASS }).hash(password);
     const userId = generateId(15);
 
     try {
 
-        const newuser = await db.testUser.create({
+        const newuser = await db.user.create({
             data: {
                 id: userId,
                 username,
-                password: hashedPassword,
-                // role
+                hashedPassword,
+                active: true,
+                role
             }
         })
         console.log(newuser)

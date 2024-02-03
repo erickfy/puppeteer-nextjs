@@ -2,10 +2,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Container from "@/components/container";
 import { OWNER } from "@/lib/constants";
 import RootProvider from "@/components/providers/root-provider";
 import ClientOnly from "@/components/client-only";
+import Background from "@/components/background";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,8 +14,9 @@ export const metadata = {
   description: `Created by ${OWNER}`,
 };
 
-export default function RootLayout({ children }: Readonly<{
+export default function RootLayout({ children, login }: Readonly<{
   children: React.ReactNode;
+  login: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -23,6 +24,8 @@ export default function RootLayout({ children }: Readonly<{
         <RootProvider />
         <ClientOnly>
           {children}
+          {/* {login} */}
+          <Background />
         </ClientOnly>
       </body>
     </html>
