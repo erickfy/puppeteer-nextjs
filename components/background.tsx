@@ -37,11 +37,13 @@ export default function Background({ }: Props) {
     }, [isAuth])
 
     console.log(background)
-    if (BACKGROUND.LOGIN === background)
-        return (<div className={cn(styles.auth_background, 'thereis')}></div>)
-    else if (BACKGROUND.SCRAPPING === background) {
-        return (<div className={cn(styles.scrapping_background, 'thereis_')}>
-        </div>)
-    }
+
+    return (
+        <div
+            className={cn(BACKGROUND.LOGIN === background ?
+                styles.auth_background : styles.scrapping_background)}>
+        </div>
+    )
+
 }
 

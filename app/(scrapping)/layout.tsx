@@ -40,7 +40,7 @@ export default async function Layout({ children }: Readonly<{
 
   return (
     <>
-      <div className="w-full max-w-[2300px]">
+      <div className="w-full ">
         <div className="h-[80px] md:pl-56 fixed inset-y-0 w-full z-50">
           <DynamicNavbar user={user} />
         </div>
@@ -48,7 +48,7 @@ export default async function Layout({ children }: Readonly<{
           <DynamicSideBar user={user} />
         </div>
 
-        <main className="md:pl-56 pt-[80px] h-full">
+        <main className="md:pl-56 pt-[80px] h-full w-full ">
           <DynamicToolbar />
           <Container>
             {children}
@@ -56,17 +56,16 @@ export default async function Layout({ children }: Readonly<{
 
         </main>
       </div>
-      <div className="scrapping-background"></div>
     </>
   );
 }
 
-export async function getUser() {
-  const id = faker.string.uuid()
-  const userName = faker.internet.userName();
-  // const hashPass = await hashedPassword(userName);
-  const isActive = faker.helpers.shuffle([true, false])[0]
-  const role = faker.helpers.shuffle(Object.keys(USER_ROLE))[0] as USER_ROLE
+export function getUser() {
+  // const id = faker.string.uuid()
+  // const userName = faker.internet.userName();
+  // // const hashPass = await hashedPassword(userName);
+  // const isActive = faker.helpers.shuffle([true, false])[0]
+  // const role = faker.helpers.shuffle(Object.keys(USER_ROLE))[0] as USER_ROLE
   // return {
   //   id,
   //   username: userName,

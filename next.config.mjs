@@ -17,6 +17,7 @@ const nextConfig = {
       "instagram.fuio19-1.fna.fbcdn.net",
       "m.media-amazon.com",
       "http2.mlstatic.com",
+      "images.fastcompany.net",
     ],
   },
 };

@@ -1,7 +1,6 @@
 import { ActionResult, Form } from "@/lib/form";
 import { login } from "@/actions/authentication";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 
 type Props = {
     content: React.ReactNode
@@ -10,15 +9,14 @@ type Props = {
     descriptionTwo: string;
     footer: React.ReactNode;
     action: (_: any, formData: FormData) => Promise<ActionResult>
-    classNameHeader?: string;
 }
 
 export default function FormCard({
-    content, title, descriptionOne, descriptionTwo, footer, action, classNameHeader = ''
+    content, title, descriptionOne, descriptionTwo, footer, action
 }: Props) {
     return (
         <Card className="w-[350px]  absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <CardHeader className={cn("items-center", classNameHeader)}>
+            <CardHeader className="items-center">
                 <CardTitle className="font-semibold text-xl">
                     {title}
                 </CardTitle>

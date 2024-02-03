@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ArrowLeftRight, LogOut } from "lucide-react";
 import Link from "next/link";
 
@@ -20,6 +20,7 @@ enum USER_MODE {
 
 export const NavbarRoutes = ({ user }: SideBarProps) => {
   const pathname = usePathname();
+  const router = useRouter()
 
   const isAdmin = user.role === USER_ROLE.ADMIN
   const isAdminPage = pathname?.startsWith("/admin");
@@ -57,10 +58,20 @@ export const NavbarRoutes = ({ user }: SideBarProps) => {
           </Link>
         ) : null} */}
         <Button onClick={async () => {
-          const r = await axios.get('/api/test')
-          console.log(r.data)
+          // const r = await axios.get('/profile')
+          // console.log(r.data)
+          router.push('/profile')
+
         }}>
-          Test API
+          pro
+        </Button>
+        <Button onClick={async () => {
+          // const r = await axios.get('/profile')
+          // console.log(r.data)
+          router.push('/profile/2')
+
+        }}>
+          p 2
         </Button>
         {isAdmin && (
           <Link href={isAdminPage ? "/driver/journeys" : "/admin/vehicles"}>

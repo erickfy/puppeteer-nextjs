@@ -23,7 +23,7 @@ export function Form({
     const [state, formAction] = useFormState(action, initState);
     return (
         <form action={formAction} style={style} className={cn('grid gap-8', className)}>
-            {state.errors && state.errors.length !== 0 && state.errors[0] !== '' &&
+            {state?.errors && state.errors.length !== 0 && state.errors[0] !== '' &&
                 <div className={cn("pl-6 pr-6 text-rose-500", "bg-red-500")} style={{ color: "rgb(239, 68, 68)" }} >
                     <ul className="pl-4" style={{ listStyleType: "disc", paddingRight: "16px" }}>
                         {state.errors && state.errors?.map((e) => (

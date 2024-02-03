@@ -19,6 +19,7 @@ export const routes = {
   mercadoLibre: '/mercado-libre',
   bookStore: '/book-store',
   botDetect: '/bot-detect',
+  profile: '/profile',
 }
 
 /**

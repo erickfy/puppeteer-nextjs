@@ -25,7 +25,7 @@ export default function RootLayout({ children, login }: Readonly<{
         <ClientOnly>
           {children}
           {/* {login} */}
-          <Background />
+          {/* <Background /> */}
         </ClientOnly>
       </body>
     </html>
