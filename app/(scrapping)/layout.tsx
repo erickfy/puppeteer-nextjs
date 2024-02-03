@@ -1,9 +1,5 @@
 import Container from "@/components/container";
-import Toolbar from "@/components/toolbar/toolbar";
 import { Skeleton } from "@/components/ui/skeleton";
-import getCurrentUser from "@/data/getCurrentUser";
-import { OWNER } from "@/lib/constants";
-import { faker } from "@faker-js/faker";
 import { USER_ROLE } from "@prisma/client";
 import dynamic from "next/dynamic";
 

@@ -32,10 +32,11 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
 
     console.log(validatedFields.data)
 
-    return {
-        errors: ['']
-    }
-    const { id, username, fullNames, image, role } = validatedFields.data
+    // return {
+    //     errors: ['']
+    // }
+
+    const { id, username, fullNames, image } = validatedFields.data
 
 
     try {
@@ -45,7 +46,7 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
                 username,
                 fullNames,
                 image,
-                role
+                // role
             }
         })
 

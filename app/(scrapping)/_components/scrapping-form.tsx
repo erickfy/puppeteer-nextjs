@@ -41,7 +41,13 @@ type Props<T> = {
 
 export default function ScrappingForm<T>({ title, description, exampleInput, hiddenInput = false, routeHandler, cardScrapping: CardScrapping }: Props<T>) {
     const route = useRouter()
-    const { resetInstragramImage, setInstagramImage } = useImages()
+    const { resetInstragramImage,
+        setInstagramImage,
+        setAmazonImage,
+        setBookStoreImage,
+        setBotDetectImage,
+        setMercadoLibreImage,
+    } = useImages()
     const [data, setData] = useState<T[]>([])
     const [loading, setLoading] = useState<boolean>()
     const [isPending, startTransition] = useTransition()
@@ -80,8 +86,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                     if (request.status === 200) {
                         setData(request.data.data);
                         setLoading(false);
-                        const src = `/${routeHandler}/${dt.search}.webp`;
-                        setInstagramImage(src)
+                        saveTypeImage(dt.search)
                         console.log(isPending)
                         console.log(request.data)
                         if (request.data.data.length === 0) {
@@ -102,6 +107,17 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
         })
 
     }
+
+    function saveTypeImage(imageName: string) {
+        const src = `/${routeHandler}/${imageName}.webp`;
+
+        if (routeHandler === 'instagram') setInstagramImage(src)
+        else if (routeHandler === 'amazon') setAmazonImage(src)
+        else if (routeHandler === 'book-store') setBookStoreImage(src)
+        else if (routeHandler === 'bot-detect') setBotDetectImage(src)
+        else if (routeHandler === 'mercado-libre') setMercadoLibreImage(src)
+    }
+    
     return (
         <div className="flex h-full items-center justify-center">
 

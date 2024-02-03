@@ -34,7 +34,7 @@ export default function Background({ }: Props) {
         console.log(getBG())
 
         return getBG()
-    }, [isAuth])
+    }, [isAuth, getBG(), setBG])
 
     console.log(background)
 
