@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Ignore webp generated
 **/*.webp
+
+# editor conf
+.vscode
