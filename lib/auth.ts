@@ -21,14 +21,14 @@ export const lucia = new Lucia(adapter, {
         return {
             id: attributes.id,
             username: attributes.username,
-            // role: '',
-            // fullNames: '',
-            // active: '',
+            fullNames: attributes.fullNames,
+            role: attributes.role,
+            image: attributes.image,
         };
     },
-    sessionExpiresIn: new TimeSpan(1, "m")
-
+    sessionExpiresIn: new TimeSpan(2, "m")
 });
+
 
 const nullResponse = {
     user: null,
@@ -55,7 +55,7 @@ export const validateRequest = cache(
                 cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
             }
         } catch (e) {
-            // console.error(e)
+            console.error(e)
             if (e instanceof Prisma.PrismaClientKnownRequestError) return nullResponse
         }
         return result;
@@ -66,7 +66,7 @@ declare module "lucia" {
     interface Register {
         Lucia: typeof lucia;
         DatabaseUserAttributes: Omit<UserDB,
-            "hashedPassword" | 'createdAt' | 'updatedAt' | 'role'
+            "hashedPassword" | 'createdAt' | 'updatedAt'
         >;
         // DatabaseSessionAttributes: Omit<SessionDB, ''>;
     }

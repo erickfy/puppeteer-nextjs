@@ -1,15 +1,10 @@
 'use server'
 import { db } from "@/lib/db";
-import { Argon2id } from "oslo/password";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { lucia, validateRequest } from "@/lib/auth";
-import { ActionResult, Form } from "@/lib/form";
-import { generateId } from "lucia";
-import { EditUserSchema, SignInSchema, SignUpSchema } from "@/schemas/form-schemas";
+import { ActionResult } from "@/lib/form";
+import { EditUserSchema } from "@/schemas/form-schemas";
 import { Prisma } from "@prisma/client";
-import { SECRET_HASH_PASS } from "@/lib/hashPassword";
 import { PutBlobResult } from "@vercel/blob";
 
 export async function editUser(_: any, formData: FormData): Promise<ActionResult> {
@@ -19,7 +14,6 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
         username: formData.get('username'),
         fullNames: formData.get('fullNames'),
         image: formData.get('image'),
-        // role: formData.get('role'),
     })
     console.log(formData)
 
@@ -53,7 +47,6 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
                 urlImage = url
             }
         })
-
     }
 
 
@@ -65,7 +58,6 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
                 username,
                 fullNames,
                 image: urlImage ? urlImage : null
-                // role
             }
         })
 
@@ -78,15 +70,15 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
         }
 
     } catch (e) {
-        console.error(e)
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            console.error("DB", e)
             return {
-                errors: ["Username already used"]
+                errors: [""]
             };
+        } else {
+            console.error(e)
+            return { errors: ["Un desconocido error ocurrio"] };
         }
-        return {
-            errors: ["An unknown error occurred"]
-        };
     }
 
     return redirect("/instagram");

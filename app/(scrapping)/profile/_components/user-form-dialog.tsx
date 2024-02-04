@@ -60,16 +60,12 @@ export default function UserFormDialog({ user }: Props) {
                             </div>
 
                         </>
-                        {/* flex-col sm:flex-row */}
                         <DialogFooter className=" sm:!justify-between gap-4">
                             <DialogClose asChild>
                                 <Button type="button" variant="secondary">
                                     Cerrar
                                 </Button>
                             </DialogClose>
-                            {/* <Button type="submit">
-                                Actualizar
-                            </Button> */}
                             <EditButtonUser title='Actualizar' />
                         </DialogFooter>
                     </Form>
