@@ -21,10 +21,10 @@ export default function Home() {
             </div>
             <p className="font-light text-gray-600 w-full max-w-lg text-center mt-6">
                 <Link
-                    href="https://vercel.com/blob"
+                    href="/test/all-files"
                     className="font-medium underline underline-offset-4 hover:text-black transition-colors"
                 >
-                    Vercel Blob
+                    ALL FILES
                 </Link>{' '}
                 demo. Built with{' '}
                 <Link

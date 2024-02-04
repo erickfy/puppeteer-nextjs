@@ -10,6 +10,7 @@ import { generateId } from "lucia";
 import { EditUserSchema, SignInSchema, SignUpSchema } from "@/schemas/form-schemas";
 import { Prisma } from "@prisma/client";
 import { SECRET_HASH_PASS } from "@/lib/hashPassword";
+import { PutBlobResult } from "@vercel/blob";
 
 export async function editUser(_: any, formData: FormData): Promise<ActionResult> {
 
@@ -20,6 +21,7 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
         image: formData.get('image'),
         // role: formData.get('role'),
     })
+    console.log(formData)
 
     if (!validatedFields.success) {
         const errors = validatedFields.error.flatten().fieldErrors
@@ -32,11 +34,28 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
 
     console.log(validatedFields.data)
 
-    // return {
-    //     errors: ['']
-    // }
-
     const { id, username, fullNames, image } = validatedFields.data
+
+    let urlImage = ''
+    if (image) {
+
+        const formData = new FormData();
+        formData.append('file', image as Blob);
+
+        fetch('/api/avatar/file', {
+            method: 'POST',
+            // headers: { 'content-type': formData?.type || 'application/octet-stream' },
+            headers: { 'content-type': 'application/octet-stream' },
+            body: formData,
+        }).then(async (res) => {
+            if (res.status === 200) {
+                const { url } = (await res.json()) as PutBlobResult
+                urlImage = url
+            }
+        })
+
+    }
+
 
 
     try {
@@ -45,7 +64,7 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
             data: {
                 username,
                 fullNames,
-                image,
+                image: urlImage ? urlImage : null
                 // role
             }
         })

@@ -13,9 +13,9 @@ import { Form } from '@/lib/form'
 import { editUser } from '@/actions/user'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import FormCard from '@/app/(auth)/_components/form-card'
 import { Button } from '@/components/ui/button'
-import { CopyIcon } from 'lucide-react'
+import Uploader from '@/components/uploader'
+import EditButtonUser from '@/components/buttons/edit-button-user'
 
 type Props = {
     user: {
@@ -56,9 +56,9 @@ export default function UserFormDialog({ user }: Props) {
                                 <Input type="text" name="fullNames" id="fullNames" placeholder="Ej: Johan Quinatoa" defaultValue={user.fullNames} />
                             </div>
                             <div className="grid w-full max-w-xs items-center gap-2">
-                                <Label htmlFor="image">Imagen</Label>
-                                <Input type="text" id="image" name="image" defaultValue={user.image} />
+                                <Uploader id='image-upload' name='image' src={user.image} />
                             </div>
+
                         </>
                         {/* flex-col sm:flex-row */}
                         <DialogFooter className=" sm:!justify-between gap-4">
@@ -67,9 +67,10 @@ export default function UserFormDialog({ user }: Props) {
                                     Cerrar
                                 </Button>
                             </DialogClose>
-                            <Button type="submit">
+                            {/* <Button type="submit">
                                 Actualizar
-                            </Button>
+                            </Button> */}
+                            <EditButtonUser title='Actualizar' />
                         </DialogFooter>
                     </Form>
                 </div>

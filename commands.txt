@@ -10,3 +10,7 @@ pnpm prisma migrate db push
 
 # generate secret key
 openssl rand -base64 32
+
+
+# delete cache env
+git rm --cached -r .env*

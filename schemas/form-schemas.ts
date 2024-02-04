@@ -16,6 +16,7 @@ const msg = {
         max: 'El campo de busqueda es de maximo permitido de 20 letras'
     }
 }
+const MAX_FILE_SIZE_MB = 50;
 
 export const SignInSchema = z.object({
     username: z.string({ required_error: msg.empty })
@@ -58,9 +59,25 @@ export const EditUserSchema = z.object({
         .min(4, { message: msg.username.min })
         .max(20, { message: msg.username.max })
         .optional(),
-    image: z.string().optional(),
-    // role: z.nativeEnum(USER_ROLE, { required_error: msg.empty })
-    //     .optional(),
+    image: z.unknown().refine(value => {
+        if (!(value instanceof File)) {
+            return false;
+        }
+
+        // Check type image
+        const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!allowedImageTypes.includes(value.type)) {
+            return false;
+        }
+
+        // Check size image
+        const maxSizeBytes = MAX_FILE_SIZE_MB * 1024 * 1024;
+        if (value.size > maxSizeBytes) {
+            return false;
+        }
+
+        return true;
+    }, { message: 'Archivo de imagen invalido' }).optional(),
 })
 export type TEditUserSchema = z.infer<typeof EditUserSchema>
 

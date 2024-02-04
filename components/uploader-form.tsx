@@ -1,22 +1,15 @@
 'use client'
 
-import React, { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import { useState, useCallback, useMemo, ChangeEvent } from 'react'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
-import { useFormStatus } from 'react-dom'
+import { PutBlobResult } from '@vercel/blob'
+import LoadingDots from './loading-dots'
 
-type Props = {
-    id: string
-    name: string;
-    src?: string
-}
-
-export default function Uploader({ id = "image-upload", src, name }: Props) {
-
+export default function UploaderForm() {
     const [data, setData] = useState<{
         image: string | null
     }>({
-        image: src ? src : null,
+        image: null,
     })
     const [file, setFile] = useState<File | null>(null)
 
@@ -40,25 +33,86 @@ export default function Uploader({ id = "image-upload", src, name }: Props) {
         },
         [setData]
     )
+
     const [saving, setSaving] = useState(false)
-    const { pending, } = useFormStatus()
 
     const saveDisabled = useMemo(() => {
         return !data.image || saving
     }, [data.image, saving])
 
-
     return (
-        <>
+        <form
+            className="grid gap-6"
+            onSubmit={async (e) => {
+                e.preventDefault()
+                setSaving(true)
+                console.log(file)
+                fetch('/api/avatar/file', {
+                    method: 'POST',
+                    headers: { 'content-type': file?.type || 'application/octet-stream' },
+                    body: file,
+                }).then(async (res) => {
+                    if (res.status === 200) {
+                        const { url } = (await res.json()) as PutBlobResult
+                        console.log(url)
+                        toast(
+                            <div className="relative">
+                                <div className="p-2">
+                                    <p className="font-semibold text-gray-900">
+                                        File uploaded!
+                                    </p>
+                                    <p className="mt-1 text-sm text-gray-500">
+                                        Your file has been uploaded to{' '}
+                                        <a
+                                            className="font-medium text-gray-900 underline"
+                                            href={url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {url}
+                                        </a>
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => toast.dismiss(url)}
+                                    className="absolute top-0 -right-2 inline-flex text-gray-400 focus:outline-none focus:text-gray-500 rounded-full p-1.5 hover:bg-gray-100 transition ease-in-out duration-150"
+                                >
+                                    <svg
+                                        className="h-5 w-5"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M5.293 5.293a1 1 0 011.414 0L10
+                          8.586l3.293-3.293a1 1 0 111.414 1.414L11.414
+                          10l3.293 3.293a1 1 0 01-1.414 1.414L10
+                          11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586
+                          10 5.293 6.707a1 1 0 010-1.414z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>,
+                            { duration: 300000 }
+                        )
+                    } else {
+                        const error = await res.text()
+                        toast.error(error)
+                    }
+                    setSaving(false)
+                })
+            }}
+        >
             <div>
                 <div className="space-y-1 mb-4">
-                    <h2 className="text-xl font-semibold">Subir a Imagen</h2>
+                    <h2 className="text-xl font-semibold">Upload a file</h2>
                     <p className="text-sm text-gray-500">
-                        Formatos aceptados: .png, .jpg, .gif, .mp4
+                        Accepted formats: .png, .jpg, .gif, .mp4
                     </p>
                 </div>
                 <label
-                    htmlFor={id}
+                    htmlFor="image-upload"
                     className="group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50"
                 >
                     <div
@@ -102,14 +156,11 @@ export default function Uploader({ id = "image-upload", src, name }: Props) {
                         }}
                     />
                     <div
-                        className={cn(`${dragActive ? 'border-2 border-black' : ''
+                        className={`${dragActive ? 'border-2 border-black' : ''
                             } absolute z-[3] flex h-full w-full flex-col items-center justify-center rounded-md px-10 transition-all ${data.image
-                                ? 'bg-white/80 opacity-0  hover:opacity-100 hover:backdrop-blur-md'
+                                ? 'bg-white/80 opacity-0 hover:opacity-100 hover:backdrop-blur-md'
                                 : 'bg-white opacity-100 hover:bg-gray-50'
-                            }`,
-                        )
-                        }
-
+                            }`}
                     >
                         <svg
                             className={`${dragActive ? 'scale-110' : 'scale-100'
@@ -129,10 +180,10 @@ export default function Uploader({ id = "image-upload", src, name }: Props) {
                             <path d="m16 16-4-4-4 4"></path>
                         </svg>
                         <p className="mt-2 text-center text-sm text-gray-500">
-                            Arrastra y suelta o click para subir.
+                            Drag and drop or click to upload.
                         </p>
                         <p className="mt-2 text-center text-sm text-gray-500">
-                            Tamano Maximo: 50MB
+                            Max file size: 50MB
                         </p>
                         <span className="sr-only">Photo upload</span>
                     </div>
@@ -142,17 +193,13 @@ export default function Uploader({ id = "image-upload", src, name }: Props) {
                             src={data.image}
                             alt="Preview"
                             className="h-full w-full rounded-md object-cover"
-                            onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                                const target = event.target as HTMLImageElement;
-                                target.src = '/user-empty.webp';
-                            }}
                         />
                     )}
                 </label>
                 <div className="mt-1 flex rounded-md shadow-sm">
                     <input
-                        id={id}
-                        name={name}
+                        id="image-upload"
+                        name="image"
                         type="file"
                         accept="image/*"
                         className="sr-only"
@@ -160,6 +207,20 @@ export default function Uploader({ id = "image-upload", src, name }: Props) {
                     />
                 </div>
             </div>
-        </>
+
+            <button
+                disabled={saveDisabled}
+                className={`${saveDisabled
+                    ? 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
+                    : 'border-black bg-black text-white hover:bg-white hover:text-black'
+                    } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
+            >
+                {saving ? (
+                    <LoadingDots color="#808080" />
+                ) : (
+                    <p className="text-sm">Confirm upload</p>
+                )}
+            </button>
+        </form>
     )
 }
