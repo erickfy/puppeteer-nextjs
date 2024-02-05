@@ -17,10 +17,21 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-    const isPrivateRoute = privateRoutes.includes(nextUrl.pathname);
+    const isPrivateRoute = privateRoutes.some(route => {
+        if (route.startsWith("/profile/")) {
+          // Para las rutas de perfil con expresiones regulares
+        //   const regex = new RegExp(`^${route}$`);
+        //   return regex.test(nextUrl.pathname);
+        return route.startsWith('/profile')
+        } else {
+          // Para otras rutas, verificación exacta
+          return nextUrl.pathname === route;
+        }
+      });
+    
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-    console.log("isPublicRoute", isPublicRoute)
+    // console.log("isPublicRoute", isPublicRoute)
     console.log("isPrivateRoute", isPrivateRoute)
 
     if (isApiAuthRoute) {
@@ -31,27 +42,26 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
         return NextResponse.next();
     }
 
-    if (request.method === "GET" && isPrivateRoute) {
-    // if (!isPrivateRoute) {
-        // check unauthorized users
-        const url = new URL(request.url);
-        const urlAuthorized = `${url.origin}${apiAuthPrefix}/check-cookie`;
+    if (!isPrivateRoute) {
+        return NextResponse.redirect(new URL(DEFAULT_UNAUTHORIZED_REDIRECT, nextUrl))
+        // const url = new URL(request.url);
+        // const urlAuthorized = `${url.origin}${apiAuthPrefix}/check-cookie`;
 
-        const req = await fetch(urlAuthorized, { method: 'GET' });
+        // const req = await fetch(urlAuthorized, { method: 'GET' });
 
-        if (!req.ok) {
-            console.error(`Error: ${req.status} - ${req.statusText}`);
-            const { status } = req
-            if (status === 401) {
-                // go to protected
-                return NextResponse.redirect(new URL(DEFAULT_UNAUTHORIZED_REDIRECT, nextUrl))
-            } else if (status === 404) {
-                // notFound()
-            }
-            if (status === 200) {
-                return NextResponse.next();
-            }
-        }
+        // if (!req.ok) {
+        //     console.error(`Error: ${req.status} - ${req.statusText}`);
+        //     const { status } = req
+        //     if (status === 401) {
+        //         // go to protected
+        //         return NextResponse.redirect(new URL(DEFAULT_UNAUTHORIZED_REDIRECT, nextUrl))
+        //     } else if (status === 404) {
+        //         // notFound()
+        //     }
+        //     if (status === 200) {
+        //         return NextResponse.next();
+        //     }
+        // }
         // console.log("bueno", isPrivateRoute)
         // return NextResponse.redirect(new URL(DEFAULT_UNAUTHORIZED_REDIRECT, nextUrl))
     }
@@ -63,8 +73,6 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     //         status: 403
     //     });
     // }
-    // console.log("I want to know")
-
     return NextResponse.next();
 }
 

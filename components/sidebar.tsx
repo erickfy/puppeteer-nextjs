@@ -1,6 +1,7 @@
 import { USER_ROLE } from "@prisma/client";
 import Logo from "./logo";
 import { SidebarRoutes } from "./sidebar-routes";
+import { User } from "lucia";
 
 export type SideBarProps = {
     user: {
@@ -9,7 +10,7 @@ export type SideBarProps = {
         fullNames: string | null;
         role: USER_ROLE;
         image: string | null;
-    }
+    } & User
 }
 
 const Sidebar = ({ user }: SideBarProps) => {

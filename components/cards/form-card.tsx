@@ -1,5 +1,4 @@
 import { ActionResult, Form } from "@/lib/form";
-import { login } from "@/actions/authentication";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 

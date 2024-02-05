@@ -1,19 +1,24 @@
 import React from 'react'
-import { getUser } from '../layout'
 import { Card, CardHeader } from '@/components/ui/card'
 import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { USER_ROLE } from '@prisma/client'
-import EditButton from './_components/edit-button'
+import EditButton from '../../../components/buttons/edit-button'
+import { redirect } from 'next/navigation'
+import { validateRequest } from '@/lib/auth'
 
 type Props = {
   // dialog: React.ReactNode
 }
 
-export default function ProfilePage({ }: Props) {
-  const user = getUser()
+export default async function ProfilePage({ }: Props) {
 
+  const { user, session } = await validateRequest()
+  console.log(user)
+  if (!session && !user) {
+    return redirect('/protected')
+  }
   return (
     <Card className='w-full xl:w-[625px] relative'>
       <div className="absolute top-3 right-3">
@@ -24,7 +29,7 @@ export default function ProfilePage({ }: Props) {
           <div className='min-w-[150px] min-h-[150px] relative flex'>
 
             <Image
-              src={user.image}
+              src={user.image ? user.image : '/user-empty.webp'}
               objectFit="cover"
               layout="fill"
               alt="Descripción de la imagen"

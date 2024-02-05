@@ -35,7 +35,7 @@ export const privateRoutes: string[] = [
   "/mercado-libre",
   "/book-store",
   "/bot-detect",
-  "/profile",
+  "/profile/[a-zA-Z0-9]+", 
 ];
 
 /**

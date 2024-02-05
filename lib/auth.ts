@@ -26,7 +26,7 @@ export const lucia = new Lucia(adapter, {
             image: attributes.image,
         };
     },
-    sessionExpiresIn: new TimeSpan(2, "m")
+    sessionExpiresIn: new TimeSpan(3, "m")
 });
 
 

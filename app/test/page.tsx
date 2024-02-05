@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import ExpandingArrow from './expanded-arrow'
-import Uploader from '@/components/uploader'
+import UploaderForm from '@/components/uploader-form'
 
 export default function Home() {
     return (
@@ -17,7 +17,7 @@ export default function Home() {
                 Blob on Vercel
             </h1>
             <div className="bg-white/30 p-12 shadow-xl ring-1 ring-gray-900/5 rounded-lg backdrop-blur-lg max-w-xl mx-auto w-full">
-                <Uploader />
+                <UploaderForm />
             </div>
             <p className="font-light text-gray-600 w-full max-w-lg text-center mt-6">
                 <Link

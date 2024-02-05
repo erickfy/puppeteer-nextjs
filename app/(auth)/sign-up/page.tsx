@@ -3,7 +3,7 @@ import Link from "next/link";
 import { validateRequest } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-import FormCard from "@/app/(auth)/_components/form-card";
+import FormCard from "@/components/cards/form-card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
