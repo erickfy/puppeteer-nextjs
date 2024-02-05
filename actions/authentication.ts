@@ -50,10 +50,12 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
 
         if (!validPassword) {
             return {
-                // errors: ["La contrasena no coincide"]
-                errors: ["Campos ingresados incorrectos"]
+                errors: ["Contrasena incorrecta!"]
+                // errors: ["Campos ingresados incorrectos"]
             };
         }
+
+        console.log(validPassword)
 
         const session = await lucia.createSession(existingUser.id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
@@ -119,6 +121,7 @@ export async function signup(_: any, formData: FormData): Promise<ActionResult> 
         cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
     } catch (e) {
+        console.log(e)
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             return {
                 errors: ["Username already used"]
@@ -127,7 +130,6 @@ export async function signup(_: any, formData: FormData): Promise<ActionResult> 
         return {
             errors: ["An unknown error occurred"]
         };
-        console.log(e)
     }
-    return redirect("/lucia/login");
+    return redirect("/instagram");
 }

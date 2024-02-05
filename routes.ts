@@ -20,7 +20,23 @@ export const routes = {
   bookStore: '/book-store',
   botDetect: '/bot-detect',
   profile: '/profile',
+  protected: '/protected',
 }
+
+/**
+ * An array of routes that are accessible to the public
+ * These routes do not require authentication
+ * @type {string[]}
+ */
+
+export const privateRoutes: string[] = [
+  "/instagram",
+  "/amazon",
+  "/mercado-libre",
+  "/book-store",
+  "/bot-detect",
+  "/profile",
+];
 
 /**
  * An array of routes that are accessible to the public
@@ -31,6 +47,7 @@ export const routes = {
 export const publicRoutes: string[] = [
   "/",
   "/sign-up",
+  "/protected",
 ];
 
 /**
@@ -55,3 +72,4 @@ export const apiAuthPrefix: string = "/api/auth";
  * @type {string}
  */
 export const DEFAULT_LOGIN_REDIRECT: string = "/";
+export const DEFAULT_UNAUTHORIZED_REDIRECT: string = "/protected";

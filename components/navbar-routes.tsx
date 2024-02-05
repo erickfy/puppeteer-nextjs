@@ -59,7 +59,6 @@ export const NavbarRoutes = ({ user }: SideBarProps) => {
         ) : null} */}
         <Button onClick={async () => {
           // const r = await axios.get('/profile')
-          // console.log(r.data)
           router.push('/profile')
 
         }}>
@@ -67,7 +66,6 @@ export const NavbarRoutes = ({ user }: SideBarProps) => {
         </Button>
         <Button onClick={async () => {
           // const r = await axios.get('/profile')
-          // console.log(r.data)
           router.push('/profile/2')
 
         }}>

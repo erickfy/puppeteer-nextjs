@@ -19,10 +19,7 @@ function isAuthRoute(path: string) {
 export default function Background({ }: Props) {
     const { getBG, setBG } = useBackground()
     const pathname = usePathname()
-    const currentBackground = getBG()
-    console.log(pathname)
     const isAuth = isAuthRoute(pathname)
-    console.log(isAuth)
 
     const background = useMemo(() => {
 
@@ -31,12 +28,9 @@ export default function Background({ }: Props) {
         } else {
             setBG(BACKGROUND.SCRAPPING)
         }
-        console.log(getBG())
 
         return getBG()
     }, [isAuth, getBG(), setBG])
-
-    console.log(background)
 
     return (
         <div

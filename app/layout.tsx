@@ -22,10 +22,9 @@ export default function RootLayout({ children, login }: Readonly<{
     <html lang="en">
       <body className={cn(inter.className)} >
         <RootProvider />
+        {children}
         <ClientOnly>
-          {children}
-          {/* {login} */}
-          {/* <Background /> */}
+          <Background />
         </ClientOnly>
       </body>
     </html>
