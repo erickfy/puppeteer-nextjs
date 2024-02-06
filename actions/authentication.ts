@@ -26,10 +26,7 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
             errors: errorStrings
         }
     }
-    console.log(validatedFields.data)
-
     const { username, password } = validatedFields.data
-
     try {
         const existingUser = await db.user.findFirst({
             where: {
@@ -37,8 +34,6 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
                 active: true
             }
         })
-
-        console.log(existingUser)
 
         if (!existingUser) {
             return {
@@ -54,8 +49,6 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
                 // errors: ["Campos ingresados incorrectos"]
             };
         }
-
-        console.log(validPassword)
 
         const session = await lucia.createSession(existingUser.id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
@@ -93,7 +86,6 @@ export async function signup(_: any, formData: FormData): Promise<ActionResult> 
             errors: errorStrings
         }
     }
-    console.log(validatedFields.data)
     // if (validatedFields.data.password !== validatedFields.data.confirmPassword) {
     //     return { errors: ["Las contrasenas no coinciden"] }
     // }
@@ -114,6 +106,7 @@ export async function signup(_: any, formData: FormData): Promise<ActionResult> 
                 role
             }
         })
+        
         console.log(newuser)
 
         const session = await lucia.createSession(newuser.id, {});

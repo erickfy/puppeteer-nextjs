@@ -3,19 +3,19 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 import { ActionResult } from "@/lib/form";
-import { EditUserSchema } from "@/schemas/form-schemas";
+import { ChangePasswordSchema, EditUserSchema } from "@/schemas/form-schemas";
 import { Prisma } from "@prisma/client";
-import { PutBlobResult } from "@vercel/blob";
+import { sendImage } from "./sendImage";
+import { Argon2id } from "oslo/password";
+import { SECRET_HASH_PASS } from "@/lib/hashPassword";
 
-export async function editUser(_: any, formData: FormData): Promise<ActionResult> {
+export async function changePasswordAction(_: any, formData: FormData): Promise<ActionResult> {
 
-    const validatedFields = EditUserSchema.safeParse({
+    const validatedFields = ChangePasswordSchema.safeParse({
         id: formData.get('id'),
-        username: formData.get('username'),
-        fullNames: formData.get('fullNames'),
-        image: formData.get('image'),
+        password: formData.get('password'),
+        confirmPassword: formData.get('confirmPassword'),
     })
-    console.log(formData)
 
     if (!validatedFields.success) {
         const errors = validatedFields.error.flatten().fieldErrors
@@ -26,42 +26,75 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
         }
     }
 
-    console.log(validatedFields.data)
+    const { id, password, confirmPassword } = validatedFields.data
 
-    const { id, username, fullNames, image } = validatedFields.data
-
-    let urlImage = ''
-    if (image) {
-
-        const formData = new FormData();
-        formData.append('file', image as Blob);
-
-        fetch('/api/avatar/file', {
-            method: 'POST',
-            // headers: { 'content-type': formData?.type || 'application/octet-stream' },
-            headers: { 'content-type': 'application/octet-stream' },
-            body: formData,
-        }).then(async (res) => {
-            if (res.status === 200) {
-                const { url } = (await res.json()) as PutBlobResult
-                urlImage = url
-            }
-        })
+    if (password !== confirmPassword) {
+        return {
+            errors: ['Las contrasenas no coinciden']
+        }
     }
 
-
+    const hashedPassword = await new Argon2id({ secret: SECRET_HASH_PASS }).hash(password);
 
     try {
         const newUser = await db.user.update({
             where: { id },
             data: {
-                username,
+                hashedPassword
+            }
+        })
+
+        if (!newUser) {
+            return {
+                errors: ["No se pudo actualizar el usuario."]
+            };
+        }
+
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            console.error("DB", e)
+            return {
+                errors: [""]
+            };
+        } else {
+            console.error(e)
+            return { errors: ["Un desconocido error ocurrio"] };
+        }
+    }
+
+    return redirect("/instagram");
+}
+
+
+export async function editUser(_: any, formData: FormData): Promise<ActionResult> {
+
+    const validatedFields = EditUserSchema.safeParse({
+        id: formData.get('id'),
+        fullNames: formData.get('fullNames'),
+        image: formData.get('image'),
+    })
+
+    if (!validatedFields.success) {
+        const errors = validatedFields.error.flatten().fieldErrors
+        const errorStrings = Object.values(errors).flat()
+        console.log(errors)
+        return {
+            errors: errorStrings
+        }
+    }
+
+    const { id, fullNames, image } = validatedFields.data
+
+    let urlImage = image ? await sendImage(image, image.type) : null
+
+    try {
+        const newUser = await db.user.update({
+            where: { id },
+            data: {
                 fullNames,
                 image: urlImage ? urlImage : null
             }
         })
-
-        console.log(newUser)
 
         if (!newUser) {
             return {

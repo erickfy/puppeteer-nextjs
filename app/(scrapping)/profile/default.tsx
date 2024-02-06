@@ -7,6 +7,7 @@ import { USER_ROLE } from '@prisma/client'
 import EditButton from '../../../components/buttons/edit-button'
 import { redirect } from 'next/navigation'
 import { validateRequest } from '@/lib/auth'
+import Link from 'next/link'
 
 export default async function DefaultProfilePage() {
 
@@ -24,14 +25,11 @@ export default async function DefaultProfilePage() {
             <CardHeader>
                 <div className='flex flex-col md:flex-row gap-8 md:gap-8 justify-start items-center'>
                     <div className='min-w-[150px] min-h-[150px] relative flex'>
-
                         <Image
                             src={user.image ? user.image : '/user-empty.webp'}
                             objectFit="cover"
                             layout="fill"
                             alt="Descripción de la imagen"
-                            // width={100}
-                            // height={100}
                             className="rounded-full"
                         />
                     </div>
@@ -47,19 +45,18 @@ export default async function DefaultProfilePage() {
                             </p>
                         </div>
                         <Separator className="my-4" />
-                        <div className="flex h-5 items-center space-x-4 text-sm">
+                        <div className="flex h-5 items-center space-x-1 md:space-x-4 text-sm">
                             <div>{user.role === USER_ROLE.ADMIN ? "Administrador" : "Usuario"}</div>
                             <Separator orientation="vertical" />
                             <div>Activo</div>
-                            <Separator orientation="vertical" />
-                            <div><Button variant={"link"}>Cambiar mi contrasena</Button></div>
+                            <div className='hidden sr-only'>
+                                <Separator orientation="vertical" />
+                            </div>
+                            <Link href={`/profile/${user.id}?changePassword=true`}><Button variant={"link"}>Cambiar mi contrasena</Button></Link>
                         </div>
                     </div>
-
                 </div>
-
             </CardHeader>
-
         </Card>
     )
 }

@@ -21,7 +21,8 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
         if (route.startsWith("/profile/")) {
           // Para las rutas de perfil con expresiones regulares
         //   const regex = new RegExp(`^${route}$`);
-        //   return regex.test(nextUrl.pathname);
+            //   return regex.test(nextUrl.pathname);
+            console.log("((((((((((((((((((((((((((((((((((((((((((((((((((((((")
         return route.startsWith('/profile')
         } else {
           // Para otras rutas, verificación exacta

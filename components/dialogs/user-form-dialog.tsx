@@ -4,22 +4,18 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Uploader from '@/components/uploader'
-import EditButtonUser from '@/components/buttons/edit-button-user'
+import ButtonUI from '@/components/buttons/button-ui'
 import { User } from 'lucia'
 import DialogUI from './dialog-ui'
 
 type Props = {
-    user: User
+    user: User,
 }
 
 export default function UserFormDialog({ user }: Props) {
 
     const content = (<>
         <Input name='id' className='hidden' defaultValue={user.id} />
-        <div className="grid w-full max-w-xs items-center gap-2">
-            <Label htmlFor="username">Usuario</Label>
-            <Input type="text" id="username" name="username" placeholder="Ej: dejanstipke" defaultValue={user.username ? user.username : ''} />
-        </div>
         <div className="grid w-full max-w-xs items-center gap-2">
             <Label htmlFor="fullNames">Nombres Completos</Label>
             <Input type="text" name="fullNames" id="fullNames" placeholder="Ej: Johan Quinatoa" defaultValue={user.fullNames ? user.fullNames : ''} />
@@ -31,7 +27,7 @@ export default function UserFormDialog({ user }: Props) {
     </>)
 
     const buttonClose = (<Button type="button" variant="secondary">Cerrar</Button>)
-    const buttonSubmit = <EditButtonUser title='Actualizar' />
+    const buttonSubmit = <ButtonUI title='Actualizar' />
 
     return (
         <DialogUI

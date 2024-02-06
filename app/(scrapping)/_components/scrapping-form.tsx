@@ -36,10 +36,11 @@ type Props<T> = {
     routeHandler:
     'instagram' | 'book-store' | 'amazon' | 'bot-detect' | 'mercado-libre'
     cardScrapping: React.ComponentType<{ data: T[] }>;
+    userId: string;
 }
 
 
-export default function ScrappingForm<T>({ title, description, exampleInput, hiddenInput = false, routeHandler, cardScrapping: CardScrapping }: Props<T>) {
+export default function ScrappingForm<T>({ title, description, exampleInput, hiddenInput = false, routeHandler, cardScrapping: CardScrapping, userId }: Props<T>) {
     const route = useRouter()
     const { resetInstragramImage,
         setInstagramImage,
@@ -78,11 +79,13 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
 
         startTransition(() => {
 
-            toast.promise(axios.post(`/api/scrapping/${routeHandler}`,
-                { searchInput: dt.search }
-            ), {
+            toast.promise(Promise.all([
+                axios.post(`/api/scrapping/${routeHandler}`, { searchInput: dt.search }),
+                axios.post(`/api/scrapping/count-word`, { userId, searchInput: dt.search, type: routeHandler }),
+            ]), {
                 loading: "Scrapeando... ⌛",
-                success: async (request) => {
+                success: async (requests) => {
+                    const request = requests[0]
                     if (request.status === 200) {
                         setData(request.data.data);
                         setLoading(false);
@@ -117,7 +120,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
         else if (routeHandler === 'bot-detect') setBotDetectImage(src)
         else if (routeHandler === 'mercado-libre') setMercadoLibreImage(src)
     }
-    
+
     return (
         <div className="flex h-full items-center justify-center">
 

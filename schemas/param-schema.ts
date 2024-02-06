@@ -7,3 +7,9 @@ export const ParamSchema = z.object({
 })
 export type TParamSchema = z.infer<typeof ParamSchema>
 
+
+export const ParamsEditUserSchema = z.object({
+    changePassword: z.string().optional()
+})
+export type TParamsEditUserSchema = z.infer<typeof ParamsEditUserSchema>
+

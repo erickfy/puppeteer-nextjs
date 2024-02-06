@@ -1,5 +1,4 @@
 "use client";
-import { useCallback, useRef, useEffect, MouseEventHandler } from "react";
 import {
     Dialog,
     DialogClose,
@@ -8,7 +7,6 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 import { Form } from '@/lib/form'
 import { useRouter } from "next/navigation";
@@ -37,9 +35,9 @@ export default function DialogUI({ action, title, description, content, buttonCl
                     </DialogDescription>
                 </DialogHeader>
 
-                <Form action={action} className=" mx-auto w-full">
+                <Form action={action} className=" mx-auto sm:max-w-sm w-full">
                     {content}
-                    <DialogFooter className=" sm:!justify-between gap-4">
+                    <DialogFooter className="sm:!justify-between gap-4">
                         <DialogClose>
                             {buttonClose}
                         </DialogClose>

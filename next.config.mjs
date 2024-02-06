@@ -18,6 +18,8 @@ const nextConfig = {
       "m.media-amazon.com",
       "http2.mlstatic.com",
       "images.fastcompany.net",
+      "1dh5zqw7u0xfdger.public.blob.vercel-storage.com",
+      
     ],
   },
 };

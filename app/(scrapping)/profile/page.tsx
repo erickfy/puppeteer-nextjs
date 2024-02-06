@@ -7,6 +7,7 @@ import { USER_ROLE } from '@prisma/client'
 import EditButton from '../../../components/buttons/edit-button'
 import { redirect } from 'next/navigation'
 import { validateRequest } from '@/lib/auth'
+import Link from 'next/link'
 
 type Props = {
   // dialog: React.ReactNode
@@ -55,7 +56,7 @@ export default async function ProfilePage({ }: Props) {
               <Separator orientation="vertical" />
               <div>Activo</div>
               <Separator orientation="vertical" />
-              <div><Button variant={"link"}>Cambiar mi contrasena</Button></div>
+              <Link href={`/profile/${user.id}?changePassword=true`}><Button variant={"link"}>Cambiar mi contrasena</Button></Link>
             </div>
           </div>
 

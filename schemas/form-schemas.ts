@@ -52,14 +52,14 @@ export type TSearchSchema = z.infer<typeof SearchSchema>
 
 export const EditUserSchema = z.object({
     id: z.string({ required_error: msg.empty }),
-    username: z.string({ required_error: msg.empty })
-        .min(4, { message: msg.username.min })
-        .max(20, { message: msg.username.max }),
+    // username: z.string({ required_error: msg.empty })
+    //     .min(4, { message: msg.username.min })
+    //     .max(20, { message: msg.username.max }),
     fullNames: z.string()
         .min(4, { message: msg.username.min })
         .max(20, { message: msg.username.max })
         .optional(),
-    image: z.unknown().refine(value => {
+    image: z.instanceof(File).refine(value => {
         if (!(value instanceof File)) {
             return false;
         }
@@ -84,6 +84,7 @@ export type TEditUserSchema = z.infer<typeof EditUserSchema>
 
 
 export const ChangePasswordSchema = z.object({
+    id: z.string({ required_error: msg.empty }),
     password: z.string({ required_error: msg.empty })
         .min(2, { message: msg.password.min })
         .max(20, { message: msg.password.max }),

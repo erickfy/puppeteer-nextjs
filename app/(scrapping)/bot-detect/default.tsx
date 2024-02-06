@@ -1,8 +1,8 @@
-'use client'
-
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
+import { validateRequest } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 import BotDetectCard from '../_components/cards/bot-detect-card';
 
 interface DynamicScrappingFormProps {
@@ -12,6 +12,7 @@ interface DynamicScrappingFormProps {
   hiddenInput: boolean;
   routeHandler: 'instagram' | 'amazon' | 'bot-detect' | 'mercado-libre' | 'book-store';
   cardScrapping: React.ComponentType<{ data: TBotDetect[] }>;
+  userId: string;
 }
 
 const DynamicScrappingForm = dynamic<DynamicScrappingFormProps>(() => import('../_components/scrapping-form'), {
@@ -19,7 +20,12 @@ const DynamicScrappingForm = dynamic<DynamicScrappingFormProps>(() => import('..
   ssr: false
 });
 
-export default function DefaultBotDetectPage() {
+export default async function DefaultBotDetectPage() {
+  const { user, session } = await validateRequest()
+  if (!session && !user) {
+    return redirect('/protected')
+  }
+
   const dynamicProps: DynamicScrappingFormProps = {
     title: "Scrapping de analisis",
     description: "Extrae una imagen de la persona o robot que solicita informacion",
@@ -27,6 +33,7 @@ export default function DefaultBotDetectPage() {
     hiddenInput: true,
     routeHandler: 'bot-detect',
     cardScrapping: BotDetectCard,
+    userId: `${user.id}`
   };
 
   return <DynamicScrappingForm {...dynamicProps} />;

@@ -7,6 +7,7 @@ import FormCard from "@/components/cards/form-card";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { login } from "@/actions/authentication";
+import ButtonUI from "@/components/buttons/button-ui";
 
 export default async function RootLoginPage() {
   const { user } = await validateRequest();
@@ -33,9 +34,8 @@ export default async function RootLoginPage() {
       }
       footer={
         <>
-          <Button className="w-full" type="submit">
-            Continuar
-          </Button>
+
+          <ButtonUI className="w-full" type="submit" title="Continuar" />
           <div className="text-sm text-muted-foreground flex gap-2">
             <p className="text-black">
               Aun no tienes cuenta?

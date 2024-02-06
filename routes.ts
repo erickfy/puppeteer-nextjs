@@ -21,6 +21,9 @@ export const routes = {
   botDetect: '/bot-detect',
   profile: '/profile',
   protected: '/protected',
+  users: "/users",
+  searchs: "/searchs",
+
 }
 
 /**
@@ -35,7 +38,10 @@ export const privateRoutes: string[] = [
   "/mercado-libre",
   "/book-store",
   "/bot-detect",
-  "/profile/[a-zA-Z0-9]+", 
+  "/users",
+  "/searchs",
+  "/profile/[a-zA-Z0-9]+",
+
 ];
 
 /**
