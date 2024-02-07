@@ -63,7 +63,7 @@ To be able to start development on this app, make sure that you have the followi
 <summary>
 Stack
 </summary> 
-Some tech tacks that have been used for this project
+Some tech stacks that have been used for this project
 <br/>
 <br/>
 
