@@ -65,8 +65,15 @@ export const EditUserSchema = z.object({
         }
 
         // Check type image
-        const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const allowedImageTypes = [
+            'image/jpg',
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+        ];
+        
         if (!allowedImageTypes.includes(value.type)) {
+            console.log("yes", value.type)
             return false;
         }
 

@@ -1,9 +1,8 @@
 'use client'
 
-import React, { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import React, { ChangeEvent, useCallback, useState } from 'react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
-import { useFormStatus } from 'react-dom'
 
 type Props = {
     id: string
@@ -27,7 +26,7 @@ export default function Uploader({ id = "image-upload", src, name }: Props) {
             const file = event.currentTarget.files && event.currentTarget.files[0]
             if (file) {
                 if (file.size / 1024 / 1024 > 50) {
-                    toast.error('File size too big (max 50MB)')
+                    toast.error('Archivo muy grande (max 50MB)')
                 } else {
                     setFile(file)
                     const reader = new FileReader()
@@ -40,13 +39,6 @@ export default function Uploader({ id = "image-upload", src, name }: Props) {
         },
         [setData]
     )
-    const [saving, setSaving] = useState(false)
-    const { pending, } = useFormStatus()
-
-    const saveDisabled = useMemo(() => {
-        return !data.image || saving
-    }, [data.image, saving])
-
 
     return (
         <>
@@ -54,7 +46,7 @@ export default function Uploader({ id = "image-upload", src, name }: Props) {
                 <div className="space-y-1 mb-4">
                     <h2 className="text-xl font-semibold">Subir a Imagen</h2>
                     <p className="text-sm text-gray-500">
-                        Formatos aceptados: .png, .jpg, .gif, .mp4
+                        Formatos aceptados: .png, .jpg, .jpeg, .gif
                     </p>
                 </div>
                 <label

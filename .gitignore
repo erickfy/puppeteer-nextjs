@@ -44,5 +44,8 @@ next-env.d.ts
 # Ignore webp generated
 **/*.webp
 
+# Except for the ones in the "images" folder
+!.github/**/*.webp
+
 # editor conf
 .vscode

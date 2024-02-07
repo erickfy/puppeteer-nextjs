@@ -1,6 +1,7 @@
 import Heading from '@/components/heading'
 import { validateRequest } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { USER_ROLE } from '@prisma/client'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
@@ -43,10 +44,12 @@ export default async function UsersPage({ }: Props) {
               alt="User"
               className="w-24 h-24 rounded-full mx-auto my-2"
             />
-            <p className="font-bold text-lg mb-2">{user.username}</p>
-            <p className="mb-2">Nombres: {user.fullNames}</p>
-            <p className="mb-2">Rol: {user.role}</p>
-            <p className="mb-2">Activo: {user.active ? 'Si' : 'No'}</p>
+            <p className="font-bold text-lg mb-2">@{user.username}</p>
+            <p className="mb-2"><span className='font-bold'>Nombres:</span> {user.fullNames}</p>
+            <p className="mb-2"><span className='font-bold'>Rol:</span> {user.role === USER_ROLE.ADMIN ?
+              "Administrador" : "Usuario"
+            }</p>
+            <p className="mb-2"><span className='font-bold'>Activo:</span> {user.active ? 'Si' : 'No'}</p>
           </div>))}
       </div>
     </div>
