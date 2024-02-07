@@ -2,8 +2,6 @@ import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import { customAlphabet } from 'nanoid'
 
-export const runtime = 'edge'
-
 export async function DELETE(req: Request) {
     const json = await req.json()
     return Response.json({})

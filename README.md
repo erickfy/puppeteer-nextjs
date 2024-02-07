@@ -6,7 +6,7 @@
 </h1>
 
 <p align="center">
-  <i align="center">App to scrapping from websites 🚀</i>
+  <i align="center">App to scrapping websites 🚀</i>
 </p>
 
 <img src='./.github/assets/screen-login.webp'>
