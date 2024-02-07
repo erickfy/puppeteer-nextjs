@@ -21,26 +21,25 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/componen
 import { useImages } from '@/hooks/useImages';
 import { toast } from 'sonner';
 import Message from './message';
+import { TWITHOUT_INPUT } from '@/lib/constants';
 
 /**
  * DOCS:
  * useTransition: https://react.dev/reference/react/useTransition#marking-a-state-update-as-a-non-blocking-transition
  */
 
-
 type Props<T> = {
     title: string;
     description: string;
+    defaultInput?: string;
     exampleInput: string;
     hiddenInput?: boolean;
     routeHandler:
     'instagram' | 'book-store' | 'amazon' | 'bot-detect' | 'mercado-libre'
     cardScrapping: React.ComponentType<{ data: T[] }>;
-    userId: string;
 }
 
-
-export default function ScrappingForm<T>({ title, description, exampleInput, hiddenInput = false, routeHandler, cardScrapping: CardScrapping, userId }: Props<T>) {
+export default function ScrappingForm<T>({ title, description, exampleInput, hiddenInput = false, routeHandler, cardScrapping: CardScrapping, defaultInput = "" }: Props<T>) {
     const route = useRouter()
     const { resetInstragramImage,
         setInstagramImage,
@@ -57,7 +56,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
     const form = useForm<TSearchSchema>({
         resolver: zodResolver(SearchSchema),
         defaultValues: {
-            search: "",
+            search: defaultInput,
         },
     })
 
@@ -81,7 +80,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
 
             toast.promise(Promise.all([
                 axios.post(`/api/scrapping/${routeHandler}`, { searchInput: dt.search }),
-                axios.post(`/api/scrapping/count-word`, { userId, searchInput: dt.search, type: routeHandler }),
+                axios.post(`/api/scrapping/count-word`, { searchInput: dt.search, type: routeHandler }),
             ]), {
                 loading: "Scrapeando... ⌛",
                 success: async (requests) => {
@@ -90,8 +89,6 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                         setData(request.data.data);
                         setLoading(false);
                         saveTypeImage(dt.search)
-                        console.log(isPending)
-                        console.log(request.data)
                         if (request.data.data.length === 0) {
                             form.reset()
                             return '🚫 Sin resultados pero puedes mirar su imagen!'
@@ -116,9 +113,15 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
 
         if (routeHandler === 'instagram') setInstagramImage(src)
         else if (routeHandler === 'amazon') setAmazonImage(src)
-        else if (routeHandler === 'book-store') setBookStoreImage(src)
-        else if (routeHandler === 'bot-detect') setBotDetectImage(src)
         else if (routeHandler === 'mercado-libre') setMercadoLibreImage(src)
+        else if (routeHandler === 'book-store') {
+            const src = `/${routeHandler}/${TWITHOUT_INPUT.BOOK_STORE as string}`
+            setBookStoreImage(src)
+        }
+        else if (routeHandler === 'bot-detect') {
+            const src = `/${routeHandler}/${TWITHOUT_INPUT.BOT_DETECT as string}`
+            setBotDetectImage(src)
+        }
     }
 
     return (
@@ -138,23 +141,24 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                             <CardContent>
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                                        {!hiddenInput &&
-                                            <FormField
-                                                control={form.control}
-                                                name="search"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Busqueda</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder={`Ej: ${exampleInput}`}  {...field} type="text" autoComplete="off" />
-                                                        </FormControl>
-                                                        <FormMessage>
-                                                            {form.formState.errors.search?.message}
-                                                        </FormMessage>
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        }
+
+                                        <FormField
+                                            control={form.control}
+                                            name="search"
+                                            render={({ field }) => (
+                                                // TO HIDDE INPUT
+                                                <FormItem className={hiddenInput ? 'sr-only' : ''}>
+                                                    <FormLabel>Busqueda</FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder={`Ej: ${exampleInput}`}  {...field} type="text" autoComplete="off" />
+                                                    </FormControl>
+                                                    <FormMessage>
+                                                        {form.formState.errors.search?.message}
+                                                    </FormMessage>
+                                                </FormItem>
+                                            )}
+                                        />
+
                                         <div className='flex w-full justify-end'>
                                             <Button type="submit">Scrapear</Button>
                                         </div>

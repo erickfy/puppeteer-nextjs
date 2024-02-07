@@ -23,7 +23,6 @@ export const routes = {
   protected: '/protected',
   users: "/users",
   searchs: "/searchs",
-
 }
 
 /**
@@ -41,8 +40,8 @@ export const privateRoutes: string[] = [
   "/users",
   "/searchs",
   "/profile/[a-zA-Z0-9]+",
-
 ];
+
 
 /**
  * An array of routes that are accessible to the public
@@ -69,9 +68,25 @@ export const authRoutes = [
 /**
  * The prefix for API authentication routes
  * Routes that start with this prefix are used for API authentication purposes
- * @type {string}
+ * @type string 
  */
 export const apiAuthPrefix: string = "/api/auth";
+
+
+/**
+ * Scrapping Routes
+ * route for scrapping purposes
+ * @const string[]
+ */
+export const scrappingRoutes = [
+  "/instagram",
+  "/amazon",
+  "/mercado-libre",
+  "/book-store",
+  "/bot-detect",
+]
+
+
 
 /**
  * The default redirect path after logging in

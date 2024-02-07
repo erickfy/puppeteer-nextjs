@@ -46,7 +46,6 @@ export default function UploaderForm() {
             onSubmit={async (e) => {
                 e.preventDefault()
                 setSaving(true)
-                console.log(file)
                 fetch('/api/avatar/file', {
                     method: 'POST',
                     headers: { 'content-type': file?.type || 'application/octet-stream' },
@@ -54,7 +53,6 @@ export default function UploaderForm() {
                 }).then(async (res) => {
                     if (res.status === 200) {
                         const { url } = (await res.json()) as PutBlobResult
-                        console.log(url)
                         toast(
                             <div className="relative">
                                 <div className="p-2">

@@ -82,8 +82,6 @@ export default function ScrappingFormButton<T>({ title, description, exampleInpu
                         setLoading(false);
                         const src = `/${routeHandler}/${dt.search}.webp`;
                         setInstagramImage(src)
-                        console.log(isPending)
-                        console.log(request.data)
                         if (request.data.data.length === 0) {
                             form.reset()
                             return '🚫 Sin resultados pero puedes mirar su imagen!'

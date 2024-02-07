@@ -6,7 +6,6 @@ export const runtime = 'edge'
 
 export async function DELETE(req: Request) {
     const json = await req.json()
-    console.log({ json })
     return Response.json({})
 }
 const nanoid = customAlphabet(
@@ -15,19 +14,18 @@ const nanoid = customAlphabet(
 ) // 7-character random string
 
 export async function POST(req: Request): Promise<NextResponse> {
-    console.log(nanoid)
-    const file = req.body || ''
-    console.log(file)
-    const contentType = req.headers.get('content-type') || 'text/plain'
-    console.log(contentType)
-    const filename = `${nanoid()}.${contentType.split('/')[1]}`
-    console.log(filename)
-    const blob = await put(filename, file, {
-        contentType,
-        access: 'public',
-    })
+    try {
 
-    console.log(blob)
+        const file = req.body || ''
+        const contentType = req.headers.get('content-type') || 'text/plain'
+        const filename = `${nanoid()}.${contentType.split('/')[1]}`
+        const blob = await put(filename, file, {
+            contentType,
+            access: 'public',
+        })
 
-    return NextResponse.json(blob);
+        return NextResponse.json(blob);
+    } catch (error) {
+        return NextResponse.json({ status: 500 })
+    }
 }

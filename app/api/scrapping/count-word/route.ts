@@ -1,5 +1,7 @@
+import { validateRequest } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { userAgent } from "next/server"
+import { DEFAULT_UNAUTHORIZED_REDIRECT } from "@/routes"
+import { NextResponse } from "next/server"
 /**
  * @params userId: string
  * @params searchInput: string
@@ -18,14 +20,18 @@ export async function POST(req: Request) {
     try {
 
         const data = await req.json()
-        const userId = data.userId as string
+        // const userId = data.userId as string
         const searchInput = data.searchInput as string
         const type = data.type as string
 
-        if (!userId) {
-            // NO CONTENT
-            return new Response(null, { status: 204 })
+        const { user: currentUser } = await validateRequest()
+
+        if (!currentUser) {
+            // NO CONTENT USER NEEDS TO BE LOG IN
+            // return redirect('/')
+            return NextResponse.redirect(new URL(DEFAULT_UNAUTHORIZED_REDIRECT, req.url))
         }
+        const userId = currentUser.id
 
         const typeSearch = {
             instagram: TYPE.INSTAGRAM === type,
@@ -43,25 +49,28 @@ export async function POST(req: Request) {
             }
         })
 
-
-        if (!userId) {
+        if (!user) {
             // NO CONTENT NOT FOUND USER
             return new Response(null, { status: 204 })
         }
 
         // COUNTING WORD INSTAGRAM
-        if (typeSearch.instagram && user?.instagramHistory) {
-            const list = user.instagramHistory.list;
-            list.push(searchInput)
-
+        if (typeSearch.instagram) {
             await db.user.update({
                 where: { id: userId },
                 data: {
                     instagramHistory: {
-                        connectOrCreate: {
-                            where: { userId: userId },
+                        upsert: {
+                            where: {
+                                userId
+                            },
+                            update: {
+                                list: {
+                                    push: searchInput
+                                }
+                            },
                             create: {
-                                list
+                                list: [searchInput]
                             }
                         }
                     }
@@ -70,18 +79,22 @@ export async function POST(req: Request) {
         }
 
         // COUNTING WORD AMAZON
-        else if (typeSearch.amazon && user?.amazonHistory) {
-            const list = user.amazonHistory.list;
-            list.push(searchInput)
-
+        else if (typeSearch.amazon) {
             await db.user.update({
                 where: { id: userId },
                 data: {
                     amazonHistory: {
-                        connectOrCreate: {
-                            where: { userId: userId },
+                        upsert: {
+                            where: {
+                                userId
+                            },
+                            update: {
+                                list: {
+                                    push: searchInput
+                                }
+                            },
                             create: {
-                                list
+                                list: [searchInput]
                             }
                         }
                     }
@@ -90,18 +103,24 @@ export async function POST(req: Request) {
         }
 
         // COUNTING WORD BOOKSTORE
-        else if (typeSearch.bookStore && user?.bookStoreHistory) {
-            const list = user.bookStoreHistory.list;
-            list.push(searchInput)
-
+        // register date searching due to not exist searchInput
+        else if (typeSearch.bookStore) {
+            const dateString = (new Date()).toISOString()
             await db.user.update({
                 where: { id: userId },
                 data: {
                     bookStoreHistory: {
-                        connectOrCreate: {
-                            where: { userId: userId },
+                        upsert: {
+                            where: {
+                                userId
+                            },
+                            update: {
+                                list: {
+                                    push: dateString
+                                }
+                            },
                             create: {
-                                list
+                                list: [dateString]
                             }
                         }
                     }
@@ -110,18 +129,22 @@ export async function POST(req: Request) {
         }
 
         // COUNTING WORD MERCADOLIBRE
-        else if (typeSearch.mercadoLibre && user?.mercadoLibreHistory) {
-            const list = user.mercadoLibreHistory.list;
-            list.push(searchInput)
-
+        else if (typeSearch.mercadoLibre) {
             await db.user.update({
                 where: { id: userId },
                 data: {
                     mercadoLibreHistory: {
-                        connectOrCreate: {
-                            where: { userId: userId },
+                        upsert: {
+                            where: {
+                                userId
+                            },
+                            update: {
+                                list: {
+                                    push: searchInput
+                                }
+                            },
                             create: {
-                                list
+                                list: [searchInput]
                             }
                         }
                     }

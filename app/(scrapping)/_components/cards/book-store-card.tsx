@@ -8,12 +8,13 @@ import Image from "next/image"
 import ScrappingCarrousel from "../scrapping-carrousel"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
+import ImageProvider from "@/lib/ImageProvider"
 
 type Props = {
   data: TBookStore[]
 }
 export default function BookStoreCard({ data }: Props) {
-const route = useRouter()
+  const route = useRouter()
 
   const body = (<>
     {
@@ -22,13 +23,14 @@ const route = useRouter()
           <Card>
             <CardContent className="relative flex aspect-square items-center justify-center p-0 md:p-6 max-w-sm min-w-60 md:min-w-72">
               <div className="w-full h-full">
-                <Image
+                {/* <Image
                   src={item.src}
                   objectFit="cover"
                   layout="fill"
                   alt="Descripción de la imagen"
                   className="z-0"
-                />
+                /> */}
+                <ImageProvider imageUrl={item.src} alt={item.title} />
               </div>
               <div className="absolute w-full bottom-0 left-0 px-4 pb-4 z-10">
                 <div className="flex flex-col gap-1 md:gap-1">

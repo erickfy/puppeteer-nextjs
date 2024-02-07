@@ -5,7 +5,6 @@ type Props = {}
 
 export default async function AllFilesPage({ }: Props) {
     const { blobs } = await list();
-    console.log({ blobs })
     return (
         <div>
 

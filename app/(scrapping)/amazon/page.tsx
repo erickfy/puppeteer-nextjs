@@ -1,8 +1,8 @@
+'use client'
+
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
-import { validateRequest } from '@/lib/auth';
-import { redirect } from 'next/navigation';
 import AmazonCard from '../_components/cards/amazon-card';
 
 interface DynamicScrappingFormProps {
@@ -11,7 +11,6 @@ interface DynamicScrappingFormProps {
   exampleInput: string;
   routeHandler: 'instagram' | 'amazon' | 'bot-detect' | 'mercado-libre';
   cardScrapping: React.ComponentType<{ data: TAmazon[] }>;
-  userId: string;
 }
 
 const DynamicScrappingForm = dynamic<DynamicScrappingFormProps>(() => import('../_components/scrapping-form'), {
@@ -19,19 +18,13 @@ const DynamicScrappingForm = dynamic<DynamicScrappingFormProps>(() => import('..
   ssr: false
 });
 
-export default async function AmazonPage() {
-  const { user, session } = await validateRequest()
-  if (!session && !user) {
-    return redirect('/protected')
-  }
-
+export default function AmazonPage() {
   const dynamicProps: DynamicScrappingFormProps = {
     title: "Scrapping Amazon",
     description: "Extrae datos de productos",
     exampleInput: "watch",
     routeHandler: 'amazon',
     cardScrapping: AmazonCard,
-    userId: `${user.id}`
   };
 
   return <DynamicScrappingForm {...dynamicProps} />;

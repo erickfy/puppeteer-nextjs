@@ -1,4 +1,20 @@
-/** @type {import('next').NextConfig} */
+/**
+ *  @type {import('next').NextConfig}
+ *  @const knownDomains are image providers but certainly are like example
+ * */
+
+const knownDomains = [
+  "instagram.fuio19-1.fna.fbcdn.net",
+  "m.media-amazon.com",
+  "http2.mlstatic.com",
+  "images.fastcompany.net",
+  "1dh5zqw7u0xfdger.public.blob.vercel-storage.com",
+  "scontent-lax3-1.cdninstagram.com",
+  "scontent-ams2-1.cdninstagram.com",
+  "instagram.fcpv15-1.fna.fbcdn.net",
+  "books.toscrape.com",
+];
+
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
@@ -12,15 +28,44 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: [
-      "japanoncloudnine.com",
-      "instagram.fuio19-1.fna.fbcdn.net",
-      "m.media-amazon.com",
-      "http2.mlstatic.com",
-      "images.fastcompany.net",
-      "1dh5zqw7u0xfdger.public.blob.vercel-storage.com",
-      
-    ],
+    // remotePatterns: [
+    //   {
+    //     protocol: "https",
+    //     hostname: "scontent-lax3-1.cdninstagram.com",
+    //     pathname: "/**",
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "instagram.fuio19-1.fna.fbcdn.net",
+    //     pathname: "/**",
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "m.media-amazon.com",
+    //     pathname: "/**",
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "http2.mlstatic.com",
+    //     pathname: "/**",
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "images.fastcompany.net",
+    //     pathname: "/**",
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "1dh5zqw7u0xfdger.public.blob.vercel-storage.com",
+    //     pathname: "/**",
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "scontent-lax3-1.cdninstagram.com",
+    //     pathname: "/**",
+    //   },
+    // ],
+    domains: knownDomains,
   },
 };
 

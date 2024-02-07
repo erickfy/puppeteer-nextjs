@@ -33,7 +33,6 @@ export default async function Layout({ children }: Readonly<{
 
 
   const { user,session } = await validateRequest()
-  console.log(session)
   if (!session && !user) {
     return redirect('/protected')
   }

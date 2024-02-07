@@ -21,7 +21,6 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
     if (!validatedFields.success) {
         const errors = validatedFields.error.flatten().fieldErrors
         const errorStrings = Object.values(errors).flat()
-        console.log(errors)
         return {
             errors: errorStrings
         }
@@ -80,7 +79,6 @@ export async function signup(_: any, formData: FormData): Promise<ActionResult> 
 
     if (!validatedFields.success) {
         const errors = validatedFields.error.flatten().fieldErrors
-        console.log(errors)
         const errorStrings = Object.values(errors).flat()
         return {
             errors: errorStrings
@@ -106,22 +104,19 @@ export async function signup(_: any, formData: FormData): Promise<ActionResult> 
                 role
             }
         })
-        
-        console.log(newuser)
 
         const session = await lucia.createSession(newuser.id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
         cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
     } catch (e) {
-        console.log(e)
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             return {
-                errors: ["Username already used"]
+                errors: ["Error en los campos"]
             };
         }
         return {
-            errors: ["An unknown error occurred"]
+            errors: ["Un desconocido error ha ocurrido!"]
         };
     }
     return redirect("/instagram");

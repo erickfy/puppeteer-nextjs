@@ -9,7 +9,6 @@ export default function Layout({
     children,
     dialog
 }: Props) {
-    console.log("how")
     return (
         <>
             {children}

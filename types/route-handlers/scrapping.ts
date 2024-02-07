@@ -23,9 +23,8 @@ type TBookStore = {
     review: string;
 }
 
-type TBotDetect = {
-    capture: Buffer
-}
+type TBotDetect = Buffer
+
 
 type TMercadoLibre = {
     title: string;

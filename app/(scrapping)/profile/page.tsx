@@ -16,7 +16,6 @@ type Props = {
 export default async function ProfilePage({ }: Props) {
 
   const { user, session } = await validateRequest()
-  console.log(user)
   if (!session && !user) {
     return redirect('/protected')
   }

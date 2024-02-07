@@ -1,7 +1,7 @@
 // import puppeteer from "puppeteer-extra";
 import puppeteer from "puppeteer";
 import { NextRequest } from "next/server";
-import { BOOKS_ADDRESS, DIR_IMAGES } from "@/lib/constants";
+import { BOOKS_ADDRESS, DIR_IMAGES, TWITHOUT_INPUT } from "@/lib/constants";
 
 /**
  * Scrapping values from Books to scrape
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
 
     // place to save the image
     await page.screenshot({
-      path: `${DIR_IMAGES}/book-store/book-store.webp`,
+      path: `${DIR_IMAGES}/book-store/${TWITHOUT_INPUT.BOOK_STORE as string}`,
       type: 'webp',
       fullPage: true
     })

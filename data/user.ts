@@ -12,7 +12,6 @@ export const getUserByUsername = async (username: string) => {
         role: true,
       }
     });
-    console.log("exists this user", user)
 
     return user;
   } catch {

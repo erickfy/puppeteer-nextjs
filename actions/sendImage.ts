@@ -13,13 +13,10 @@ export async function sendImage(image: File, contentType: string) {
     formData.append('file', image as Blob)
 
     const filename = `${nanoid()}.${contentType.split('/')[1]}`
-    console.log(filename)
     const blob = await put(filename, image, {
         contentType,
         access: 'public',
     })
-
-    console.log(blob)
 
     return blob.url
 }

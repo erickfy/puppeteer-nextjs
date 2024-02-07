@@ -12,7 +12,6 @@ import Link from 'next/link'
 export default async function DefaultProfilePage() {
 
     const { user, session } = await validateRequest()
-    console.log(user)
     if (!session && !user) {
         return redirect('/protected')
     }

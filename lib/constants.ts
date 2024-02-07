@@ -11,4 +11,12 @@ export const AMAZON_ADDRESS = process.env.AMAZON_ADDRESS as string
 export const BOOKS_ADDRESS = process.env.BOOKS_ADDRESS as string
 export const BOT_DETECT_ADDRESS = process.env.BOT_DETECT_ADDRESS as string
 export const MERCADO_LIBRE = process.env.MERCADO_LIBRE as string
-export const INSTAGRAM = process.env.INSTAGRAM as string 
+export const INSTAGRAM = process.env.INSTAGRAM as string
+
+
+
+// IMAGES ROUTE WITHOUT INPUT
+export const TWITHOUT_INPUT = {
+    BOT_DETECT: 'bot-analyse.webp',
+    BOOK_STORE: 'book-store.webp'
+}

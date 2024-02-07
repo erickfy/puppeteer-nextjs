@@ -20,7 +20,6 @@ export async function changePasswordAction(_: any, formData: FormData): Promise<
     if (!validatedFields.success) {
         const errors = validatedFields.error.flatten().fieldErrors
         const errorStrings = Object.values(errors).flat()
-        console.log(errors)
         return {
             errors: errorStrings
         }
@@ -52,13 +51,11 @@ export async function changePasswordAction(_: any, formData: FormData): Promise<
 
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            console.error("DB", e)
             return {
-                errors: [""]
+                errors: ["Error en los datos ingresados"]
             };
         } else {
-            console.error(e)
-            return { errors: ["Un desconocido error ocurrio"] };
+            return { errors: ["Un error desconocido ha ocurrido!"] };
         }
     }
 
@@ -77,7 +74,6 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
     if (!validatedFields.success) {
         const errors = validatedFields.error.flatten().fieldErrors
         const errorStrings = Object.values(errors).flat()
-        console.log(errors)
         return {
             errors: errorStrings
         }
@@ -104,13 +100,11 @@ export async function editUser(_: any, formData: FormData): Promise<ActionResult
 
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            console.error("DB", e)
             return {
-                errors: [""]
+                errors: ["Error en los datos ingresados"]
             };
         } else {
-            console.error(e)
-            return { errors: ["Un desconocido error ocurrio"] };
+            return { errors: ["Un error desconocido ha ocurrido!"] };
         }
     }
 

@@ -93,7 +93,6 @@ export async function POST(req: NextRequest) {
         });
       },
     );
-    console.log(cards.length)
     const cleanData = cards.filter(val => val.title !== '')
 
     await page.close();

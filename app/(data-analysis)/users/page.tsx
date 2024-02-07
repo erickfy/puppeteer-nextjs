@@ -1,3 +1,4 @@
+import Heading from '@/components/heading'
 import { validateRequest } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { redirect } from 'next/navigation'
@@ -13,17 +14,42 @@ export default async function UsersPage({ }: Props) {
   }
 
 
-  const users = await db.user.findMany()
+  const users = await db.user.findMany({
+    select: {
+      id: true,
+      active: true,
+      username: true,
+      fullNames: true,
+      role: true,
+      image: true,
+    }
+  })
+
   const count = await db.user.count()
 
   return (
     <div className='flex gap-4 flex-col'>
-      <div>
-        Users: {JSON.stringify(users)}
-      </div>
-      <div>
-        Count Users: {JSON.stringify(count)}
-      </div>
 
-    </div>)
+      <Heading
+        title='Usuarios'
+        subtitle={`Total: ${count}`}
+      />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {users.map((user) => (
+          <div className="bg-white border rounded p-4 hover:scale-105 transition-all " key={user.id}>
+            <img
+              src={user.image ?? '/user-empty.webp'}
+              alt="User"
+              className="w-24 h-24 rounded-full mx-auto my-2"
+            />
+            <p className="font-bold text-lg mb-2">{user.username}</p>
+            <p className="mb-2">Nombres: {user.fullNames}</p>
+            <p className="mb-2">Rol: {user.role}</p>
+            <p className="mb-2">Activo: {user.active ? 'Si' : 'No'}</p>
+          </div>))}
+      </div>
+    </div>
+
+  )
 }

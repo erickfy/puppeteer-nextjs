@@ -1,9 +1,10 @@
 "use client";
 
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, ReceiptPoundSterling } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
+import { scrappingRoutes } from "@/routes";
 
 interface SidebarItemProps {
   icon: LucideIcon;
@@ -19,13 +20,14 @@ export const SidebarItem = ({
   const pathname = usePathname();
   const router = useRouter();
 
-   const isActive =
-    // (pathname === "/" && href === "/") ||
-    pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = pathname === href || scrappingRoutes.some(route => {
+    if (href === '/instagram') {
+      return pathname.startsWith(route)
+    }
+    return false
+  });
 
-  const onClick = () => {
-    router.push(href);
-  }
+  const onClick = () => router.push(href);
 
   return (
     <button

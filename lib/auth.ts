@@ -26,7 +26,7 @@ export const lucia = new Lucia(adapter, {
             image: attributes.image,
         };
     },
-    sessionExpiresIn: new TimeSpan(4, "m")
+    sessionExpiresIn: new TimeSpan(1, "w")
 });
 
 
@@ -39,13 +39,9 @@ export const validateRequest = cache(
     async (): Promise<{ user: User; session: Session } | { user: null; session: null }> => {
         const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
 
-        console.log(sessionId)
         if (!sessionId) return nullResponse
 
-
-        console.log(sessionId)
         const result = await lucia.validateSession(sessionId);
-        console.log(result)
         // next.js throws when you attempt to set cookie when rendering page
         try {
             if (result.session && result.session.fresh) {
