@@ -40,6 +40,7 @@ export default async function SearchsPage({ }: Props) {
     return redirect('/protected')
   }
 
+  
   // CURRENT USERNAME SEARCH
   const currentUser = await db.user.findFirst({
     where: { id: user.id },
@@ -100,9 +101,6 @@ export default async function SearchsPage({ }: Props) {
       </div>
     )
   }
-
-
-
 
 
   // ALL SEARCH USERNAMES ONLY ADMIN USERS

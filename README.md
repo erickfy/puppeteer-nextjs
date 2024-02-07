@@ -13,8 +13,18 @@ npx prisma migrate reset
 npx prisma migrate --name firstMigration
 
 
+npx prisma studio
 npx prisma generate
 npx prisma db seed
+
+
+# generate secret key (unix)
+openssl rand -base64 32
+
+
+# delete cache env
+git rm --cached -r .env*
+
 ```
 
 ### deployed

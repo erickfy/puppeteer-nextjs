@@ -41,7 +41,8 @@ export async function POST(req: Request) {
         }
 
         const user = await db.user.findFirst({
-            where: { id: userId }, include: {
+            where: { id: userId },
+            include: {
                 instagramHistory: typeSearch.instagram,
                 amazonHistory: typeSearch.amazon,
                 bookStoreHistory: typeSearch.bookStore,

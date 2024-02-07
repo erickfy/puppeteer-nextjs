@@ -1,13 +1,10 @@
 import {
-    DEFAULT_LOGIN_REDIRECT,
     DEFAULT_UNAUTHORIZED_REDIRECT,
     apiAuthPrefix,
     authRoutes,
     privateRoutes,
     publicRoutes,
 } from "@/routes";
-import { verifyRequestOrigin } from "lucia";
-import { notFound, redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 

@@ -13,6 +13,8 @@ const knownDomains = [
   "scontent-ams2-1.cdninstagram.com",
   "instagram.fcpv15-1.fna.fbcdn.net",
   "books.toscrape.com",
+  "cloudflare-ipfs.com",
+  
 ];
 
 const nextConfig = {

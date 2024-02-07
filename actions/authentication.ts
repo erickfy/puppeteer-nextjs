@@ -1,10 +1,11 @@
 'use server'
+
 import { db } from "@/lib/db";
 import { Argon2id } from "oslo/password";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { lucia, validateRequest } from "@/lib/auth";
+import { lucia } from "@/lib/auth";
 import { ActionResult, Form } from "@/lib/form";
 import { generateId } from "lucia";
 import { SignInSchema, SignUpSchema } from "@/schemas/form-schemas";
@@ -49,6 +50,7 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
             };
         }
 
+        // CREATE SESSION LUCIA
         const session = await lucia.createSession(existingUser.id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
         cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
