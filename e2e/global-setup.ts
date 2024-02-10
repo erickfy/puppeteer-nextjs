@@ -1,104 +1,31 @@
 
 import { chromium, FullConfig } from '@playwright/test';
-import { PrismaClient, USER_ROLE } from '@prisma/client';
 
 // Shared Below...
-import { ADMIN, APP_URL, LOGIN_URL, USER, } from './constants';
-import { faker } from '@faker-js/faker';
-import { Argon2id } from 'oslo/password';
+import { ADMIN, APP_URL, LOGIN_URL, mockUsers, USER, } from './constants';
+import { hashedPassword } from '@/lib/hashPassword';
+import { db } from '@/lib/db';
+import { USER_ROLE } from '@prisma/client';
+import { createUsers } from './helper';
 
-async function globalSetup(_config: FullConfig) {
-
-
-    const users = {
-        johan: {
-            id: '1111-johan2024',
-            username: 'johan2024',
-            fullNames: 'Johan Julio',
-            password: 'johan2024',
-            image: faker.image.avatar(),
-            role: USER_ROLE.ADMIN,
-            active: true,
-            searchs
-        },
-        galgadot: {
-            id: '1111-galgadot2024',
-            username: 'galgadot2024',
-            fullNames: 'Gal Gadot',
-            password: 'galgadot2024',
-            image: faker.image.avatar(),
-            role: USER_ROLE.ADMIN,
-            active: true,
-            searchs
-        },
-        christian: {
-            id: '1111-christian2024',
-            username: 'christiansoledispa2024',
-            fullNames: 'Christian Soledispa',
-            password: 'christiansoledispa2024',
-            image: faker.image.avatar(),
-            role: USER_ROLE.CLIENT,
-            active: true,
-            searchs
-        },
-    }
+export default async function globalSetup(_config: FullConfig) {
 
 
-    const db = new PrismaClient()
-    const allUsers = Object.values(users)
+    // USERS
+    const clientUser = mockUsers["christian"]
+    const adminUser = mockUsers["johan"]
 
-    const SECRET_HASH_PASS = Buffer
-        .from(process.env.SECRET_HASH as string, 'utf8') as Buffer;
+    const hashClient = await hashedPassword(clientUser.password);
+    const hashAdmin = await hashedPassword(adminUser.password);
 
-    const hashedPasswords = await Promise.all((allUsers)
-        .map(async (user) => await
-            new Argon2id({ secret: SECRET_HASH_PASS }).hash(user.password)));
-
-
-    await db.$transaction(allUsers
-        .map((user, index) => {
-            const hash = hashedPasswords[index]
-            return db.user.create({
-                data: {
-                    id: user.id,
-                    username: user.username,
-                    fullNames: user.fullNames,
-                    active: user.active,
-                    hashedPassword: hash,
-                    role: user.role,
-                    instagramHistory: {
-                        create: {
-                            list: user.searchs.instagram
-                        }
-                    },
-                    amazonHistory: {
-                        create: {
-                            list: user.searchs.amazon
-                        }
-                    },
-                    bookStoreHistory: {
-                        create: {
-                            list: user.searchs.bookStore
-                        }
-                    },
-                    mercadoLibreHistory: {
-                        create: {
-                            list: user.searchs.mercadoLibre
-                        }
-                    },
-                }
-            });
-        }));
-
-
-
-
+    await createUsers({
+        users: [clientUser, adminUser],
+        hashUsers: [hashClient, hashAdmin]
+    })
 
     // PLAYWRIGHT
-    const clientUser = users["christian"] //CLIENT
-    const adminUser = users["johan"] //ADMIN
-
     const browser = await chromium.launch();
+
 
     // ADMIN
     const adminPage = await browser.newPage();
@@ -114,8 +41,27 @@ async function globalSetup(_config: FullConfig) {
     // This saves everything about `adminPage` so far into a named `storageState` 
     await adminPage.context().storageState({ path: ADMIN.storageState });
 
+    const adminSessions = await db.session.findFirst({ where: { userId: adminUser.id }, select: { id: true, expiresAt: true } })
+    const adminSessionId = adminSessions?.id ?? ''
 
-    // CLIENT
+    const expiresTimestampAdmin = adminSessions?.expiresAt ?
+        Math.floor(adminSessions.expiresAt.getTime() / 1000) : undefined;
+
+    await adminPage.context().addCookies([
+        {
+            name: 'auth.session-admin.test',
+            // token or id of db
+            value: adminSessionId,
+            domain: 'localhost',
+            path: '/',
+            httpOnly: true,
+            sameSite: 'Lax',
+            expires: expiresTimestampAdmin
+        }
+    ])
+
+
+    // CLIENT OR USER
     const userPage = await browser.newPage();
     await userPage.goto(LOGIN_URL);
     await userPage.locator('#username').fill(clientUser.username)
@@ -127,19 +73,25 @@ async function globalSetup(_config: FullConfig) {
 
     await userPage.context().storageState({ path: USER.storageState });
 
+    const clientSessions = await db.session.findFirst({ where: { userId: clientUser.id }, select: { id: true, expiresAt: true } })
+    const clientSessionId = clientSessions?.id ?? ''
+
+    const expiresTimestampClient = clientSessions?.expiresAt ?
+        Math.floor(clientSessions.expiresAt.getTime() / 1000) : undefined;
+
+    await adminPage.context().addCookies([
+        {
+            name: 'auth.session-admin.test',
+            // token or id of db
+            value: clientSessionId,
+            domain: 'localhost',
+            path: '/',
+            httpOnly: true,
+            sameSite: 'Lax',
+            expires: expiresTimestampClient
+        }
+    ])
+
     await browser.close();
 
 }
-
-const searchs = {
-    instagram: ['iamstipke', 'leomessi', '13.andrea.15', 'lilabellk', 'gal_gadot'],
-    amazon: ['mac', 'laptop', 'camera', 'books'],
-    mercadoLibre: ['cortadora de cabello', 'laptop', 'camera', 'casco de moto'],
-    bookStore: [(new Date()).toISOString()],
-}
-
-
-
-
-
-export default globalSetup;

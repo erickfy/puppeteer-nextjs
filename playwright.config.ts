@@ -13,7 +13,7 @@ export default defineConfig({
   // If a test fails, retry it additional 2 times
   retries: 0,
   // Artifacts folder where screenshots, videos, and traces are stored.
-  outputDir: "test-results/",
+  outputDir: "./e2e/test-results/",
 
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
@@ -25,7 +25,7 @@ export default defineConfig({
   },
 
   globalSetup: require.resolve('./e2e/global-setup'),
-  // globalTeardown: require.resolve('./tests/e2e/global-teardown'),
+  globalTeardown: require.resolve('./e2e/global-teardown'),
   // globalSetup: './e2e/setup/globalSetup.ts',
 
   use: {
