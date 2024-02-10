@@ -35,7 +35,7 @@ export default async function RootLoginPage() {
       footer={
         <>
 
-          <ButtonUI className="w-full" type="submit" title="Continuar" />
+          <ButtonUI className="w-full" type="submit" title="Continuar" id="continue" />
           <div className="text-sm text-muted-foreground flex gap-2">
             <p className="text-black">
               Aun no tienes cuenta?

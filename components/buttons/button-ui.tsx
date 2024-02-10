@@ -8,9 +8,10 @@ type Props = {
   title: string;
   className?: string | null
   type?: "button" | "submit" | "reset";
+  id: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export default function ButtonUI({ title, className }: Props) {
+export default function ButtonUI({ title, className, id }: Props) {
   const { pending } = useFormStatus()
   const saveDisabled = useMemo(() => {
     return pending
@@ -19,6 +20,7 @@ export default function ButtonUI({ title, className }: Props) {
 
   return (
     <button
+      id={id}
       disabled={saveDisabled}
       className={cn(`${saveDisabled
         ? 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
