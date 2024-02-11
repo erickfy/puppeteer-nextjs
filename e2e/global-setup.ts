@@ -1,15 +1,11 @@
-
 import { chromium, FullConfig } from '@playwright/test';
 
-// Shared Below...
 import { ADMIN, APP_URL, LOGIN_URL, mockUsers, USER, } from './constants';
 import { hashedPassword } from '@/lib/hashPassword';
 import { db } from '@/lib/db';
-import { USER_ROLE } from '@prisma/client';
 import { createUsers } from './helper';
 
 export default async function globalSetup(_config: FullConfig) {
-
 
     // USERS
     const clientUser = mockUsers["christian"]

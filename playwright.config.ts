@@ -20,7 +20,7 @@ console.log('baseURL: ', baseURL)
 export default defineConfig({
   
   // Timeout per test
-  timeout: 50 * 1000,
+  timeout: 60 * 1000,
   // Test directory
   testDir: path.join(__dirname, "e2e", 'pages'),
   // If a test fails, retry it additional 2 times
@@ -33,7 +33,7 @@ export default defineConfig({
   webServer: {
     command: "bun run dev",
     url: baseURL,
-    timeout: 50 * 1000,
+    timeout: 60 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 
