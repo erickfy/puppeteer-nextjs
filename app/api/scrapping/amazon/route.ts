@@ -32,7 +32,8 @@ export async function POST(req: NextRequest) {
       args: ['--no-sandbox',],
 
       //? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
-      headless: 'new',
+      // headless: 'new',
+      headless: false,
     });
 
     const page = await browser.newPage();

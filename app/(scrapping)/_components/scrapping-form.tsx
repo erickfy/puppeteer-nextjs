@@ -150,7 +150,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                                                 <FormItem className={hiddenInput ? 'sr-only' : ''}>
                                                     <FormLabel>Busqueda</FormLabel>
                                                     <FormControl>
-                                                        <Input placeholder={`Ej: ${exampleInput}`}  {...field} type="text" autoComplete="off" />
+                                                        <Input placeholder={`Ej: ${exampleInput}`}  {...field} type="text" autoComplete="off" id={routeHandler} />
                                                     </FormControl>
                                                     <FormMessage>
                                                         {form.formState.errors.search?.message}
@@ -160,7 +160,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                                         />
 
                                         <div className='flex w-full justify-end'>
-                                            <Button type="submit">Scrapear</Button>
+                                            <Button type="submit" id={`${routeHandler}-submit`}>Scrapear</Button>
                                         </div>
                                     </form>
                                 </Form>

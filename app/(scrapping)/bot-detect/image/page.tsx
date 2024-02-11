@@ -16,7 +16,7 @@ export default function ImagePage({ }: Props) {
     return <Message msg='No se ha encontrado la imagen almacenada ' />
   } else {
     return (
-      <ImageCard src={botDetect} />
+      <ImageCard src={botDetect} alt='bot-detect' />
     )
 
   }

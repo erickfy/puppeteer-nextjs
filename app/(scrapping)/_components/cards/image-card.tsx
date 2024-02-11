@@ -4,9 +4,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import Image from 'next/image'
 import React from 'react'
 
-type Props = { src: string }
+type Props = { src: string, alt: string }
 
-export default function ImageCard({ src }: Props) {
+export default function ImageCard({ src, alt }: Props) {
     return (
         <Card className='flex justify-center items-center p-6'>
             <CardContent className="relative flex aspect-square items-center justify-center p-6 max-w-sm min-w-72">
@@ -15,7 +15,7 @@ export default function ImageCard({ src }: Props) {
                         src={src}
                         objectFit="cover"
                         layout="fill"
-                        alt="Descripción de la imagen"
+                        alt={`description ${alt} image`}
                         className="z-0"
                     />
                 </div>

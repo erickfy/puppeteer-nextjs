@@ -7,11 +7,11 @@ import { test, expect } from "@playwright/test";
  * https://playwright.dev/docs/api/class-locator#locator-evaluate-all
  */
 
-test("Scrapping @Instagram", async ({ page }) => {
+test("Scrapping @MercadoLibre", async ({ page }) => {
 
     // USER
     const clientUser = mockUsers['johan']
-    const identificator = 'instagram'
+    const identificator = 'mercado-libre'
 
     await page.goto('/');
     await page.locator('#username').fill(clientUser.username)
@@ -35,7 +35,7 @@ test("Scrapping @Instagram", async ({ page }) => {
 
 
     // INPUT SEARCH
-    const search = clientUser.searchs.instagram[1]
+    const search = clientUser.searchs.mercadoLibre[1]
 
     await page.locator(`#${identificator}`).fill(search)
     await page.click(`#${identificator}-submit`)
@@ -50,7 +50,7 @@ test("Scrapping @Instagram", async ({ page }) => {
 
 
     // IMAGE CARD
-    await expect(page.getByText('Imagen de Instagram')).toBeVisible()
+    await expect(page.getByText('Imagen de Mercado Libre')).toBeVisible()
 
     const images = page.locator('img');
     const imageAlt = `description ${identificator} image`

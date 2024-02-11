@@ -16,7 +16,7 @@ export default function ImagePage({ }: Props) {
     return <Message msg='No se ha encontrado la imagen almacenada '/>
   } else {
     return (
-      <ImageCard src={amazon} />
+      <ImageCard src={amazon} alt='amazon' />
     )
 
   }

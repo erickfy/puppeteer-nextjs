@@ -10,7 +10,7 @@ module.exports = {
   cacheDirectory: join(__dirname, ".cache", "puppeteer"),
   env: {
     HTTP_PROXY: `http://${PROXY}`,
-    HTTPS_PROXY: `http://${PROXY}`,
+    HTTPS_PROXY: `https://${PROXY}`,
     NO_PROXY: "localhost,127.0.0.1",
   },
 };

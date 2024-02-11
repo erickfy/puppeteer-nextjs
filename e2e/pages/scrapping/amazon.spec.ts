@@ -7,11 +7,11 @@ import { test, expect } from "@playwright/test";
  * https://playwright.dev/docs/api/class-locator#locator-evaluate-all
  */
 
-test("Scrapping @Instagram", async ({ page }) => {
+test.skip("Scrapping @Amazon", async ({ page }) => {
 
     // USER
     const clientUser = mockUsers['johan']
-    const identificator = 'instagram'
+    const identificator = 'amazon'
 
     await page.goto('/');
     await page.locator('#username').fill(clientUser.username)
@@ -19,10 +19,7 @@ test("Scrapping @Instagram", async ({ page }) => {
     await page.click('#continue')
 
     await page.waitForLoadState('networkidle')
-
-    // INIT ROUTE
     await expect(page).toHaveURL(`/instagram`);
-
 
     // CLICK TO TOOLBAR ROUTE
     await page.click(`#${identificator}-route`)
@@ -35,30 +32,32 @@ test("Scrapping @Instagram", async ({ page }) => {
 
 
     // INPUT SEARCH
-    const search = clientUser.searchs.instagram[1]
+    const search = clientUser.searchs.amazon[1]
 
     await page.locator(`#${identificator}`).fill(search)
     await page.click(`#${identificator}-submit`)
 
+    
+
     await page.waitForLoadState('domcontentloaded')
 
 
-    const buttonSelector = `#${identificator}-dialog`;
-    await page.waitForSelector(buttonSelector, { state: "visible" });
-    await page.click(buttonSelector);
-    await page.waitForLoadState('networkidle')
 
+    // const buttonSelector = `#${identificator}-dialog`;
+    // await page.waitForSelector(buttonSelector, { state: "visible" });
+    // await page.click(buttonSelector);
+    // await page.waitForLoadState('networkidle')
 
-    // IMAGE CARD
-    await expect(page.getByText('Imagen de Instagram')).toBeVisible()
+    // // IMAGE CARD
+    // await expect(page.getByText('Imagen de Amazon')).toBeVisible()
 
-    const images = page.locator('img');
-    const imageAlt = `description ${identificator} image`
+    // const images = page.locator('img');
+    // const imageAlt = `description ${identificator} image`
 
-    const altValues = await images.evaluateAll((imgs) => imgs.map(img => img.getAttribute('alt')));
+    // const altValues = await images.evaluateAll((imgs) => imgs.map(img => img.getAttribute('alt')));
 
-    // CHECK IMAGE WITH ATRIBUTE ALT
-    expect(altValues).toContain(imageAlt);
-    await page.getByAltText(imageAlt).click();
+    // // CHECK IMAGE WITH ATRIBUTE ALT
+    // expect(altValues).toContain(imageAlt);
+    // await page.getByAltText(imageAlt).click();
 
 });

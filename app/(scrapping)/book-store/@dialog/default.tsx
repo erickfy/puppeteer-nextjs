@@ -26,7 +26,7 @@ export default function DefaultInterceptDialog({ searchParams }: Props) {
     return (
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">Ver imagen de Scrapping</Button>
+          <Button variant="outline" id='book-store-dialog'>Ver imagen de Scrapping</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -35,7 +35,7 @@ export default function DefaultInterceptDialog({ searchParams }: Props) {
               Scrapeado desde la web
             </DialogDescription>
           </DialogHeader>
-          <ImageCard src={bookStore} />
+          <ImageCard src={bookStore} alt='book-store' />
         </DialogContent>
       </Dialog>
     )

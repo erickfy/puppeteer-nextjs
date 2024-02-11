@@ -16,7 +16,7 @@ const ToolbarItem = ({ href, title, icon: Icon }: Props) => {
 
   return (
     <li key={title} className={cn(isActive, styles.navbar__item)}>
-      <Link href={href} className={styles.navbar__link}>
+      <Link href={href} className={styles.navbar__link} id={`${href.split('/')[1]}-route`}>
         <Icon className={cn('h-8 w-8', isActive ? styles.active : null)} />
         <span className={cn(isActive ? styles.active : styles.no_active)}>
           {title}

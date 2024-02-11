@@ -135,7 +135,7 @@ export default function ScrappingFormButton<T>({ title, description, exampleInpu
                                             />
                                         }
                                         <div className='flex w-full justify-end'>
-                                            <Button type="submit">Scrapear</Button>
+                                            <Button type="submit" id={`${routeHandler}-submit`}>Scrapear</Button>
                                         </div>
                                     </form>
                                 </Form>

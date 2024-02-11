@@ -11,6 +11,10 @@ const msg = {
         min: "La contrasena como minimo son 4 caracteres",
         max: 'En contrasena como maximo permitido son 30 caracteres'
     },
+    fullNames: {
+        min: "La contrasena como minimo son 4 caracteres",
+        max: 'Los nombres como maximo permitido son 30 caracteres'
+    },
     search: {
         min: "El campo de busqueda es de minimo 2 letras",
         max: 'El campo de busqueda es de maximo permitido de 20 letras'
@@ -56,8 +60,8 @@ export const EditUserSchema = z.object({
     //     .min(4, { message: msg.username.min })
     //     .max(20, { message: msg.username.max }),
     fullNames: z.string()
-        .min(4, { message: msg.username.min })
-        .max(20, { message: msg.username.max })
+        .min(4, { message: msg.fullNames.min })
+        .max(30, { message: msg.fullNames.max })
         .optional(),
     image: z.instanceof(File).refine(value => {
         if (!(value instanceof File)) {

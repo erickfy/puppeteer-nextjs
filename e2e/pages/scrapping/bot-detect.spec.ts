@@ -1,4 +1,5 @@
 import { mockUsers } from "@/e2e/constants";
+import { db } from "@/lib/db";
 import { test, expect } from "@playwright/test";
 
 /**
@@ -7,11 +8,11 @@ import { test, expect } from "@playwright/test";
  * https://playwright.dev/docs/api/class-locator#locator-evaluate-all
  */
 
-test("Scrapping @Instagram", async ({ page }) => {
+test("Scrapping @BotDetect", async ({ page }) => {
 
     // USER
     const clientUser = mockUsers['johan']
-    const identificator = 'instagram'
+    const identificator = 'bot-detect'
 
     await page.goto('/');
     await page.locator('#username').fill(clientUser.username)
@@ -34,10 +35,13 @@ test("Scrapping @Instagram", async ({ page }) => {
     await expect(page.getByText('Realiza una busqueda')).toBeVisible()
 
 
-    // INPUT SEARCH
-    const search = clientUser.searchs.instagram[1]
+    // SEARCH
 
-    await page.locator(`#${identificator}`).fill(search)
+    // IT WAS NECCESARY TO ADD VALUES (AUNQUE NO SEA VISIBLE EL INPUT CON SR-ONLY DE TAILWIND)
+    await page.locator(`#${identificator}`).fill(clientUser.id)
+    await page.click(`#${identificator}-submit`)
+
+    await page.waitForLoadState('domcontentloaded')
     await page.click(`#${identificator}-submit`)
 
     await page.waitForLoadState('domcontentloaded')
@@ -50,7 +54,7 @@ test("Scrapping @Instagram", async ({ page }) => {
 
 
     // IMAGE CARD
-    await expect(page.getByText('Imagen de Instagram')).toBeVisible()
+    await expect(page.getByText('Imagen de analisis para Robots')).toBeVisible()
 
     const images = page.locator('img');
     const imageAlt = `description ${identificator} image`
