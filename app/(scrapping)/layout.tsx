@@ -32,7 +32,7 @@ export default async function Layout({ children }: Readonly<{
 }>) {
 
 
-  const { user,session } = await validateRequest()
+  const { user, session } = await validateRequest()
   if (!session && !user) {
     return redirect('/protected')
   }
@@ -47,7 +47,7 @@ export default async function Layout({ children }: Readonly<{
           <DynamicSideBar user={user} />
         </div>
 
-        <main className="md:pl-56 pt-[80px] h-full w-full ">
+        <main className="md:pl-56 pt-[80px] h-full w-full background-scrappings">
           <DynamicToolbar />
           <Container>
             {children}

@@ -6,6 +6,24 @@
   box-sizing: border-box;
 }
 
+.background-searchs {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #e6e6fa, #ffffff);
+}
+
+.background-scrappings {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(to bottom, #ffffff, #ffe6f0);
+}
+
+.background-auth {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(35deg, red, purple);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

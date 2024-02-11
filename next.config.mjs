@@ -14,7 +14,7 @@ const knownDomains = [
   "instagram.fcpv15-1.fna.fbcdn.net",
   "books.toscrape.com",
   "cloudflare-ipfs.com",
-  
+  "avatars.githubusercontent.com",
 ];
 
 const nextConfig = {

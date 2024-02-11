@@ -9,6 +9,8 @@ type Props = {
     hrefTitle: string
 }
 
+
+
 export default function ErrorPage({ status, descriptionOne, descriptionTwo, href, hrefTitle }: Props) {
 
     return (

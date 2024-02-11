@@ -65,7 +65,8 @@ export const NavbarRoutes = ({ user }: SideBarProps) => {
                 {/* {`${user.username.charAt(0)}${user.username.charAt(1)}`} */}
                 {usernameWords}
               </AvatarFallback>
-            </Avatar>}
+            </Avatar>
+          }
           menuTitle={user.username.toLocaleUpperCase()}
           roleUser={isAdmin ? USER_MODE.ADMIN : USER_MODE.CLIENT}
         />

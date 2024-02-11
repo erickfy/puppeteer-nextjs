@@ -8,6 +8,7 @@ import EditButton from '../../../components/buttons/edit-button'
 import { redirect } from 'next/navigation'
 import { validateRequest } from '@/lib/auth'
 import Link from 'next/link'
+import { db } from '@/lib/db'
 
 type Props = {
   // dialog: React.ReactNode
@@ -19,6 +20,24 @@ export default async function ProfilePage({ }: Props) {
   if (!session && !user) {
     return redirect('/protected')
   }
+
+  const userQuery = await db.user.findFirst({
+    where: { id: user.id },
+    select: {
+      amazonHistory: true,
+      instagramHistory: true,
+      bookStoreHistory: true,
+      mercadoLibreHistory: true
+    }
+  })
+
+  const totalSearchs = [
+    userQuery?.amazonHistory?.list.length,
+    userQuery?.instagramHistory?.list.length,
+    userQuery?.bookStoreHistory?.list.length,
+    userQuery?.mercadoLibreHistory?.list.length,
+  ].reduce((acc, curr) => curr !== undefined && acc !== undefined ? curr + acc : acc, 0);
+
   return (
     <Card className='w-full xl:w-[625px] relative'>
       <div className="absolute top-3 right-3">
@@ -46,7 +65,7 @@ export default async function ProfilePage({ }: Props) {
                 {user.fullNames}
               </p>
               <p className="text-sm text-muted-foreground">
-                Total de busquedas realizadas: 20
+                Total de busquedas realizadas: {totalSearchs}
               </p>
             </div>
             <Separator className="my-4" />

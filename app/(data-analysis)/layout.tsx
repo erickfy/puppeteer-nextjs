@@ -1,7 +1,6 @@
 import Container from "@/components/container";
 import { Skeleton } from "@/components/ui/skeleton";
 import { validateRequest } from "@/lib/auth";
-import { USER_ROLE } from "@prisma/client";
 import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 
@@ -46,11 +45,10 @@ export default async function Layout({ children }: Readonly<{
                     <DynamicSideBar user={user} />
                 </div>
 
-                <main className="md:pl-56 pt-[80px] h-full w-full ">
+                <main className="md:pl-56 pt-[80px] h-full w-full background-searchs">
                     <Container>
                         {children}
                     </Container>
-
                 </main>
             </div>
         </>

@@ -1,17 +1,14 @@
+import { cn } from "@/lib/utils";
+
 interface ContainerProps {
-    children: React.ReactNode
+    children: React.ReactNode;
+    className?: string | null | undefined
 };
 
-const Container: React.FC<ContainerProps> = ({ children }) => {
+const Container: React.FC<ContainerProps> = ({ children, className }) => {
     return (
         <div
-            className="
-          max-w-[2520px]
-          relative
-          mx-auto
-          p-6
-          xl:px-10 
-        "
+            className={cn("max-w-[2520px] relative mx-auto p-6 xl:px-10", className)}
         >
             {children}
         </div>

@@ -37,7 +37,7 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
 
         if (!existingUser) {
             return {
-                errors: ["El usuario no existe!"]
+                errors: ["El usuario no existe! o no esta activo"]
             };
         }
 
