@@ -52,3 +52,5 @@ next-env.d.ts
 
 # temp of stateStorage to unit test
 /e2e/temp
+# testing error puroposes
+/e2e/test-results
