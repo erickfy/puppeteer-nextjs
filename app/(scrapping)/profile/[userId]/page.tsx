@@ -53,9 +53,10 @@ export default async function PageUserById({ searchParams }: Props) {
         </>
     }
 
-    const buttonClose = (<Button type="button" variant="ghost" className="w-full">Cerrar</Button>)
-    const buttonSubmit = <ButtonUI title={isChangePassword ? 'Cambiar' : 'Actualizar'} />
-
+    const buttonClose = (<Button type="button" variant="ghost" className="w-full" id="close-button">Cerrar</Button>)
+    const buttonSubmit = <ButtonUI title={isChangePassword ? 'Cambiar' : 'Actualizar'}
+    id={`${isChangePassword ? 'change' : 'update'}-submit`}
+  />
     const footer = (<div className="flex gap-4 flex-col-reverse">
         {buttonClose}
         {buttonSubmit}

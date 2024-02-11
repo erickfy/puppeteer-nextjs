@@ -53,8 +53,10 @@ export default async function InterceptDialogUserById({ searchParams, params }: 
     </>
   }
 
-  const buttonClose = (<Button type="button" variant="ghost" className="w-full">Cerrar</Button>)
-  const buttonSubmit = <ButtonUI title={isChangePassword ? 'Cambiar' : 'Actualizar'} />
+  const buttonClose = (<Button type="button" variant="ghost" className="w-full" id="close-button">Cerrar</Button>)
+  const buttonSubmit = <ButtonUI title={isChangePassword ? 'Cambiar' : 'Actualizar'}
+    id={`${isChangePassword ? 'change' : 'update'}-submit`}
+  />
 
   return (
     <DialogUI

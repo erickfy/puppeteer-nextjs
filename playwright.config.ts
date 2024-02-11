@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import path from "path";
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 /**
  * DOCS: 
@@ -8,7 +9,6 @@ import dotenv from 'dotenv';
  * https://playwright.dev/docs/network#http-proxy
  */
 
-dotenv.config();
 
 const baseURL = `http://localhost:3000`;
 

@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
       args: ['--no-sandbox',],
 
       //? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
-      // headless: 'new',
-      headless: false,
+      headless: 'new',
+      // headless: false,
     });
 
     const page = await browser.newPage();
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
 
     await browser.close();
 
-    return Response.json({ data: cleanData })
+    return Response.json({ data: cleanData ?? [] })
   } catch (error) {
 
     console.error(error)

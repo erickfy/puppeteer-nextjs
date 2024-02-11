@@ -8,7 +8,7 @@ import { test, expect } from "@playwright/test";
  * https://playwright.dev/docs/api/class-locator#locator-evaluate-all
  */
 
-test.only("Scrapping @BookStore", async ({ page }) => {
+test("Scrapping @BookStore", async ({ page }) => {
 
     // USER
     const clientUser = mockUsers['johan']
@@ -27,7 +27,7 @@ test.only("Scrapping @BookStore", async ({ page }) => {
 
     // CLICK TO TOOLBAR ROUTE
     await page.click(`#${identificator}-route`)
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
 
     // ROUTE EXPECTED

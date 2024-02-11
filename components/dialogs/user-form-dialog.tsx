@@ -27,7 +27,7 @@ export default function UserFormDialog({ user }: Props) {
     </>)
 
     const buttonClose = (<Button type="button" variant="secondary">Cerrar</Button>)
-    const buttonSubmit = <ButtonUI title='Actualizar' />
+    const buttonSubmit = <ButtonUI title='Actualizar' id='update-submit' />
 
     return (
         <DialogUI

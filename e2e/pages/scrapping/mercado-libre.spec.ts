@@ -26,7 +26,7 @@ test("Scrapping @MercadoLibre", async ({ page }) => {
 
     // CLICK TO TOOLBAR ROUTE
     await page.click(`#${identificator}-route`)
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
 
     // ROUTE EXPECTED
