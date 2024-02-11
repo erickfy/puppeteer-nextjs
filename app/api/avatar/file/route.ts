@@ -2,6 +2,11 @@ import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import { customAlphabet } from 'nanoid'
 
+/**
+ * DOCS:
+ * https://vercel.com/docs/storage/vercel-blob/client-upload
+ */
+
 export async function DELETE(req: Request) {
     const json = await req.json()
     return Response.json({})
@@ -27,3 +32,4 @@ export async function POST(req: Request): Promise<NextResponse> {
         return NextResponse.json({ status: 500 })
     }
 }
+// 

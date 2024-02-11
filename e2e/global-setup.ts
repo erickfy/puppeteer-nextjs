@@ -35,8 +35,8 @@ export default async function globalSetup(_config: FullConfig) {
     await adminPage.waitForURL((url) => url.origin === APP_URL, { waitUntil: 'networkidle' });
 
     // This saves everything about `adminPage` so far into a named `storageState` 
-    await adminPage.context().storageState({ path: ADMIN.storageState });
 
+    // GET SESSIONS FROM SESSION DB
     const adminSessions = await db.session.findFirst({ where: { userId: adminUser.id }, select: { id: true, expiresAt: true } })
     const adminSessionId = adminSessions?.id ?? ''
 
@@ -55,6 +55,10 @@ export default async function globalSetup(_config: FullConfig) {
             expires: expiresTimestampAdmin
         }
     ])
+    await adminPage.context().storageState({ path: ADMIN.storageState });
+
+
+
 
 
     // CLIENT OR USER
@@ -67,8 +71,8 @@ export default async function globalSetup(_config: FullConfig) {
     await userPage.waitForLoadState('networkidle')
     await userPage.waitForURL((url) => url.origin === APP_URL, { waitUntil: 'networkidle' });
 
-    await userPage.context().storageState({ path: USER.storageState });
 
+    // GET SESSIONS FROM SESSION DB
     const clientSessions = await db.session.findFirst({ where: { userId: clientUser.id }, select: { id: true, expiresAt: true } })
     const clientSessionId = clientSessions?.id ?? ''
 
@@ -87,6 +91,9 @@ export default async function globalSetup(_config: FullConfig) {
             expires: expiresTimestampClient
         }
     ])
+
+    await userPage.context().storageState({ path: USER.storageState });
+
 
     await browser.close();
 

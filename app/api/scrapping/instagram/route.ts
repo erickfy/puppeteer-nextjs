@@ -17,6 +17,8 @@ import { DIR_IMAGES, INSTAGRAM } from "@/lib/constants";
 * error: string;
 * hasError: boolean;
 * } 
+* DOCS:
+* https://nextjs.org/docs/app/building-your-application/routing/route-handlers
  */
 
 export async function POST(req: NextRequest) {
@@ -32,6 +34,7 @@ export async function POST(req: NextRequest) {
 
       //? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
       headless: 'new',
+      // headless: false,
     });
 
     const page = await browser.newPage();
@@ -102,7 +105,7 @@ export async function POST(req: NextRequest) {
 
     await browser.close();
 
-    return Response.json({ data: cleanData })
+    return Response.json({ data: cleanData ?? [] })
   } catch (error) {
 
     console.error(error)

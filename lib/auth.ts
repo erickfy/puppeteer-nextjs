@@ -9,6 +9,11 @@ import { APP_ENV } from "./constants";
 import { db } from "./db";
 
 const adapter = new PrismaAdapter(db.session, db.user);
+/**
+ * DOCS:
+ * https://oslo.js.org/reference/main/TimeSpanUnit
+ * https://github.com/lucia-auth/examples/blob/main/nextjs-app/username-and-password/lib/auth.ts
+ */
 
 export const lucia = new Lucia(adapter, {
     sessionCookie: {
@@ -42,7 +47,7 @@ export const validateRequest = cache(
         if (!sessionId) return nullResponse
 
         const result = await lucia.validateSession(sessionId);
-        // next.js throws when you attempt to set cookie when rendering page
+
         try {
             if (result.session && result.session.fresh) {
                 const sessionCookie = lucia.createSessionCookie(result.session.id);

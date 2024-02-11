@@ -13,7 +13,7 @@ test("User doesn't exist", async ({ page }) => {
   await page.locator('#password').fill(randomUser.password)
   await page.click('#continue')
 
-  await page.waitForLoadState('networkidle')
+  await page.waitForLoadState('domcontentloaded')
 
   await expect(page).toHaveURL("/");
   await expect(page.getByText('El usuario no existe!')).toBeVisible()
