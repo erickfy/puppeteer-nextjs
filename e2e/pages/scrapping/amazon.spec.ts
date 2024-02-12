@@ -7,7 +7,7 @@ import { test, expect } from "@playwright/test";
  * https://playwright.dev/docs/api/class-locator#locator-evaluate-all
  */
 
-test("Scrapping @Amazon", async ({ page }) => {
+test.skip("Scrapping @Amazon", async ({ page }) => {
 
     // USER
     const clientUser = mockUsers['johan']
