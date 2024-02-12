@@ -59,6 +59,7 @@ export default function UserTable({ data }: Props) {
     /**
      * DOCS:
      * https://react.dev/reference/react/useTransition#examples
+     * https://ui.shadcn.com/docs/components/data-table
      */
 
     const [isPending, startTransition] = React.useTransition()
