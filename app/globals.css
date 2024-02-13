@@ -21,7 +21,7 @@
 .background-auth {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(35deg, red, purple);
+  background: linear-gradient(35deg, rgba(255, 0,0, 0.5), rgba(128, 0, 128, 0.5));
 }
 
 @layer base {

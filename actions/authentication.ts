@@ -67,7 +67,7 @@ export async function login(_: any, formData: FormData): Promise<ActionResult> {
         };
     }
 
-    return redirect("/instagram");
+    return redirect("/dashboard");
 }
 
 
@@ -121,5 +121,5 @@ export async function signup(_: any, formData: FormData): Promise<ActionResult> 
             errors: ["Un desconocido error ha ocurrido!"]
         };
     }
-    return redirect("/instagram");
+    return redirect("/dashboard");
 }

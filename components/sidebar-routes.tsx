@@ -1,6 +1,6 @@
 'use client'
 
-import { Layers, Search, Users } from "lucide-react";
+import { Layers, MonitorSmartphoneIcon, Search, Users } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { SideBarProps } from "./sidebar";
 import { routes } from "@/routes";
@@ -9,8 +9,12 @@ import { USER_ROLE } from "@prisma/client";
 export const SidebarRoutes = ({ user }: SideBarProps) => {
   const isAdmin = user.role && user.role === USER_ROLE.ADMIN ? true : false
 
-  // both routes 
   const adminRoutes = [
+    {
+      icon: MonitorSmartphoneIcon,
+      label: 'Panel',
+      href: '/dashboard'
+    },
     {
       icon: Users,
       label: "Usuarios",
@@ -28,6 +32,11 @@ export const SidebarRoutes = ({ user }: SideBarProps) => {
     },
   ]
   const clientRoutes = [
+    {
+      icon: MonitorSmartphoneIcon,
+      label: 'Panel',
+      href: '/dashboard'
+    },
     {
       icon: Search,
       label: "Busquedas",

@@ -7,17 +7,19 @@ import { routes } from "@/routes";
 
 interface EditButtonProps {
   userId: string
+  href: string
 }
 
 const EditButton: React.FC<EditButtonProps>
   = ({
-    userId
+    userId,
+    href
   }) => {
     const router = useRouter()
 
     return (
       <motion.div
-        onClick={() => router.push(`${routes.profile}/${userId}`)}
+        onClick={() => router.push(`${href}/${userId}`)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         className="

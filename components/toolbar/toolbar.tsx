@@ -2,13 +2,12 @@
 
 import React from 'react'
 import styles from './styles.module.scss'
-import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { Skeleton } from '../ui/skeleton'
-import { Menu } from 'lucide-react'
 import { FaAmazon, FaInstagram, FaRobot } from "react-icons/fa";
 import { SiMercadopago } from "react-icons/si";
 import { BiStoreAlt } from "react-icons/bi";
+import { routes } from '@/routes'
 
 
 const ToolbarItem = dynamic(
@@ -21,31 +20,30 @@ const ToolbarItem = dynamic(
   }
 )
 
-export const hrefs = ['/instagram', '/amazon', '/mercado-libre', '/book-store', '/bot-detect']
 
-const routes = [
+const toolbarRoutes = [
   {
-    href: hrefs[0],
+    href: routes.instagram,
     title: 'Instagram',
     icon: FaInstagram
   },
   {
-    href: hrefs[1],
+    href: routes.amazon,
     title: 'Amazon',
     icon: FaAmazon
   },
   {
-    href: hrefs[2],
+    href: routes.mercadoLibre,
     title: 'Mercado Libre',
     icon: SiMercadopago
   },
   {
-    href: hrefs[3],
+    href: routes.bookStore,
     title: 'Book Store',
     icon: BiStoreAlt
   },
   {
-    href: hrefs[4],
+    href: routes.botDetect,
     title: 'Bot Detect',
     icon: FaRobot
   },
@@ -62,7 +60,7 @@ const Toolbar = () => {
     <header className={styles.header}>
       <nav className={styles.navbar}>
         <ul className={styles.navbar__menu}>
-          {routes.map(({ title, href, icon }) => (
+          {toolbarRoutes.map(({ title, href, icon }) => (
             <ToolbarItem key={href} href={href} title={title} icon={icon} />
           ))}
 

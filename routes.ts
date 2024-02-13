@@ -23,6 +23,7 @@ export const routes = {
   protected: '/protected',
   users: "/users",
   searchs: "/searchs",
+  dashboard: '/dashboard'
 }
 
 /**
@@ -40,6 +41,7 @@ export const privateRoutes: string[] = [
   "/users",
   "/searchs",
   "/profile/[a-zA-Z0-9]+",
+  "/dashboard/[a-zA-Z0-9]+",
 ];
 
 

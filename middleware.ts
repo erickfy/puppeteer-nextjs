@@ -15,8 +15,8 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isPrivateRoute = privateRoutes.some(route => {
-        if (route.startsWith("/profile/")) {
-            return route.startsWith('/profile')
+        if (route.startsWith("/dashboard/")) {
+            return route.startsWith('/dashboard')
         } else {
             return nextUrl.pathname === route;
         }
