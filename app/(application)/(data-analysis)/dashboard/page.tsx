@@ -37,8 +37,7 @@ export default async function DashboardPage({ }: Props) {
     ].reduce((acc, curr) => curr !== undefined && acc !== undefined ? curr + acc : acc, 0);
 
     return (
-        <>
-            <Card className='w-full xl:w-[625px] relative'>
+            <Card className='w-full xl:w-[625px] relative overflow-hidden max-h-[400px] h-full'>
                 <div className="absolute top-3 right-3">
                     <EditButton userId={user.id} href={routes.dashboard} />
                 </div>
@@ -84,6 +83,5 @@ export default async function DashboardPage({ }: Props) {
                 </CardHeader>
 
             </Card>
-        </>
     )
 }

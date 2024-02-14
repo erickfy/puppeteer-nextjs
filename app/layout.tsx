@@ -11,9 +11,8 @@ export const metadata = {
   description: `Created by ${OWNER}`,
 };
 
-export default function RootLayout({ children, login }: Readonly<{
+export default function RootLayout({ children }: Readonly<{
   children: React.ReactNode;
-  login: React.ReactNode;
 }>) {
   return (
     <html lang="en">

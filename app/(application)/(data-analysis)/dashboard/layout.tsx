@@ -13,10 +13,9 @@ export default function Layout({
 }: Props) {
     return (
         <>
-            <div className='grid gap-4 grid-cols-1 xl:grid-cols-2'>
-
-                {children}
+            <div className='flex flex-wrap gap-4 '>
                 {char}
+                {children}
             </div>
             {dialog}
         </>

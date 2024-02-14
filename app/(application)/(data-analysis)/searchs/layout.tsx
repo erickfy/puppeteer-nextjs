@@ -96,7 +96,7 @@ export default async function SearchsLayout({ children, scrappings }: Props) {
                         <Card>
                             <CardHeader>
                                 <Heading
-                                    title='Scrappings mas buscados'
+                                    title='Scrappings mas y menos buscados'
                                 />
                             </CardHeader>
                             <CardContent>

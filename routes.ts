@@ -19,7 +19,6 @@ export const routes = {
   mercadoLibre: '/mercado-libre',
   bookStore: '/book-store',
   botDetect: '/bot-detect',
-  profile: '/profile',
   protected: '/protected',
   users: "/users",
   searchs: "/searchs",
@@ -40,7 +39,6 @@ export const privateRoutes: string[] = [
   "/bot-detect",
   "/users",
   "/searchs",
-  "/profile/[a-zA-Z0-9]+",
   "/dashboard/[a-zA-Z0-9]+",
 ];
 

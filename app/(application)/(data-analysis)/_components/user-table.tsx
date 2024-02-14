@@ -38,11 +38,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { TTableSearchPage } from "../searchs/page"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { TTableSearchPage } from "../users/page"
 
 type Props = {
     data: TTableSearchPage[]

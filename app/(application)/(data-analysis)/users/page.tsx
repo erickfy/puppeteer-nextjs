@@ -89,6 +89,18 @@ export default async function UsersPage({ }: Props) {
   return (
     <div className='flex gap-4 flex-col'>
 
+      <Suspense fallback={<div>Cargando tabla de usuarios..</div>}>
+        <Await promise={allUsers}>
+          {(usersResolved) =>
+            <Card>
+              <CardContent>
+                <UserTable data={usersResolved} />
+              </CardContent>
+            </Card>
+          }
+        </Await>
+      </Suspense>
+      
       <Heading
         title='Usuarios'
         subtitle={`Total: ${count}`}
@@ -110,17 +122,6 @@ export default async function UsersPage({ }: Props) {
             <p className="mb-2"><span className='font-bold'>Activo:</span> {user.active ? 'Si' : 'No'}</p>
           </div>))}
       </div>
-      <Suspense fallback={<div>Cargando tabla de usuarios..</div>}>
-        <Await promise={allUsers}>
-          {(usersResolved) =>
-            <Card>
-              <CardContent>
-                <UserTable data={usersResolved} />
-              </CardContent>
-            </Card>
-          }
-        </Await>
-      </Suspense>
     </div>
 
   )
