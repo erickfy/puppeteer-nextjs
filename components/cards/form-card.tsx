@@ -15,7 +15,7 @@ type Props = {
 
 export default function FormCard({
     content, title, descriptionOne, descriptionTwo, footer, action, classNameHeader = '',
-    classNameCard = "w-[350px] absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    classNameCard = "w-[350px] absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-lg"
 }: Props) {
     return (
         <Card className={classNameCard}>

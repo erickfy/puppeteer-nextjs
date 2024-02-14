@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card"
 import {
   CarouselItem,
 } from "@/components/ui/carousel"
@@ -19,7 +19,7 @@ export default function MercadoLibreCard({ data }: Props) {
     {
       data.map((item, index) => (
         <CarouselItem key={item.title}>
-          <Card>
+          <Card className="rounded-lg shadow-lg border-0">
             <CardContent className="relative flex aspect-square items-center justify-center p-0 md:p-6 max-w-sm min-w-60 md:min-w-72">
               <div className="w-full h-full">
                 <Image
@@ -27,28 +27,34 @@ export default function MercadoLibreCard({ data }: Props) {
                   objectFit="cover"
                   layout="fill"
                   alt="Descripción de la imagen"
-                  className="z-0"
+                  className="z-0 rounded-t-lg"
                 />
               </div>
-              <div className="absolute w-full bottom-0 left-0 px-4 pb-4 z-10">
+            </CardContent>
+            <CardFooter className="p-6 py-2 bg-gradient-to-r from-purple-200 via-pink-200 to-red-200 rounded-b-lg shadow-lg">
+            <div className="w-full">
                 <div className="flex flex-col gap-1 md:gap-1">
-                  <CardTitle className=" font-bold">{item.title}</CardTitle>
-                  <CardDescription className="text-black font-bold">Precio: <span className="font-medium">{item.price}</span></CardDescription>
+                  <CardTitle className="font-semibold">{item.title}</CardTitle>
+
+                  <CardDescription className="text-black opacity-80 font-bold"><span className="font-medium text-2xl underline">${item.price}</span></CardDescription>
+
                   {item.condition &&
-                    <CardDescription className="text-black font-bold">Condicion: <span className="font-medium">{item.condition}</span></CardDescription>
+                    <CardDescription className="text-black opacity-80 font-bold">Condicion: <span className="font-medium">{item.condition}</span></CardDescription>
                   }
-                  <CardDescription className="text-black font-bold">Enlace:
-                    <Button
-                      variant={'link'}
-                      className="font-medium"
-                      onClick={() => route.push(item.url)}
-                    >
-                      Enlace de Producto
+                
+                  <div className="justify-center flex">
+                    <Button variant={'link'} className="font-medium">
+                      <a target="_blank" href={item.url} rel="noopener noreferrer">
+                        <div>
+                          Ir al producto 🔗
+                        </div>
+                      </a>
                     </Button>
-                  </CardDescription>
+                  </div>
+
                 </div>
               </div>
-            </CardContent>
+            </CardFooter>
           </Card>
         </CarouselItem>
       ))

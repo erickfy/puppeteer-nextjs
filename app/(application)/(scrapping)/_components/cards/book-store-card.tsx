@@ -32,25 +32,32 @@ export default function BookStoreCard({ data }: Props) {
     {
       data.map((item, index) => (
         <CarouselItem key={item.title}>
-          <Card className="rounded-lg shadow-lg">
+          <Card className="rounded-lg shadow-lg border-0">
             <CardContent className="relative flex aspect-square items-center justify-center  max-w-sm min-w-60 md:min-w-72">
               <div className="w-full h-full">
-                <ImageProvider imageUrl={item.src} alt={item.title} className="rounded-t-lg" />
+                <ImageProvider
+                  imageUrl={item.src}
+                  alt={item.title}
+                  className="rounded-t-lg"
+                />
               </div>
 
             </CardContent>
-            <CardFooter className="p-6 py-2 bg-gradient-to-r from-purple-200 via-pink-200 to-red-200 shadow-md">
+            <CardFooter className="p-6 py-2 bg-gradient-to-r from-purple-200 via-pink-200 to-red-200 rounded-b-lg shadow-lg">
 
               <div className="w-full">
                 <div className="flex flex-col gap-1 md:gap-1">
-                  <CardTitle className=" font-bold">{item.title}</CardTitle>
+                  <CardTitle className="font-semibold">{item.title}</CardTitle>
+                  
                   <CardDescription className="text-black opacity-80 font-bold"><span className="font-medium text-2xl underline">{item.price}</span></CardDescription>
+                  
                   <CardDescription className="text-black  opacity-80 font-bold"><span className="font-medium">{
                     getReviews(item.review)
                   }</span></CardDescription>
+
                   <CardDescription className="text-black  opacity-80 font-bold"><span className="font-bold">{item.stock}</span></CardDescription>
 
-                  <div className="justify-center flex"> {/* mx-auto centra el contenido horizontalmente */}
+                  <div className="justify-center flex">
                     <Button variant={'link'} className="font-medium">
                       <a target="_blank" href={item.url} rel="noopener noreferrer">
                         <div>
@@ -59,6 +66,7 @@ export default function BookStoreCard({ data }: Props) {
                       </a>
                     </Button>
                   </div>
+                  
                 </div>
               </div>
             </CardFooter>

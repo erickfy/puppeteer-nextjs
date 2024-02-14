@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 
 import { NextRequest } from "next/server";
-import {  DIR_IMAGES, MERCADO_LIBRE } from "@/lib/constants";
+import { DIR_IMAGES, MERCADO_LIBRE } from "@/lib/constants";
 
 /**
  * Scrapping values from Amazon
@@ -104,6 +104,6 @@ export async function POST(req: NextRequest) {
   } catch (error) {
 
     console.error(error)
-    return Response.json({ error: "API Error see logs", hasError: true })
+    return Response.json({ error: "API Error see logs", hasError: true, data: [] })
   }
 }

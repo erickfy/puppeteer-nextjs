@@ -8,6 +8,7 @@ const isKnownProvider = (imageUrl: string) => {
 };
 function ImageProvider({ imageUrl, alt, className }: { imageUrl: string, alt: string, className?: string }) {
   const hasProvider = isKnownProvider(imageUrl);
+  console.log(hasProvider)
 
   if (hasProvider) {
     // WITH PROVIDER
@@ -54,6 +55,7 @@ export const knownDomains = [
   "scontent-lax3-1.cdninstagram.com",
   "scontent-ams2-1.cdninstagram.com",
   "instagram.fcpv15-1.fna.fbcdn.net",
+  'instagram.fuio35-1.fna.fbcdn.net',
   "books.toscrape.com",
   "cloudflare-ipfs.com",
   "avatars.githubusercontent.com",

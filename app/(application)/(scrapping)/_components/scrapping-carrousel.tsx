@@ -45,7 +45,7 @@ export default function ScrappingCarrousel({ body, lengthData }: Props) {
         <CarouselNext />
       </Carousel>
       <div className="py-2 text-center text-sm text-muted-foreground">
-        Parte {current} de {count}
+        {current} de {count}
       </div>
     </div>
   )

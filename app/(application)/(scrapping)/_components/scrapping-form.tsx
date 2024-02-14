@@ -85,18 +85,24 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                 loading: "Scrapeando... ⌛",
                 success: async (requests) => {
                     const request = requests[0]
-                    if (request.status === 200) {
+                    console.log(request.data)
+                    if (request.status === 200 && request.data.data) {
                         setData(request.data.data);
                         setLoading(false);
                         saveTypeImage(dt.search)
+                        
                         if (request.data.data.length === 0) {
                             form.reset()
                             return '🚫 Sin resultados pero puedes mirar su imagen!'
+                        } else {
+                            return "Busqueda obtenida!"
                         }
                     } else {
+                        setLoading(false)
                         form.reset()
+                        return '🚫 Sin resultados! (proteccion de captcha)'
                     }
-                    return "Busqueda obtenida!"
+                    setLoading(false)
                 },
                 error: () => {
                     setLoading(false)
