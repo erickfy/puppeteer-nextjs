@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { signup } from "@/actions/authentication";
 import { USER_ROLE } from "@prisma/client";
 import { routes } from "@/routes";
+import ButtonUI from "@/components/buttons/button-ui";
 
 export default async function Page() {
   const { user } = await validateRequest();
@@ -53,9 +54,7 @@ export default async function Page() {
       }
       footer={
         <>
-          <Button className="w-full" type="submit">
-            Continuar
-          </Button>
+          <ButtonUI title="Registrarme" type="submit" id="register-submit" className="w-full" />
           <div className="text-sm text-muted-foreground flex gap-2">
             <p className="text-black">
               Ya tienes cuenta?

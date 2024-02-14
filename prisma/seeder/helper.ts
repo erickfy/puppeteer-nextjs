@@ -54,7 +54,7 @@ export function generateTestUsers() {
  * https://fakerjs.dev/api/date.html#month
  */
 
-const MAX_PRODUCTS = 10
+const MAX_PRODUCTS = 5
 export function generateAmazonHistory() {
     const products = Array.from({ length: MAX_PRODUCTS }, () => {
         return faker.commerce.productName();

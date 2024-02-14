@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "puppeteer browsers install chrome && next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "puppeteer browsers install chrome && next start",
     "lint": "next lint",
     "test:e2e": "playwright test"
   },

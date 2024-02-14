@@ -219,10 +219,10 @@ export default async function SearchsPage() {
           {maxMercadoLibre} de <span className='text-[#8884d8]'>{maxStringML} (Max)</span>
         </p>
 
-        <p><span className='font-semibold'>Tienda de Libros: </span>
-          {minBookStore} ano y mes <span className='text-[#82ca9d]'>{minStringBookStore} (Min)</span>
+        <p><span className='font-semibold'>Tienda de Libros (Año-mes): </span>
+          {minBookStore} <span className='text-[#82ca9d]'>{minStringBookStore} (Min)</span>
           &nbsp;|&nbsp;
-          {maxBookStore} ano y mes <span className='text-[#8884d8]'>{maxStringBookStore} (Max)</span>
+          {maxBookStore} <span className='text-[#8884d8]'>{maxStringBookStore} (Max)</span>
         </p>
 
       </div>
