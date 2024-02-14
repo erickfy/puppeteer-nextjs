@@ -11,7 +11,7 @@ import FormCard from "@/components/cards/form-card"
 
 type Props = {
     searchParams: { image: string }
-    params: any
+    params: { userId: string }
 }
 
 export default async function PageUserById({ searchParams }: Props) {
@@ -48,15 +48,15 @@ export default async function PageUserById({ searchParams }: Props) {
                 <Input type="text" name="fullNames" id="fullNames" placeholder="Ej: Johan Quinatoa" defaultValue={user.fullNames ? user.fullNames : ''} />
             </div>
             <div className="grid w-full max-w-xs items-center gap-2">
-                <Uploader id='image-upload' name='image' src={user.image ? user.image : undefined} />
+                {/* <Uploader id='image-upload' name='image' src={user.image ? user.image : undefined} /> */}
             </div>
         </>
     }
 
     const buttonClose = (<Button type="button" variant="ghost" className="w-full" id="close-button">Cerrar</Button>)
     const buttonSubmit = <ButtonUI title={isChangePassword ? 'Cambiar' : 'Actualizar'}
-    id={`${isChangePassword ? 'change' : 'update'}-submit`}
-  />
+        id={`${isChangePassword ? 'change' : 'update'}-submit`}
+    />
     const footer = (<div className="flex gap-4 flex-col-reverse">
         {buttonClose}
         {buttonSubmit}
