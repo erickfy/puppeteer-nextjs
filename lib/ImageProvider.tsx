@@ -1,11 +1,12 @@
 import Image from "next/image";
+import { cn } from "./utils";
 
 const isKnownProvider = (imageUrl: string) => {
   const url = new URL(imageUrl);
   const domain = url.hostname;
   return knownDomains.includes(domain);
 };
-function ImageProvider({ imageUrl, alt }: { imageUrl: string, alt: string }) {
+function ImageProvider({ imageUrl, alt, className }: { imageUrl: string, alt: string, className?: string }) {
   const hasProvider = isKnownProvider(imageUrl);
 
   if (hasProvider) {
@@ -16,7 +17,7 @@ function ImageProvider({ imageUrl, alt }: { imageUrl: string, alt: string }) {
         objectFit="cover"
         layout="fill"
         alt={alt}
-        className="z-0"
+        className={cn("z-0", className)}
         onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
           const target = event.target as HTMLImageElement;
           // prevent broken image
@@ -30,7 +31,7 @@ function ImageProvider({ imageUrl, alt }: { imageUrl: string, alt: string }) {
       <img
         src={imageUrl}
         alt={alt}
-        className="w-full h-full"
+        className={cn("w-full h-full", className)}
         width={"100%"}
         height={"100%"}
         onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {

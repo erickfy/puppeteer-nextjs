@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card"
 import {
   CarouselItem,
 } from "@/components/ui/carousel"
@@ -9,10 +9,22 @@ import ScrappingCarrousel from "../scrapping-carrousel"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import ImageProvider from "@/lib/ImageProvider"
+import Link from "next/link"
 
 type Props = {
   data: TBookStore[]
 }
+
+function getReviews(reviews: string) {
+  const rev = reviews.toLocaleLowerCase()
+  if (rev === 'one') return 'No me gustó en absoluto. ⭐';
+  else if (rev === 'two') return 'Podría ser mejor. ⭐⭐';
+  else if (rev === 'three') return 'Es aceptable. ⭐⭐⭐';
+  else if (rev === 'four') return 'Me gusta. ⭐⭐⭐⭐';
+  else if (rev === 'five') return '¡Producto increíble! ⭐⭐⭐⭐⭐'
+  return 'Sin calificación.';
+}
+
 export default function BookStoreCard({ data }: Props) {
   const route = useRouter()
 
@@ -20,36 +32,36 @@ export default function BookStoreCard({ data }: Props) {
     {
       data.map((item, index) => (
         <CarouselItem key={item.title}>
-          <Card>
-            <CardContent className="relative flex aspect-square items-center justify-center p-0 md:p-6 max-w-sm min-w-60 md:min-w-72">
+          <Card className="rounded-lg shadow-lg">
+            <CardContent className="relative flex aspect-square items-center justify-center  max-w-sm min-w-60 md:min-w-72">
               <div className="w-full h-full">
-                {/* <Image
-                  src={item.src}
-                  objectFit="cover"
-                  layout="fill"
-                  alt="Descripción de la imagen"
-                  className="z-0"
-                /> */}
-                <ImageProvider imageUrl={item.src} alt={item.title} />
+                <ImageProvider imageUrl={item.src} alt={item.title} className="rounded-t-lg" />
               </div>
-              <div className="absolute w-full bottom-0 left-0 px-4 pb-4 z-10">
+
+            </CardContent>
+            <CardFooter className="p-6 py-2 bg-gradient-to-r from-purple-200 via-pink-200 to-red-200 shadow-md">
+
+              <div className="w-full">
                 <div className="flex flex-col gap-1 md:gap-1">
                   <CardTitle className=" font-bold">{item.title}</CardTitle>
-                  <CardDescription className="text-black font-bold">Precio: <span className="font-medium">{item.price}</span></CardDescription>
-                  <CardDescription className="text-black font-bold">Resenas: <span className="font-medium">{item.review}</span></CardDescription>
-                  <CardDescription className="text-black font-bold">Stock: <span className="font-medium">{item.stock}</span></CardDescription>
-                  <CardDescription className="text-black font-bold">Enlace:
-                    <Button
-                      variant={'link'}
-                      className="font-medium"
-                      onClick={() => route.push(item.url)}
-                    >
-                      Enlace de Producto
+                  <CardDescription className="text-black opacity-80 font-bold"><span className="font-medium text-2xl underline">{item.price}</span></CardDescription>
+                  <CardDescription className="text-black  opacity-80 font-bold"><span className="font-medium">{
+                    getReviews(item.review)
+                  }</span></CardDescription>
+                  <CardDescription className="text-black  opacity-80 font-bold"><span className="font-bold">{item.stock}</span></CardDescription>
+
+                  <div className="justify-center flex"> {/* mx-auto centra el contenido horizontalmente */}
+                    <Button variant={'link'} className="font-medium">
+                      <a target="_blank" href={item.url} rel="noopener noreferrer">
+                        <div>
+                          Ir al producto 🔗
+                        </div>
+                      </a>
                     </Button>
-                  </CardDescription>
+                  </div>
                 </div>
               </div>
-            </CardContent>
+            </CardFooter>
           </Card>
         </CarouselItem>
       ))
