@@ -86,7 +86,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                 success: async (requests) => {
                     const request = requests[0]
                     console.log(request.data)
-                    if (request.status === 200 && request.data.data) {
+                    if (request.status === 200 && request.data && !request.data.hasError) {
                         setData(request.data.data);
                         setLoading(false);
                         saveTypeImage(dt.search)
