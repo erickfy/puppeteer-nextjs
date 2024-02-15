@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
     console.log(error)
 
     if (error instanceof Error) {
-      const logFilePath = path.join(process.cwd(), 'error.log');
+      const logFilePath = path.join(__dirname, 'error.log');
 
       fs.writeFileSync(logFilePath, error.stack || error.toString(), 'utf-8');
     }
