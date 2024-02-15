@@ -108,7 +108,8 @@ export async function POST(req: NextRequest) {
     return Response.json({ data: cleanData ?? [] })
   } catch (error) {
 
-    console.error(error)
+    console.log(error)
+    return Response.error()
     return Response.json({ error: "API Error see logs", hasError: true, data: [] })
   }
 }
