@@ -1,7 +1,8 @@
 import puppeteer from "puppeteer";
 import { NextRequest } from "next/server";
 import { DIR_IMAGES, INSTAGRAM } from "@/lib/constants";
-
+import fs from 'fs'
+import path from 'path';
 /**
  * Scrapping values from Instagram
  * return {cards} has contains
@@ -106,9 +107,16 @@ export async function POST(req: NextRequest) {
     await browser.close();
 
     return Response.json({ data: cleanData ?? [] })
-  } catch (error) {
+  } catch (error: unknown) {
 
     console.log(error)
+
+    if (error instanceof Error) {
+      const logFilePath = path.join(process.cwd(), 'error.log');
+
+      fs.writeFileSync(logFilePath, error.stack || error.toString(), 'utf-8');
+    }
+
     return Response.error()
     return Response.json({ error: "API Error see logs", hasError: true, data: [] })
   }
