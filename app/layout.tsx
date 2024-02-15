@@ -7,8 +7,8 @@ import RootProvider from "@/components/providers/root-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Login to Scriping 🤖",
-  description: `Created by ${OWNER}`,
+  title: "Scrapeador 🤖",
+  description: `Una forma de scrapear sitios web | creado por ${OWNER}`,
 };
 
 export default function RootLayout({ children }: Readonly<{
