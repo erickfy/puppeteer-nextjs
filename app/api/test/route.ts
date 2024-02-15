@@ -1,7 +1,7 @@
 export async function POST(req: Request): Promise<Response> {
   try {
     // Obtén el contenido del archivo que deseas enviar (aquí se simula un contenido)
-    const fileContent = 'Contenido del archivo que deseas enviar a GitHub Gist';
+    const fileContent = 'This is a content test for scrapping well this is everything';
 
     // Configuración para la creación del Gist
     const gistApiUrl = 'https://api.github.com/gists';
@@ -15,7 +15,7 @@ export async function POST(req: Request): Promise<Response> {
     };
 
     // Reemplaza 'tu_token_de_acceso' con tu token de acceso personal
-    const accessToken = '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';
+    const accessToken = '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';
 
     const response = await fetch(gistApiUrl, {
       method: 'POST',

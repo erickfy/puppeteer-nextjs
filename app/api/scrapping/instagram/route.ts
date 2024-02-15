@@ -114,29 +114,47 @@ export async function POST(req: NextRequest) {
     if (error instanceof Error) {
       // const logFilePath = path.join(__dirname, 'error.log');
       // fs.writeFileSync(logFilePath, error.stack || error.toString(), 'utf-8');
-
-      const accessToken = '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';
+      
+      
+      
+      const fileContent = 'This is a content test for scrapping well this is everything';
+      
+      // Configuración para la creación del Gist
       const gistApiUrl = 'https://api.github.com/gists';
       const gistData = {
         public: true,
         files: {
-          'error_instagram.log': {
-            // content: error.stack || error.toString(),
+          'archivo.txt': { // Nombre del archivo en el Gist
             content: `Type: ${typeof error}\nDetails: ${JSON.stringify(error, null, 2)}`,
-          },
         },
-      };
+      },
+    };
 
-      const response = await fetch(gistApiUrl, {
-        method: 'POST',
-        body: JSON.stringify(gistData),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      });
+    // Reemplaza 'tu_token_de_acceso' con tu token de acceso personal
+    const accessToken = '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';
 
-      const responseData = await response.json();
+    const response = await fetch(gistApiUrl, {
+      method: 'POST',
+      body: JSON.stringify(gistData),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    });
+
+    const responseData = await response.json();
+
+    // Verifica si la creación del Gist fue exitosa
+    if (response.ok) {
+      return Response.json({ data: 'Archivo enviado a GitHub Gist', gistUrl: responseData.html_url, hasError: true });
+    } else {
+      console.error('Error al enviar el archivo a GitHub Gist:', responseData.message);
+      return Response.json({ error: 'Error al enviar el archivo a GitHub Gist', hasError: true }, { status: response.status }, );
+    }
+        
+        
+        
+        
 
 
       return Response.json({ error: "error", hasError: true, url: responseData.html_url })
