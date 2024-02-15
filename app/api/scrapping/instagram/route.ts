@@ -118,28 +118,30 @@ export async function POST(req: NextRequest) {
       const accessToken = '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';
       const gistApiUrl = 'https://api.github.com/gists';
       const gistData = {
-          public: true,
-          files: {
-              'error_instagram.log': {
-                  content: error.stack || error.toString(),
-              },
+        public: true,
+        files: {
+          'error_instagram.log': {
+            content: error.stack || error.toString(),
           },
+        },
       };
 
       const response = await fetch(gistApiUrl, {
-          method: 'POST',
-          body: JSON.stringify(gistData),
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${accessToken}`,
-          },
+        method: 'POST',
+        body: JSON.stringify(gistData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
       });
 
+      const responseData = await response.json();
 
+
+      return Response.json({ error: "error", hasError: true, url: responseData.html_url })
 
     }
 
-    return Response.error()
     return Response.json({ error: "API Error see logs", hasError: true, data: [] })
   }
 }
