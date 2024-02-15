@@ -22,6 +22,7 @@ import { useImages } from '@/hooks/useImages';
 import { toast } from 'sonner';
 import Message from './message';
 import { TWITHOUT_INPUT } from '@/lib/constants';
+import { watch } from 'fs';
 
 /**
  * DOCS:
@@ -156,7 +157,12 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                                                 <FormItem className={hiddenInput ? 'sr-only' : ''}>
                                                     <FormLabel>Busqueda</FormLabel>
                                                     <FormControl>
-                                                        <Input placeholder={`Ej: ${exampleInput}`}  {...field} type="text" autoComplete="off" id={routeHandler} />
+                                                        <Input
+                                                            placeholder={`Ej: ${exampleInput}`}  {...field}
+                                                            type="text"
+                                                            autoComplete="off"
+                                                            id={routeHandler}
+                                                            defaultValue={form.watch('search')} />
                                                     </FormControl>
                                                     <FormMessage>
                                                         {form.formState.errors.search?.message}
