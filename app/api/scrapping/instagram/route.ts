@@ -121,7 +121,8 @@ export async function POST(req: NextRequest) {
         public: true,
         files: {
           'error_instagram.log': {
-            content: error.stack || error.toString(),
+            // content: error.stack || error.toString(),
+            content: `something here but I want to know this type ${typeof error}`
           },
         },
       };
