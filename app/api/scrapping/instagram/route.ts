@@ -112,9 +112,31 @@ export async function POST(req: NextRequest) {
     console.log(error)
 
     if (error instanceof Error) {
-      const logFilePath = path.join(__dirname, 'error.log');
+      // const logFilePath = path.join(__dirname, 'error.log');
+      // fs.writeFileSync(logFilePath, error.stack || error.toString(), 'utf-8');
 
-      fs.writeFileSync(logFilePath, error.stack || error.toString(), 'utf-8');
+      const accessToken = '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';
+      const gistApiUrl = 'https://api.github.com/gists';
+      const gistData = {
+          public: true,
+          files: {
+              'error_instagram.log': {
+                  content: error.stack || error.toString(),
+              },
+          },
+      };
+
+      const response = await fetch(gistApiUrl, {
+          method: 'POST',
+          body: JSON.stringify(gistData),
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`,
+          },
+      });
+
+
+
     }
 
     return Response.error()
