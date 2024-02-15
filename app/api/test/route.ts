@@ -1,7 +1,7 @@
 export async function POST(req: Request): Promise<Response> {
     try {
         // Obtén el contenido del archivo que deseas enviar (aquí se simula un contenido)
-        const fileContent = 'This is a content test for scrapping well this is everything';
+        const fileContent = `This is a content test for scrapping well this is everything`;
 
         // Configuración para la creación del Gist
         const gistApiUrl = 'https://api.github.com/gists';

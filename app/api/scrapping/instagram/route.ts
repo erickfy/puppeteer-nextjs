@@ -125,7 +125,12 @@ export async function POST(req: NextRequest) {
         public: true,
         files: {
           'archivo.txt': { // Nombre del archivo en el Gist
-            content: `Type: ${typeof error}\nDetails: ${JSON.stringify(error, null, 2)}`,
+            content: `Type: ${typeof error}\nDetails: ${JSON.stringify(error, null, 2)} 
+            AND CAUSE: ${JSON.stringify(error.cause)}
+            AND MESSAGE: ${JSON.stringify(error.message)}
+            AND NAME: ${JSON.stringify(error.name)}
+            AND STACK: ${JSON.stringify(error.stack)}
+            `,
         },
       },
     };
