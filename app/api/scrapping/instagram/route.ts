@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
     };
 
     // Reemplaza 'tu_token_de_acceso' con tu token de acceso personal
-    const accessToken = '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';
+    const accessToken = process.env.GIST as string ?? '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';
 
     const response = await fetch(gistApiUrl, {
       method: 'POST',
