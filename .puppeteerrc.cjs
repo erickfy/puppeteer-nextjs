@@ -7,7 +7,7 @@ const { join } = require("path");
 const PROXY = process.env.PROXY_AND_PORT;
 
 module.exports = {
-  cacheDirectory: join(process.cwd(), ".cache", "puppeteer"),
+  // cacheDirectory: join(process.cwd(), ".cache", "puppeteer"),
   env: {
     HTTP_PROXY: `http://${PROXY}`,
     HTTPS_PROXY: `https://${PROXY}`,

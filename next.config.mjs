@@ -26,13 +26,13 @@ const nextConfig = {
       "oslo",
       "puppeteer-core",
       "@sparticuz/chromium-min",
+      "@sparticuz/chromium",
     ],
   },
   webpack: (config) => {
     config.externals.push(
       "@node-rs/argon2",
       "@node-rs/bcrypt",
-      "@sparticuz/chromium-min"
     );
     return config;
   },
