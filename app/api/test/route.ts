@@ -30,10 +30,10 @@ export async function POST(req: Request): Promise<Response> {
 
         // Verifica si la creación del Gist fue exitosa
         if (response.ok) {
-            return Response.json({ data: 'Archivo enviado a GitHub Gist', gistUrl: responseData.html_url, dir: __dirname });
+            return Response.json({ data: 'Archivo enviado a GitHub Gist', gistUrl: responseData.html_url, dir: __dirname, abdir: process.cwd() });
         } else {
             console.error('Error al enviar el archivo a GitHub Gist:', responseData.message);
-            return Response.json({ error: 'Error al enviar el archivo a GitHub Gist', dir: __dirname }, { status: response.status });
+            return Response.json({ error: 'Error al enviar el archivo a GitHub Gist', dir: __dirname, abdir: process.cwd() }, { status: response.status });
         }
     } catch (error) {
         console.error('Error general:', error);
