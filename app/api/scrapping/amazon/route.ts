@@ -46,8 +46,10 @@ export async function POST(req: NextRequest) {
     await page.waitForNavigation();
 
     // place to save the image
+    const rootUrl = process.cwd()
+    const path = `${rootUrl}${DIR_IMAGES}/amazon/${searchInput}.webp`;
     await page.screenshot({
-      path: `${DIR_IMAGES}/amazon/${searchInput}.webp`,
+      path,
       type: 'webp',
       fullPage: true
     })

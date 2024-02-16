@@ -1,1 +1,1 @@
-#### Images from MERCADO LIBRE
+#### Scrapping from MERCADO LIBRE

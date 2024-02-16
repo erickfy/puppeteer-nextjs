@@ -1,4 +1,4 @@
-export const DIR_IMAGES = './public'
+export const DIR_IMAGES = '/public'
 
 export const OWNER = process.env.OWNER as string;
 export const APP_ENV = process.env.APP_ENV as string;

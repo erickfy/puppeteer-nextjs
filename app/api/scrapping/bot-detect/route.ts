@@ -109,13 +109,13 @@ async function captureScreenshot() {
   console.log('alright')
 
 
+  const rootUrl = process.cwd()
+  const path = `${rootUrl}${DIR_IMAGES}/bot-detect/${TWITHOUT_INPUT.BOT_DETECT}`
   const capture = await page.screenshot({
-    path: `${DIR_IMAGES}/bot-detect/${TWITHOUT_INPUT.BOT_DETECT}`,
+    path,
     type: 'webp',
-    fullPage: true,
-  });
-
-  console.log('final')
+    fullPage: true
+  })
 
   console.log("Chromium:", await browser.version());
 

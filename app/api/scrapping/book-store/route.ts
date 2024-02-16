@@ -55,8 +55,12 @@ export async function POST(req: NextRequest) {
     // await page.waitForNavigation();
 
     // place to save the image
+
+
+    const rootUrl = process.cwd()
+    const path = `${rootUrl}${DIR_IMAGES}/book-store/${TWITHOUT_INPUT.BOOK_STORE as string}`
     await page.screenshot({
-      path: `${DIR_IMAGES}/book-store/${TWITHOUT_INPUT.BOOK_STORE as string}`,
+      path,
       type: 'webp',
       fullPage: true
     })

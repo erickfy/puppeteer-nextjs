@@ -49,8 +49,10 @@ export async function POST(req: NextRequest) {
     await new Promise(resolve => setTimeout(resolve, timeoutAfterLoad));
 
     // place to save the image
+    const rootUrl = process.cwd()
+    const path = `${rootUrl}${DIR_IMAGES}/instagram/${searchInput}.webp`
     await page.screenshot({
-      path: `${DIR_IMAGES}/instagram/${searchInput}.webp`,
+      path,
       type: 'webp',
       fullPage: true
     })
