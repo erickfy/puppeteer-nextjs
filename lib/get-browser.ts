@@ -8,28 +8,31 @@ import puppeteer from 'puppeteer-core';
  * https://www.npmjs.com/package/@sparticuz/chromium-min
  * ARGS:
  * https://peter.sh/experiments/chromium-command-line-switches/
- * 
- * 
  */
+
 export default async function getBrowser() {
     try {
 
         const isProd = process.env.APP_ENV as string === 'production'
 
         if (isProd) {
-            chromium.setGraphicsMode = false
+            // chromium.setGraphicsMode = false
 
             // mod min - chrome 
-            const browser = await puppeteer.launch({
-                args: chromiumMin.args,
-                defaultViewport: chromiumMin.defaultViewport,
-                executablePath: await chromiumMin.executablePath(
-                    "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
-                ),
-                headless: chromiumMin.headless,
-                ignoreDefaultArgs:  ['--disable-extensions'],
-                ignoreHTTPSErrors: true,
-            });
+            // const browser = await puppeteer.launch({
+            //     args: chromiumMin.args,
+            //     defaultViewport: chromiumMin.defaultViewport,
+            //     // executablePath: await chromiumMin.executablePath(
+            //     //     "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
+            //     // ),
+            //     headless: chromiumMin.headless,
+            //     ignoreDefaultArgs:  ['--disable-extensions'],
+            //     ignoreHTTPSErrors: true,
+            // });
+
+            const browser = await puppeteer.connect({
+                browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.TOKEN_BROWSERLESS as string} `,
+            })
             return browser
 
         } else {
@@ -90,7 +93,7 @@ export default async function getBrowser() {
         // ),
         executablePath: await chromium.executablePath(),
         headless: chromium.headless,
-        ignoreDefaultArgs:  ['--disable-extensions'],
+        ignoreDefaultArgs: ['--disable-extensions'],
         ignoreHTTPSErrors: true,
     });
 
