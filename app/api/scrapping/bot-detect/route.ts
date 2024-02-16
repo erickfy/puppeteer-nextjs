@@ -2,6 +2,7 @@ import puppeteer from "puppeteer";
 import { NextRequest } from "next/server";
 import { BOT_DETECT_ADDRESS, DIR_IMAGES, TWITHOUT_INPUT } from "@/lib/constants";
 import sharp from 'sharp';
+import getBrowser from "@/lib/get-browser";
 
 
 /**
@@ -31,10 +32,12 @@ export async function POST(req: NextRequest) {
 
 
 async function captureScreenshot() {
-  const browser = await puppeteer.launch({
-    args: ['--no-sandbox'],
-    headless: 'new',
-  });
+  // const browser = await puppeteer.launch({
+  //   args: ['--no-sandbox'],
+  //   headless: 'new',
+  // });
+
+  const browser = await getBrowser()
 
   const page = await browser.newPage();
 

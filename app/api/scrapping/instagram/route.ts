@@ -22,6 +22,8 @@ import path from 'path';
 * https://nextjs.org/docs/app/building-your-application/routing/route-handlers
  */
 
+
+
 export async function POST(req: NextRequest) {
   try {
     const { searchInput } = await req.json()
@@ -32,6 +34,7 @@ export async function POST(req: NextRequest) {
 
     const browser = await puppeteer.launch({
       args: ['--no-sandbox',],
+      executablePath: '/',
 
       //? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
       headless: 'new',

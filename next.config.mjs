@@ -24,6 +24,7 @@ const nextConfig = {
     serverComponentsExternalPackages: [
       // "argon2",
       "oslo",
+      "puppeteer-core",
     ],
   },
   webpack: (config) => {
