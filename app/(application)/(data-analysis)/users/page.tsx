@@ -7,6 +7,8 @@ import { redirect } from 'next/navigation'
 import React, { Suspense } from 'react'
 import UserTable from '../_components/user-table'
 import { Card, CardContent } from '@/components/ui/card'
+import fs from 'fs'
+import path from 'path'
 
 type Props = {}
 
@@ -86,10 +88,32 @@ export default async function UsersPage({ }: Props) {
     }
   )
 
+
+  const directorioActual = process.cwd();
+
+  // Lee el contenido del directorio
+  const archivos = await fs.promises.readdir(directorioActual);
+
+  // Filtra solo los directorios
+  const directorios = await Promise.all(archivos.map(async archivo => {
+    const rutaCompleta = path.join(directorioActual, archivo);
+    const esDirectorio = (await fs.promises.stat(rutaCompleta)).isDirectory();
+    return esDirectorio ? archivo : null;
+  }));
+
+  // Filtra los resultados no nulos (solo directorios)
+  const directoriosFiltrados = directorios.filter(dir => dir !== null);
+
+  // Imprime el array de directorios
+  console.log('Directorios:', directoriosFiltrados);
+
+
+
   return (
     <div className='flex gap-4 flex-col'>
 
-      <div>there is root: { process.cwd()}</div>
+      <div>there is root: {process.cwd()}</div>
+      <div>all is {directoriosFiltrados.map((di, index) => <div key={index}>{JSON.stringify(di)}</div>)}</div>
 
       <Suspense fallback={<div>Cargando tabla de usuarios..</div>}>
         <Await promise={allUsers}>
@@ -102,7 +126,7 @@ export default async function UsersPage({ }: Props) {
           }
         </Await>
       </Suspense>
-      
+
       <Heading
         title='Usuarios'
         subtitle={`Total: ${count}`}
