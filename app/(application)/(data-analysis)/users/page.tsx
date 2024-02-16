@@ -89,7 +89,7 @@ export default async function UsersPage({ }: Props) {
   )
 
 
-  const directorioActual = process.cwd();
+  const directorioActual = `${process.cwd()}/app`;
 
   // Lee el contenido del directorio
   const archivos = await fs.promises.readdir(directorioActual);
