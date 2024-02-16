@@ -27,6 +27,7 @@ export default async function getBrowser() {
                     "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
                 ),
                 headless: chromiumMin.headless,
+                ignoreDefaultArgs:  ['--disable-extensions'],
                 ignoreHTTPSErrors: true,
             });
             return browser
@@ -89,6 +90,7 @@ export default async function getBrowser() {
         // ),
         executablePath: await chromium.executablePath(),
         headless: chromium.headless,
+        ignoreDefaultArgs:  ['--disable-extensions'],
         ignoreHTTPSErrors: true,
     });
 
