@@ -25,6 +25,7 @@ const nextConfig = {
       // "argon2",
       "oslo",
       "puppeteer-core",
+      '@sparticuz/chromium-min'
     ],
   },
   webpack: (config) => {
