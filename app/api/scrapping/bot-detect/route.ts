@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 import { BOT_DETECT_ADDRESS, DIR_IMAGES, TWITHOUT_INPUT } from "@/lib/constants";
 import sharp from 'sharp';
 import getBrowser from "@/lib/get-browser";
-
+import fs from 'fs'
 
 /**
  * API to detect robots 
@@ -109,10 +109,16 @@ async function captureScreenshot() {
   console.log('alright')
 
 
-  const rootUrl = process.cwd()
-  const path = `${rootUrl}${DIR_IMAGES}/bot-detect/${TWITHOUT_INPUT.BOT_DETECT}`
+
+  // place to save the image
+  const rootUrl = process.cwd();
+  const folderPath = `${rootUrl}${DIR_IMAGES}/bot-detect/`;
+  const filePath = `${folderPath}${TWITHOUT_INPUT.BOT_DETECT}`;
+
+  // check if exists the folder
+  await fs.promises.mkdir(folderPath, { recursive: true });
   const capture = await page.screenshot({
-    path,
+    path: filePath,
     type: 'webp',
     fullPage: true
   })

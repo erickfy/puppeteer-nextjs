@@ -3,6 +3,7 @@ import puppeteer from "puppeteer";
 import { NextRequest } from "next/server";
 import { DIR_IMAGES, MERCADO_LIBRE } from "@/lib/constants";
 import getBrowser from "@/lib/get-browser";
+import fs from 'fs'
 
 /**
  * Scrapping values from Amazon
@@ -46,10 +47,15 @@ export async function POST(req: NextRequest) {
     await page.waitForNavigation();
 
     // place to save the image
-    const rootUrl = process.cwd()
-    const path = `${rootUrl}${DIR_IMAGES}/mercado-libre/${searchInput}.webp`
+    const rootUrl = process.cwd();
+    const folderPath = `${rootUrl}${DIR_IMAGES}/mercado-libre/`;
+    const filePath = `${folderPath}${searchInput}.webp`;
+    
+    // check if exists the folder
+    await fs.promises.mkdir(folderPath, { recursive: true });
+
     await page.screenshot({
-      path,
+      path: filePath,
       type: 'webp',
       fullPage: true
     })
