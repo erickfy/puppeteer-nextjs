@@ -13,35 +13,16 @@ import puppeteer from 'puppeteer-core';
 export default async function getBrowser() {
     const isProd = process.env.APP_ENV as string === 'production'
 
-    if (true) {
+    if (isProd) {
         console.log('yes I trust')
         return puppeteer.launch({
-            // args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
-            // defaultViewport: chromium.defaultViewport,
-            // executablePath: await chromium.executablePath(
-            //     'https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar'
-            // ),
-            // headless: chromium.headless,
-            // ignoreHTTPSErrors: true,
-
             args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
             defaultViewport: chromium.defaultViewport,
             executablePath: await chromium.executablePath(
-                "https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar"
+                "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
             ),
-            headless: false,
-            // headless: chromium.headless,
-            // headless: chromium.headless,
+            headless: true,
             ignoreHTTPSErrors: true,
-
-            // args: chromium.args,
-            // defaultViewport: chromium.defaultViewport,
-            // executablePath: await chromium.executablePath(),
-            // headless: chromium.headless,
-            // args: chromium.args,
-            // defaultViewport: chromium.defaultViewport,
-            // executablePath: await chromium.executablePath("/opt/chromium"),
-            // headless: chromium.headless,
         });
 
     } else {
