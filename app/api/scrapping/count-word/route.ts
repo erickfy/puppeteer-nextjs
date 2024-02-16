@@ -14,6 +14,7 @@ enum TYPE {
     AMAZON = 'amazon',
     BOOK_STORE = 'book-store',
     MERCADO_LIBRE = 'mercado-libre',
+    BOT_DETECT= 'bot-detect'
 }
 
 export async function POST(req: Request) {
@@ -31,6 +32,12 @@ export async function POST(req: Request) {
             // return redirect('/')
             return NextResponse.redirect(new URL(DEFAULT_UNAUTHORIZED_REDIRECT, req.url))
         }
+
+        if (type === TYPE.BOT_DETECT) {
+            // NO CONTENT
+            return new Response(null, {status: 204})
+        }
+
         const userId = currentUser.id
 
         const typeSearch = {
@@ -49,6 +56,8 @@ export async function POST(req: Request) {
                 mercadoLibreHistory: typeSearch.mercadoLibre,
             }
         })
+        console.log(searchInput)
+        console.log(user)
 
         if (!user) {
             // NO CONTENT NOT FOUND USER

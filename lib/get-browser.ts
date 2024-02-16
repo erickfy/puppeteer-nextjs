@@ -4,6 +4,8 @@ import puppeteer from 'puppeteer-core';
 /**
  * DOCS: 
  * ? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
+ * ARGS:
+ * https://peter.sh/experiments/chromium-command-line-switches/
  * 
  */
 export default async function getBrowser() {
@@ -23,11 +25,11 @@ export default async function getBrowser() {
             args: chromium.args,
             defaultViewport: chromium.defaultViewport,
             executablePath: await chromium.executablePath(
-              "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
+                "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
             ),
-            headless: chromium.headless,
+            headless: 'shell',
             ignoreHTTPSErrors: true,
-         
+
             // args: chromium.args,
             // defaultViewport: chromium.defaultViewport,
             // executablePath: await chromium.executablePath(),
