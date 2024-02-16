@@ -1,4 +1,6 @@
-import chromium from '@sparticuz/chromium-min';
+// import chromium from '@sparticuz/chromium-min';
+import chromium from '@sparticuz/chromium';
+
 import puppeteer from 'puppeteer-core';
 
 /**
@@ -14,16 +16,18 @@ export default async function getBrowser() {
     const isProd = process.env.APP_ENV as string === 'production'
 
     if (isProd) {
-        console.log('yes I trust')
-        return puppeteer.launch({
+        const browser = puppeteer.launch({
             args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
             defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath(
-                "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
-            ),
+            // executablePath: await chromium.executablePath(
+            //     "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
+            // ),
+            executablePath: await chromium.executablePath(),
             headless: true,
             ignoreHTTPSErrors: true,
         });
+
+        return browser
 
     } else {
         return puppeteer.launch({
