@@ -89,6 +89,8 @@ export default async function UsersPage({ }: Props) {
   return (
     <div className='flex gap-4 flex-col'>
 
+      <div>there is root: { process.cwd()}</div>
+
       <Suspense fallback={<div>Cargando tabla de usuarios..</div>}>
         <Await promise={allUsers}>
           {(usersResolved) =>
