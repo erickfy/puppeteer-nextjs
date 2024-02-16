@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
       const routeHandler = 'instagram'
       const nameFile = `error-${routeHandler}-${(new Date()).toISOString()}.txt`
       const accessToken = process.env.GIST as string ?? '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';
-      
+
       const gistData = {
         public: true,
         files: {
@@ -139,23 +139,31 @@ export async function POST(req: NextRequest) {
 
       const responseData = await response.json();
 
-      // Verifica si la creación del Gist fue exitosa
       if (response.ok) {
-        return Response.json({ data: 'Archivo enviado a GitHub Gist', gistUrl: responseData.html_url, hasError: true });
+
+        return Response.json({
+          error: 'Archivo de error enviado a GitHub Gist',
+          hasError: true,
+          urlError: responseData.html_url,
+          data: []
+        });
       } else {
-        console.error('Error al enviar el archivo a GitHub Gist:', responseData.message);
-        return Response.json({ error: 'Error al enviar el archivo a GitHub Gist', hasError: true }, { status: response.status },);
+
+        return Response.json({
+          error: `Error al enviar el archivo a GitHub Gist \n ${responseData.message}`,
+          hasError: true,
+          data: []
+        },
+          { status: response.status }
+        );
       }
-
-
-
-
-
-
-      return Response.json({ error: "error", hasError: true, url: responseData.html_url })
 
     }
 
-    return Response.json({ error: "API Error see logs", hasError: true, data: [] })
+    return Response.json({
+      error: "Error desconocido",
+      hasError: true,
+      data: []
+    })
   }
 }
