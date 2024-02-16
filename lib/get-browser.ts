@@ -14,7 +14,7 @@ import puppeteer from 'puppeteer-core';
 export default async function getBrowser() {
     const isProd = process.env.APP_ENV as string === 'production'
 
-    if (isProd) {
+    if (true) {
         const browser = puppeteer.launch({
             // args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
             args: chromium.args,
