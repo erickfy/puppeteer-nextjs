@@ -123,7 +123,7 @@ async function captureScreenshot() {
   if (!page.isClosed()) await page.close()
 
   await browser.disconnect()
-  if (browser.connected) await browser.disconnect()
+  // if (browser.connected) await browser.disconnect()
 
   console.log('return 2')
 

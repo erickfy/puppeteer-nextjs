@@ -1,4 +1,4 @@
-// import chromium from '@sparticuz/chromium-min';
+import chromiumMin from '@sparticuz/chromium-min';
 import chromium from '@sparticuz/chromium';
 import puppeteer from 'puppeteer-core';
 
@@ -18,28 +18,28 @@ export default async function getBrowser() {
 
         if (isProd) {
             chromium.setGraphicsMode = false
-            const browser = puppeteer.launch({
-                // args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
-                args: chromium.args,
-                defaultViewport: chromium.defaultViewport,
-                // executablePath: await chromium.executablePath(
-                //     "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
-                // ),
-                executablePath: await chromium.executablePath(),
-                headless: true,
+
+            // mod min - chrome 
+            const browser = await puppeteer.launch({
+                args: chromiumMin.args,
+                defaultViewport: chromiumMin.defaultViewport,
+                executablePath: await chromiumMin.executablePath(
+                    "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
+                ),
+                headless: chromiumMin.headless,
                 ignoreHTTPSErrors: true,
             });
-
             return browser
 
         } else {
-            return puppeteer.launch({
+            const browser = puppeteer.launch({
                 args: ['--hide-scrollbars', '--disable-web-security'],
                 // defaultViewport: 
                 executablePath: '/home/zukyo/Desktop/erick/testing/johan/retesis2024/.cache/puppeteer/chrome/linux-121.0.6167.85/chrome-linux64/chrome',
                 ignoreHTTPSErrors: true,
-                headless: false
+                headless: chromium.headless
             });
+            return browser
 
         }
 
@@ -78,18 +78,20 @@ export default async function getBrowser() {
 
         }
 
-        return puppeteer.launch({
-            // args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
-            args: chromium.args,
-            defaultViewport: chromium.defaultViewport,
-            // executablePath: await chromium.executablePath(
-            //     "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
-            // ),
-            executablePath: await chromium.executablePath(),
-            headless: true,
-            ignoreHTTPSErrors: true,
-        });
 
     }
+    const browsering = puppeteer.launch({
+        // args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        // executablePath: await chromium.executablePath(
+        //     "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
+        // ),
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
+    });
+
+    return browsering
 
 }
