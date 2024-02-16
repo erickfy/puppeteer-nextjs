@@ -12,10 +12,73 @@ import puppeteer from 'puppeteer-core';
  * 
  */
 export default async function getBrowser() {
-    const isProd = process.env.APP_ENV as string === 'production'
+    try {
 
-    if (true) {
-        const browser = puppeteer.launch({
+        const isProd = process.env.APP_ENV as string === 'production'
+
+        if (isProd) {
+            chromium.setGraphicsMode = false
+            const browser = puppeteer.launch({
+                // args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+                args: chromium.args,
+                defaultViewport: chromium.defaultViewport,
+                // executablePath: await chromium.executablePath(
+                //     "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
+                // ),
+                executablePath: await chromium.executablePath(),
+                headless: true,
+                ignoreHTTPSErrors: true,
+            });
+
+            return browser
+
+        } else {
+            return puppeteer.launch({
+                args: ['--hide-scrollbars', '--disable-web-security'],
+                // defaultViewport: 
+                executablePath: '/home/zukyo/Desktop/erick/testing/johan/retesis2024/.cache/puppeteer/chrome/linux-121.0.6167.85/chrome-linux64/chrome',
+                ignoreHTTPSErrors: true,
+                headless: false
+            });
+
+        }
+
+    } catch (error) {
+
+        if (error instanceof Error) {
+
+            const gistApiUrl = 'https://api.github.com/gists';
+            const routeHandler = 'browser'
+            const nameFile = `error-${routeHandler}-${(new Date()).toISOString()}.txt`
+            const accessToken = process.env.GIST as string ?? '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';
+
+            const gistData = {
+                public: true,
+                files: {
+                    [nameFile]: {
+                        content: `Stack error: \n
+                Name: ${JSON.stringify(error.name)}
+                Cause: ${JSON.stringify(error.cause)}
+                Message: ${JSON.stringify(error.message)}
+                Stack: ${JSON.stringify(error.stack)}
+                `,
+                    },
+                },
+            };
+
+
+            await fetch(gistApiUrl, {
+                method: 'POST',
+                body: JSON.stringify(gistData),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+
+        }
+
+        return puppeteer.launch({
             // args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
             args: chromium.args,
             defaultViewport: chromium.defaultViewport,
@@ -25,17 +88,6 @@ export default async function getBrowser() {
             executablePath: await chromium.executablePath(),
             headless: true,
             ignoreHTTPSErrors: true,
-        });
-
-        return browser
-
-    } else {
-        return puppeteer.launch({
-            args: ['--hide-scrollbars', '--disable-web-security'],
-            // defaultViewport: 
-            executablePath: '/home/zukyo/Desktop/erick/testing/johan/retesis2024/.cache/puppeteer/chrome/linux-121.0.6167.85/chrome-linux64/chrome',
-            ignoreHTTPSErrors: true,
-            headless: false
         });
 
     }
