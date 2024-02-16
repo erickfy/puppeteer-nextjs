@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 
 import { NextRequest } from "next/server";
 import { DIR_IMAGES, MERCADO_LIBRE } from "@/lib/constants";
-import getBrowser from "@/lib/get-browser";
+import getBrowser, { getIsProd } from "@/lib/get-browser";
 import fs from 'fs'
 
 /**
@@ -47,18 +47,37 @@ export async function POST(req: NextRequest) {
     await page.waitForNavigation();
 
     // place to save the image
-    const rootUrl = process.cwd();
-    const folderPath = `${rootUrl}${DIR_IMAGES}/mercado-libre/`;
-    const filePath = `${folderPath}${searchInput}.webp`;
-    
-    // check if exists the folder
-    await fs.promises.mkdir(folderPath, { recursive: true });
 
-    await page.screenshot({
-      path: filePath,
-      type: 'webp',
-      fullPage: true
-    })
+
+    if (getIsProd()) {
+      const url = `/var/task/.next/static/public/`
+      await fs.promises.mkdir(url, { recursive: true });
+      await fs.promises.mkdir(`${url}/mercado-libre/`)
+      const filePath = `${url}/mercado-libre/${searchInput}.webp`;
+      await page.screenshot({
+        path: filePath,
+        type: 'webp',
+        fullPage: true
+      })
+
+
+    } else {
+
+      const rootUrl = process.cwd();
+      const folderPath = `${rootUrl}${DIR_IMAGES}/mercado-libre/`;
+      const filePath = `${folderPath}${searchInput}.webp`;
+
+      // check if exists the folder
+      await fs.promises.mkdir(folderPath, { recursive: true });
+
+      await page.screenshot({
+        path: filePath,
+        type: 'webp',
+        fullPage: true
+      })
+    }
+
+
 
     const cards = await page.$$eval(
       '.ui-search-results .ui-search-result__wrapper',

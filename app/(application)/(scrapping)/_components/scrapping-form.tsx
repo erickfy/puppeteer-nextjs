@@ -91,7 +91,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                         setData(request.data.data);
                         setLoading(false);
                         saveTypeImage(dt.search)
-                        
+
                         if (request.data.data.length === 0) {
                             form.reset()
                             return '🚫 Sin resultados pero puedes mirar su imagen!'
@@ -130,6 +130,9 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
             setBotDetectImage(src)
         }
     }
+
+    console.log('route is')
+    console.log(process.cwd(), __dirname)
 
     return (
         <div className="flex h-full items-center justify-center">

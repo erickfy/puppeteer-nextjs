@@ -9,11 +9,13 @@ import puppeteer from 'puppeteer-core';
  * ARGS:
  * https://peter.sh/experiments/chromium-command-line-switches/
  */
-
+export function getIsProd() {
+    return process.env.APP_ENV as string === 'production'
+}
 export default async function getBrowser() {
     try {
 
-        const isProd = process.env.APP_ENV as string === 'production'
+        const isProd = getIsProd()
 
         if (isProd) {
             // chromium.setGraphicsMode = false
