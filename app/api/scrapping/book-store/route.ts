@@ -2,6 +2,7 @@
 import puppeteer from "puppeteer";
 import { NextRequest } from "next/server";
 import { BOOKS_ADDRESS, DIR_IMAGES, TWITHOUT_INPUT } from "@/lib/constants";
+import getBrowser from "@/lib/get-browser";
 
 /**
  * Scrapping values from Books to scrape
@@ -37,13 +38,8 @@ export async function POST(req: NextRequest) {
     //   return Response.json({ error: "No params provided", hasError: true })
     // }
 
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox',],
-
-      //? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
-      headless: 'new',
-    });
-
+    const browser = await getBrowser()
+    
     const page = await browser.newPage();
 
     // to monitors (only available)

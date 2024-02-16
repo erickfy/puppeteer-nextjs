@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import { DIR_IMAGES, INSTAGRAM } from "@/lib/constants";
 import fs from 'fs'
 import path from 'path';
+import getBrowser from "@/lib/get-browser";
 /**
  * Scrapping values from Instagram
  * return {cards} has contains
@@ -32,14 +33,7 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: "No params provided", hasError: true })
     }
 
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox',],
-      executablePath: '/',
-
-      //? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
-      headless: 'new',
-      // headless: false,
-    });
+    const browser = await getBrowser()
 
     const page = await browser.newPage();
 
@@ -110,59 +104,52 @@ export async function POST(req: NextRequest) {
     await browser.close();
 
     return Response.json({ data: cleanData ?? [] })
-  } catch (error: unknown) {
-
-    console.log(error)
+  } catch (error) {
 
     if (error instanceof Error) {
-      // const logFilePath = path.join(__dirname, 'error.log');
-      // fs.writeFileSync(logFilePath, error.stack || error.toString(), 'utf-8');
-      
-      
-      
-      const fileContent = 'This is a content test for scrapping well this is everything';
-      
-      // Configuración para la creación del Gist
+
       const gistApiUrl = 'https://api.github.com/gists';
+      const routeHandler = 'instagram'
+      const nameFile = `error-${routeHandler}-${(new Date()).toISOString()}.txt`
+      const accessToken = process.env.GIST as string ?? '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';
+      
       const gistData = {
         public: true,
         files: {
-          'archivo.txt': { // Nombre del archivo en el Gist
-            content: `Type: ${typeof error}\nDetails: ${JSON.stringify(error, null, 2)} 
-            AND CAUSE: ${JSON.stringify(error.cause)}
-            AND MESSAGE: ${JSON.stringify(error.message)}
-            AND NAME: ${JSON.stringify(error.name)}
-            AND STACK: ${JSON.stringify(error.stack)}
+          [nameFile]: {
+            content: `Stack error: \n
+            Name: ${JSON.stringify(error.name)}
+            Cause: ${JSON.stringify(error.cause)}
+            Message: ${JSON.stringify(error.message)}
+            Stack: ${JSON.stringify(error.stack)}
             `,
+          },
         },
-      },
-    };
+      };
 
-    // Reemplaza 'tu_token_de_acceso' con tu token de acceso personal
-    const accessToken = process.env.GIST as string ?? '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';
 
-    const response = await fetch(gistApiUrl, {
-      method: 'POST',
-      body: JSON.stringify(gistData),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
-      },
-    });
+      const response = await fetch(gistApiUrl, {
+        method: 'POST',
+        body: JSON.stringify(gistData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
 
-    const responseData = await response.json();
+      const responseData = await response.json();
 
-    // Verifica si la creación del Gist fue exitosa
-    if (response.ok) {
-      return Response.json({ data: 'Archivo enviado a GitHub Gist', gistUrl: responseData.html_url, hasError: true });
-    } else {
-      console.error('Error al enviar el archivo a GitHub Gist:', responseData.message);
-      return Response.json({ error: 'Error al enviar el archivo a GitHub Gist', hasError: true }, { status: response.status }, );
-    }
-        
-        
-        
-        
+      // Verifica si la creación del Gist fue exitosa
+      if (response.ok) {
+        return Response.json({ data: 'Archivo enviado a GitHub Gist', gistUrl: responseData.html_url, hasError: true });
+      } else {
+        console.error('Error al enviar el archivo a GitHub Gist:', responseData.message);
+        return Response.json({ error: 'Error al enviar el archivo a GitHub Gist', hasError: true }, { status: response.status },);
+      }
+
+
+
+
 
 
       return Response.json({ error: "error", hasError: true, url: responseData.html_url })

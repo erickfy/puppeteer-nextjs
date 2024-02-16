@@ -1,6 +1,11 @@
 import chromium from '@sparticuz/chromium-min';
 import puppeteer from 'puppeteer-core';
 
+/**
+ * DOCS: 
+ * ? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
+ * 
+ */
 export default async function getBrowser() {
     const isProd = process.env.APP_ENV as string === 'production'
 
@@ -21,6 +26,7 @@ export default async function getBrowser() {
             // defaultViewport: 
             executablePath: '/home/zukyo/Desktop/erick/testing/johan/retesis2024/.cache/puppeteer/chrome/linux-121.0.6167.85/chrome-linux64/chrome',
             ignoreHTTPSErrors: true,
+            headless: false
         });
 
     }
