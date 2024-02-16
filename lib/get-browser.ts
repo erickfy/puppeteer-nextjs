@@ -4,14 +4,16 @@ import puppeteer from 'puppeteer-core';
 /**
  * DOCS: 
  * ? https://developer.chrome.com/docs/chromium/new-headless instead of true --> 'new'
+ * https://www.npmjs.com/package/@sparticuz/chromium-min
  * ARGS:
  * https://peter.sh/experiments/chromium-command-line-switches/
+ * 
  * 
  */
 export default async function getBrowser() {
     const isProd = process.env.APP_ENV as string === 'production'
 
-    if (isProd) {
+    if (true) {
         console.log('yes I trust')
         return puppeteer.launch({
             // args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
@@ -22,12 +24,14 @@ export default async function getBrowser() {
             // headless: chromium.headless,
             // ignoreHTTPSErrors: true,
 
-            args: chromium.args,
+            args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
             defaultViewport: chromium.defaultViewport,
             executablePath: await chromium.executablePath(
-                "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
+                "https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar"
             ),
-            headless: 'shell',
+            headless: false,
+            // headless: chromium.headless,
+            // headless: chromium.headless,
             ignoreHTTPSErrors: true,
 
             // args: chromium.args,

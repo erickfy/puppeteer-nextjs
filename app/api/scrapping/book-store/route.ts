@@ -128,7 +128,9 @@ export async function POST(req: NextRequest) {
     await page.close();
     if (!page.isClosed()) await page.close()
 
-    await browser.close();
+    await browser.disconnect()
+    if (browser.connected) await browser.disconnect()
+
 
     return Response.json({ data: cleanData })
   } catch (error) {

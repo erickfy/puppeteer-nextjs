@@ -21,8 +21,11 @@ export async function POST(req: NextRequest) {
 
     const captureBuffer = await captureScreenshot();
 
+    console.log('well', captureBuffer.length)
+
     const processedBuffer = await sharp(captureBuffer).webp().toBuffer();
 
+    console.log('already')
     return Response.json({ data: [processedBuffer] });
   } catch (error) {
 
@@ -96,10 +99,15 @@ async function captureScreenshot() {
   // });
 
   const browser = await getBrowser()
+  console.log('here')
 
   const page = await browser.newPage();
+  console.log('another')
 
   await page.goto(BOT_DETECT_ADDRESS, { waitUntil: 'load' });
+
+  console.log('alright')
+
 
   const capture = await page.screenshot({
     path: `${DIR_IMAGES}/bot-detect/${TWITHOUT_INPUT.BOT_DETECT}`,
@@ -107,8 +115,17 @@ async function captureScreenshot() {
     fullPage: true,
   });
 
-  await page.close()
-  await browser.close();
+  console.log('final')
+
+  console.log("Chromium:", await browser.version());
+
+  await page.close();
+  if (!page.isClosed()) await page.close()
+
+  await browser.disconnect()
+  if (browser.connected) await browser.disconnect()
+
+  console.log('return 2')
 
   return capture;
 }
