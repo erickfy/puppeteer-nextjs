@@ -12,7 +12,7 @@ const knownDomains = [
   "scontent-lax3-1.cdninstagram.com",
   "scontent-ams2-1.cdninstagram.com",
   "instagram.fcpv15-1.fna.fbcdn.net",
-  'instagram.fuio35-1.fna.fbcdn.net',
+  "instagram.fuio35-1.fna.fbcdn.net",
   "books.toscrape.com",
   "cloudflare-ipfs.com",
   "avatars.githubusercontent.com",
@@ -25,11 +25,15 @@ const nextConfig = {
       // "argon2",
       "oslo",
       "puppeteer-core",
-      '@sparticuz/chromium-min'
+      "@sparticuz/chromium-min",
     ],
   },
   webpack: (config) => {
-    config.externals.push("@node-rs/argon2", "@node-rs/bcrypt");
+    config.externals.push(
+      "@node-rs/argon2",
+      "@node-rs/bcrypt",
+      "@sparticuz/chromium-min"
+    );
     return config;
   },
   images: {
