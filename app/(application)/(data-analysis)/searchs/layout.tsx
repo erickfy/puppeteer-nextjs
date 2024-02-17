@@ -85,28 +85,11 @@ export default async function SearchsLayout({ children, scrappings }: Props) {
         username: user.username
     }]
 
-    const directorioActual = `${process.cwd()}/.next`;
 
-    // Lee el contenido del directorio
-    const archivos = await fs.promises.readdir(directorioActual);
-
-    // Filtra solo los directorios
-    const directorios = await Promise.all(archivos.map(async archivo => {
-        const rutaCompleta = path.join(directorioActual, archivo);
-        const esDirectorio = (await fs.promises.stat(rutaCompleta)).isDirectory();
-        return esDirectorio ? archivo : null;
-    }));
-
-    // Filtra los resultados no nulos (solo directorios)
-    const directoriosFiltrados = directorios.filter(dir => dir !== null);
 
 
     return (
         <div className='flex gap-4 flex-col relative'>
-
-            <div>there is root: {process.cwd()}</div>
-            <div>all is {directoriosFiltrados.map((di, index) => <div key={index}>{JSON.stringify(di)}</div>)}</div>
-
 
             <div className='grid grid-cols-1'>
                 {user.role !== USER_ROLE.ADMIN ?

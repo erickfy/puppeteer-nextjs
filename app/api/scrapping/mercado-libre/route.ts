@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
 
     // place to save the image
 
-
+    // no solution for now
     // if (getIsProd()) {
     //   const url = `/var/task/.next/static/public/`
     //   await fs.promises.mkdir(url, { recursive: true });

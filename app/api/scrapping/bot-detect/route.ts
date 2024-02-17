@@ -111,6 +111,8 @@ async function captureScreenshot() {
 
 
   // place to save the image
+
+  // no solution????? for now
   const rootUrl = process.cwd();
   const folderPath = `${rootUrl}${DIR_IMAGES}/bot-detect/`;
   const filePath = `${folderPath}${TWITHOUT_INPUT.BOT_DETECT}`;
@@ -131,7 +133,6 @@ async function captureScreenshot() {
   await browser.disconnect()
   // if (browser.connected) await browser.disconnect()
 
-  console.log('return 2')
 
   return capture;
 }

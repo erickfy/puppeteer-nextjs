@@ -54,16 +54,19 @@ export async function POST(req: NextRequest) {
     // await page.keyboard.press("Enter");
     // await page.waitForNavigation();
 
+
+
+    // any solucion??????????????????
     // place to save the image
+    // const rootUrl = process.cwd()
+    // const path = `${rootUrl}${DIR_IMAGES}/book-store/${TWITHOUT_INPUT.BOOK_STORE as string}`
+    // await page.screenshot({
+    //   path,
+    //   type: 'webp',
+    //   fullPage: true
+    // })
 
 
-    const rootUrl = process.cwd()
-    const path = `${rootUrl}${DIR_IMAGES}/book-store/${TWITHOUT_INPUT.BOOK_STORE as string}`
-    await page.screenshot({
-      path,
-      type: 'webp',
-      fullPage: true
-    })
 
     const rootSrc = `${BOOKS_ADDRESS}`
 

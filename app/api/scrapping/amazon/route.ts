@@ -46,13 +46,14 @@ export async function POST(req: NextRequest) {
     await page.waitForNavigation();
 
     // place to save the image
-    const rootUrl = process.cwd()
-    const path = `${rootUrl}${DIR_IMAGES}/amazon/${searchInput}.webp`;
-    await page.screenshot({
-      path,
-      type: 'webp',
-      fullPage: true
-    })
+    // no solution???????? for now
+    // const rootUrl = process.cwd()
+    // const path = `${rootUrl}${DIR_IMAGES}/amazon/${searchInput}.webp`;
+    // await page.screenshot({
+    //   path,
+    //   type: 'webp',
+    //   fullPage: true
+    // })
 
     const cards = await page.$$eval(
       '.s-search-results .s-card-container',
