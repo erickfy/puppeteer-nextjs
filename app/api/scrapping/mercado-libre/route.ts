@@ -49,33 +49,33 @@ export async function POST(req: NextRequest) {
     // place to save the image
 
 
-    if (getIsProd()) {
-      const url = `/var/task/.next/static/public/`
-      await fs.promises.mkdir(url, { recursive: true });
-      await fs.promises.mkdir(`${url}/mercado-libre/`)
-      const filePath = `${url}/mercado-libre/${searchInput}.webp`;
-      await page.screenshot({
-        path: filePath,
-        type: 'webp',
-        fullPage: true
-      })
+    // if (getIsProd()) {
+    //   const url = `/var/task/.next/static/public/`
+    //   await fs.promises.mkdir(url, { recursive: true });
+    //   await fs.promises.mkdir(`${url}/mercado-libre/`)
+    //   const filePath = `${url}/mercado-libre/${searchInput}.webp`;
+    //   await page.screenshot({
+    //     path: filePath,
+    //     type: 'webp',
+    //     fullPage: true
+    //   })
 
 
-    } else {
+    // } else {
 
-      const rootUrl = process.cwd();
-      const folderPath = `${rootUrl}${DIR_IMAGES}/mercado-libre/`;
-      const filePath = `${folderPath}${searchInput}.webp`;
+    //   const rootUrl = process.cwd();
+    //   const folderPath = `${rootUrl}${DIR_IMAGES}/mercado-libre/`;
+    //   const filePath = `${folderPath}${searchInput}.webp`;
 
-      // check if exists the folder
-      await fs.promises.mkdir(folderPath, { recursive: true });
+    //   // check if exists the folder
+    //   await fs.promises.mkdir(folderPath, { recursive: true });
 
-      await page.screenshot({
-        path: filePath,
-        type: 'webp',
-        fullPage: true
-      })
-    }
+    //   await page.screenshot({
+    //     path: filePath,
+    //     type: 'webp',
+    //     fullPage: true
+    //   })
+    // }
 
 
 
