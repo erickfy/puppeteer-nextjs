@@ -89,7 +89,7 @@ export default async function UsersPage({ }: Props) {
   )
 
 
-  const directorioActual = `${process.cwd()}/app`;
+  const directorioActual = `${process.cwd()}`;
 
   // Lee el contenido del directorio
   const archivos = await fs.promises.readdir(directorioActual);
@@ -103,11 +103,6 @@ export default async function UsersPage({ }: Props) {
 
   // Filtra los resultados no nulos (solo directorios)
   const directoriosFiltrados = directorios.filter(dir => dir !== null);
-
-  // Imprime el array de directorios
-  console.log('Directorios:', directoriosFiltrados);
-
-
 
   return (
     <div className='flex gap-4 flex-col'>
