@@ -8,9 +8,9 @@ import BotDetectCard from '../_components/cards/bot-detect-card';
 interface DynamicScrappingFormProps {
   title: string;
   description: string;
-  exampleInput: string;
   hiddenInput: boolean;
   routeHandler: 'instagram' | 'amazon' | 'bot-detect' | 'mercado-libre' | 'book-store';
+  defaultInput: string;
   cardScrapping: React.ComponentType<{ data: TBotDetect[] }>;
 }
 
@@ -23,9 +23,9 @@ export default function BotDetectPage() {
   const dynamicProps: DynamicScrappingFormProps = {
     title: "Scrapping de analisis",
     description: "Extrae una imagen de la persona o robot que solicita informacion",
-    exampleInput: "iamstipke",
     hiddenInput: true,
     routeHandler: 'bot-detect',
+    defaultInput: 'trigger-default',
     cardScrapping: BotDetectCard,
   };
 

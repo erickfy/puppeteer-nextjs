@@ -9,6 +9,7 @@ import UserTable from '../_components/user-table'
 import { Card, CardContent } from '@/components/ui/card'
 import fs from 'fs'
 import path from 'path'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type Props = {}
 
@@ -89,10 +90,12 @@ export default async function UsersPage({ }: Props) {
   )
 
 
+
+  
   return (
     <div className='flex gap-4 flex-col'>
 
-      <Suspense fallback={<div>Cargando tabla de usuarios..</div>}>
+      <Suspense fallback={<Skeleton className='w-full h-full'>Cargando tabla de usuarios..</Skeleton>}>
         <Await promise={allUsers}>
           {(usersResolved) =>
             <Card>
@@ -104,7 +107,7 @@ export default async function UsersPage({ }: Props) {
         </Await>
       </Suspense>
 
-      <Heading
+      {/* <Heading
         title='Usuarios'
         subtitle={`Total: ${count}`}
       />
@@ -124,7 +127,7 @@ export default async function UsersPage({ }: Props) {
             }</p>
             <p className="mb-2"><span className='font-bold'>Activo:</span> {user.active ? 'Si' : 'No'}</p>
           </div>))}
-      </div>
+      </div> */}
     </div>
 
   )

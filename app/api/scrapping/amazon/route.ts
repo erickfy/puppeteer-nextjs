@@ -1,8 +1,9 @@
 import puppeteer from "puppeteer";
 
 import { NextRequest } from "next/server";
-import { AMAZON_ADDRESS, DIR_IMAGES } from "@/lib/constants";
-import getBrowser from "@/lib/get-browser";
+import { AMAZON_ADDRESS, APP_ENV, DIR_IMAGES, TOKEN_BROWSERLESS } from "@/lib/constants";
+import fs from 'fs'
+import path from 'path'
 
 /**
  * Scrapping values from Amazon
@@ -29,7 +30,28 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: "No params provided", hasError: true })
     }
 
-    const browser = await getBrowser()
+    const isProd = APP_ENV === 'production'
+    const ROUTE = 'amazon'
+    let browser;
+
+    if (isProd) {
+
+      browser = await puppeteer.connect({
+        browserWSEndpoint: `wss://chrome.browserless.io?token=${TOKEN_BROWSERLESS}`,
+      })
+
+    } else {
+
+      browser = await puppeteer.launch({
+        args: [
+          '--no-sandbox',
+          // Use proxy for localhost URLs
+          '--proxy-bypass-list=<-loopback>',
+        ],
+        headless: 'new'
+      });
+    }
+
 
     const page = await browser.newPage();
 
@@ -45,15 +67,38 @@ export async function POST(req: NextRequest) {
     await page.keyboard.press("Enter");
     await page.waitForNavigation();
 
-    // place to save the image
-    // no solution???????? for now
-    // const rootUrl = process.cwd()
-    // const path = `${rootUrl}${DIR_IMAGES}/amazon/${searchInput}.webp`;
-    // await page.screenshot({
-    //   path,
-    //   type: 'webp',
-    //   fullPage: true
-    // })
+
+    // SAVE IMAGES
+    // NO SOLUTION FOR NOW TO PRODUCCION ONLY IN LOCAL DEVELOPMENT
+    if (isProd) {
+      const url = `/var/task/.next/static/public/`
+      await fs.promises.mkdir(url, { recursive: true });
+      await fs.promises.mkdir(`${url}/${ROUTE}/`)
+      const filePath = `${url}/${ROUTE}/${searchInput}.webp`;
+      await page.screenshot({
+        path: filePath,
+        type: 'webp',
+        // to save mb size to each image
+        fullPage: false
+      })
+
+    } else {
+
+      const rootUrl = process.cwd();
+      const folderPath = `${rootUrl}${DIR_IMAGES}/${ROUTE}/`;
+      const filePath = `${folderPath}${searchInput}.webp`;
+
+      // check if exists the folder
+      await fs.promises.mkdir(folderPath, { recursive: true });
+
+      await page.screenshot({
+        path: filePath,
+        type: 'webp',
+        // to save mb size to each image
+        fullPage: false
+      })
+    }
+    
 
     const cards = await page.$$eval(
       '.s-search-results .s-card-container',

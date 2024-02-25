@@ -1,8 +1,8 @@
 // import puppeteer from "puppeteer-extra";
 import puppeteer from "puppeteer";
 import { NextRequest } from "next/server";
-import { BOOKS_ADDRESS, DIR_IMAGES, TWITHOUT_INPUT } from "@/lib/constants";
-import getBrowser from "@/lib/get-browser";
+import { APP_ENV, BOOKS_ADDRESS, DIR_IMAGES, TOKEN_BROWSERLESS, TWITHOUT_INPUT } from "@/lib/constants";
+import fs from 'fs'
 
 /**
  * Scrapping values from Books to scrape
@@ -37,9 +37,31 @@ export async function POST(req: NextRequest) {
     // if (!searchInput) {
     //   return Response.json({ error: "No params provided", hasError: true })
     // }
+    console.log("is here")
 
-    const browser = await getBrowser()
+    const isProd = APP_ENV === 'production'
+    const ROUTE = 'amazon'
+    let browser;
 
+    if (isProd) {
+
+      browser = await puppeteer.connect({
+        browserWSEndpoint: `wss://chrome.browserless.io?token=${TOKEN_BROWSERLESS}`,
+      })
+
+    } else {
+
+      browser = await puppeteer.launch({
+        args: [
+          '--no-sandbox',
+          // Use proxy for localhost URLs
+          '--proxy-bypass-list=<-loopback>',
+        ],
+        headless: 'new'
+      });
+    }
+
+    
     const page = await browser.newPage();
 
     // to monitors (only available)
@@ -56,19 +78,37 @@ export async function POST(req: NextRequest) {
 
 
 
-    // any solucion??????????????????
-    // place to save the image
-    // const rootUrl = process.cwd()
-    // const path = `${rootUrl}${DIR_IMAGES}/book-store/${TWITHOUT_INPUT.BOOK_STORE as string}`
-    // await page.screenshot({
-    //   path,
-    //   type: 'webp',
-    //   fullPage: true
-    // })
+    // SAVE IMAGES
+    // NO SOLUTION FOR NOW TO PRODUCCION ONLY IN LOCAL DEVELOPMENT
+    if (isProd) {
+      const url = `/var/task/.next/static/public/`
+      await fs.promises.mkdir(url, { recursive: true });
+      await fs.promises.mkdir(`${url}/${ROUTE}/`)
+      const filePath = `${url}/${ROUTE}/${TWITHOUT_INPUT.BOOK_STORE as string}`;
+      await page.screenshot({
+        path: filePath,
+        type: 'webp',
+        // to save mb size to each image
+        fullPage: false
+      })
 
+    } else {
 
+      const rootUrl = process.cwd();
+      const folderPath = `${rootUrl}${DIR_IMAGES}/${ROUTE}/`;
+      const filePath = `${folderPath}${TWITHOUT_INPUT.BOOK_STORE as string}`;
 
-    const rootSrc = `${BOOKS_ADDRESS}`
+      // check if exists the folder
+      await fs.promises.mkdir(folderPath, { recursive: true });
+
+      await page.screenshot({
+        path: filePath,
+        type: 'webp',
+        // to save mb size to each image
+        fullPage: false
+      })
+    }
+
 
     const cards = await page.$$eval(
       'section li',
@@ -118,10 +158,12 @@ export async function POST(req: NextRequest) {
       },
     );
 
+
+    const rootSrc = `${BOOKS_ADDRESS}`
     const cleanData = cards.reduce((acc: OUT[], curr) => {
       if (curr.title !== '') {
 
-        // ? VALIDATE the right root for src
+        // ? FIXING SRC ROOT FROM THIS SCRAPPING
         const data = {
           ...curr,
           src: `${rootSrc}${curr.src}`
@@ -131,6 +173,7 @@ export async function POST(req: NextRequest) {
 
       return acc
     }, [])
+
 
     await page.close();
     if (!page.isClosed()) await page.close()

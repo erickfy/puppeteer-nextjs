@@ -11,7 +11,6 @@ export async function POST(req: Request) {
         }
 
         const isActive = Boolean(active)
-        console.log(isActive, userId)
         await db.user.update({
             where: {
                 id: userId

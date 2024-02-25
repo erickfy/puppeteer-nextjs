@@ -14,7 +14,7 @@ const ToolbarItem = dynamic(
   () => import('./toolbar-item'),
   {
     loading: () => <li className={styles.navbar__menu}>
-      <Skeleton className="w-[100px] h-[60px] rounded-full" />
+      <Skeleton className="w-full h-[60px]" />
     </li>,
     ssr: false
   }

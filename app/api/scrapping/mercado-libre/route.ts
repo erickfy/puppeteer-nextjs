@@ -1,9 +1,8 @@
 import puppeteer from "puppeteer";
-
 import { NextRequest } from "next/server";
-import { DIR_IMAGES, MERCADO_LIBRE } from "@/lib/constants";
-import getBrowser, { getIsProd } from "@/lib/get-browser";
+import { APP_ENV, DIR_IMAGES, MERCADO_LIBRE, TOKEN_BROWSERLESS } from "@/lib/constants";
 import fs from 'fs'
+import path from 'path'
 
 /**
  * Scrapping values from Amazon
@@ -30,52 +29,75 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: "No params provided", hasError: true })
     }
 
-    const browser = await getBrowser()
+    const isProd = APP_ENV === 'production'
+    const ROUTE = 'mercado-libre'
+    let browser;
+
+    if (isProd) {
+
+      browser = await puppeteer.connect({
+        browserWSEndpoint: `wss://chrome.browserless.io?token=${TOKEN_BROWSERLESS}`,
+      })
+
+    } else {
+
+      browser = await puppeteer.launch({
+        args: [
+          '--no-sandbox',
+          // Use proxy for localhost URLs
+          '--proxy-bypass-list=<-loopback>',
+        ],
+        headless: 'new'
+      });
+    }
+
 
     const page = await browser.newPage();
 
     // to monitors (only available)
-    await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 1, isLandscape: true });
+    // await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 1, isLandscape: true });
 
     // to mobiles is the same the input cb1-edit id
     // await page.setViewport({ width: 375, height: 667, deviceScaleFactor: 1, isMobile: true });
 
-    await page.goto(MERCADO_LIBRE, { waitUntil: "load" });
+    const timeoutAfterLoad = 7000
+    await page.goto(MERCADO_LIBRE, { waitUntil: "domcontentloaded", timeout: timeoutAfterLoad });
 
     await page.type('#cb1-edit', searchInput);
     await page.keyboard.press("Enter");
+
     await page.waitForNavigation();
 
-    // place to save the image
+    // SAVE IMAGES
+    // NO SOLUTION FOR NOW TO PRODUCCION ONLY IN LOCAL DEVELOPMENT
+    if (isProd) {
+      const url = `/var/task/.next/static/public/`
+      await fs.promises.mkdir(url, { recursive: true });
+      await fs.promises.mkdir(`${url}/${ROUTE}/`)
+      const filePath = `${url}/${ROUTE}/${searchInput}.webp`;
+      await page.screenshot({
+        path: filePath,
+        type: 'webp',
+        // to save mb size to each image
+        fullPage: false
+      })
 
-    // no solution for now
-    // if (getIsProd()) {
-    //   const url = `/var/task/.next/static/public/`
-    //   await fs.promises.mkdir(url, { recursive: true });
-    //   await fs.promises.mkdir(`${url}/mercado-libre/`)
-    //   const filePath = `${url}/mercado-libre/${searchInput}.webp`;
-    //   await page.screenshot({
-    //     path: filePath,
-    //     type: 'webp',
-    //     fullPage: true
-    //   })
+    } else {
 
+      const rootUrl = process.cwd();
+      const folderPath = `${rootUrl}${DIR_IMAGES}/${ROUTE}/`;
+      const filePath = `${folderPath}${searchInput}.webp`;
 
-    // } else {
+      // check if exists the folder
+      await fs.promises.mkdir(folderPath, { recursive: true });
 
-    //   const rootUrl = process.cwd();
-    //   const folderPath = `${rootUrl}${DIR_IMAGES}/mercado-libre/`;
-    //   const filePath = `${folderPath}${searchInput}.webp`;
-
-    //   // check if exists the folder
-    //   await fs.promises.mkdir(folderPath, { recursive: true });
-
-    //   await page.screenshot({
-    //     path: filePath,
-    //     type: 'webp',
-    //     fullPage: true
-    //   })
-    // }
+      await page.screenshot({
+        path: filePath,
+        type: 'webp',
+        // to save mb size to each image
+        fullPage: false
+      })
+    }
 
 
 
@@ -122,7 +144,7 @@ export async function POST(req: NextRequest) {
     if (!page.isClosed()) await page.close()
 
     await browser.disconnect()
-    if (browser.isConnected()) await browser.disconnect()
+    if (browser.connected) await browser.disconnect()
 
     return Response.json({ data: cleanData })
   } catch (error) {

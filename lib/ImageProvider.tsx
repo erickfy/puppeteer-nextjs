@@ -8,7 +8,6 @@ const isKnownProvider = (imageUrl: string) => {
 };
 function ImageProvider({ imageUrl, alt, className }: { imageUrl: string, alt: string, className?: string }) {
   const hasProvider = isKnownProvider(imageUrl);
-  console.log(hasProvider)
 
   if (hasProvider) {
     // WITH PROVIDER

@@ -9,9 +9,11 @@ type Props = {
   className?: string | null
   type?: "button" | "submit" | "reset";
   id: string;
+  hasLoading?: boolean;
+  loading?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export default function ButtonUI({ title, className, id }: Props) {
+export default function ButtonUI({ title, className, id, hasLoading = false, loading = false }: Props) {
   const { pending } = useFormStatus()
   const saveDisabled = useMemo(() => {
     return pending
@@ -21,21 +23,27 @@ export default function ButtonUI({ title, className, id }: Props) {
   return (
     <button
       id={id}
-      disabled={saveDisabled}
-      className={cn(`${saveDisabled
-        ? 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
-        : 'border-black bg-black text-white hover:bg-white hover:text-black'
+      disabled={hasLoading ? loading : saveDisabled}
+      className={cn(`${hasLoading ? loading ?
+          'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400' :
+          'border-black bg-black text-white hover:bg-white hover:text-black' :
+          saveDisabled
+            ? 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
+            : 'border-black bg-black text-white hover:bg-white hover:text-black'
         } flex h-10 px-10 items-center justify-center rounded-md border text-sm transition-all focus:outline-none`
         , className
       )
       }
     >
       {
-        saveDisabled ? (
-          <LoadingDots color="#808080" />
-        ) : (
-          <p className="text-sm">{title}</ p >
-        )}
+        hasLoading ?
+          loading ?
+            <LoadingDots color="#808080" /> : <p className="text-sm">{title}</ p > :
+          saveDisabled ? (
+            <LoadingDots color="#808080" />
+          ) : (
+            <p className="text-sm">{title}</ p >
+          )}
     </button>
   )
 }

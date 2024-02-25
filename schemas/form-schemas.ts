@@ -77,7 +77,6 @@ export const EditUserSchema = z.object({
         ];
         
         if (!allowedImageTypes.includes(value.type)) {
-            console.log("yes", value.type)
             return false;
         }
 

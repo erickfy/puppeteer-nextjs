@@ -1,3 +1,4 @@
+import ClientOnly from '@/components/client-only';
 import React from 'react'
 
 type Props = {
@@ -14,8 +15,13 @@ export default function Layout({
     return (
         <>
             <div className='flex flex-wrap gap-4 '>
-                {char}
-                {children}
+                <ClientOnly>
+                    <>
+                        {char}
+
+                        {children}
+                    </>
+                </ClientOnly>
             </div>
             {dialog}
         </>

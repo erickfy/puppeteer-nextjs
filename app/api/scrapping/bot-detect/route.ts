@@ -1,8 +1,7 @@
 import puppeteer from "puppeteer";
 import { NextRequest } from "next/server";
-import { BOT_DETECT_ADDRESS, DIR_IMAGES, TWITHOUT_INPUT } from "@/lib/constants";
+import { APP_ENV, BOT_DETECT_ADDRESS, DIR_IMAGES, TOKEN_BROWSERLESS, TWITHOUT_INPUT } from "@/lib/constants";
 import sharp from 'sharp';
-import getBrowser from "@/lib/get-browser";
 import fs from 'fs'
 
 /**
@@ -21,11 +20,8 @@ export async function POST(req: NextRequest) {
 
     const captureBuffer = await captureScreenshot();
 
-    console.log('well', captureBuffer.length)
-
     const processedBuffer = await sharp(captureBuffer).webp().toBuffer();
 
-    console.log('already')
     return Response.json({ data: [processedBuffer] });
   } catch (error) {
 
@@ -93,46 +89,72 @@ export async function POST(req: NextRequest) {
 
 
 async function captureScreenshot() {
-  // const browser = await puppeteer.launch({
-  //   args: ['--no-sandbox'],
-  //   headless: 'new',
-  // });
+  const isProd = APP_ENV === 'production'
+  const ROUTE = 'bot-detect'
+  let browser;
 
-  const browser = await getBrowser()
-  console.log('here')
+  if (isProd) {
+
+    browser = await puppeteer.connect({
+      browserWSEndpoint: `wss://chrome.browserless.io?token=${TOKEN_BROWSERLESS}`,
+    })
+
+  } else {
+
+    browser = await puppeteer.launch({
+      args: [
+        '--no-sandbox',
+        // Use proxy for localhost URLs
+        '--proxy-bypass-list=<-loopback>',
+      ],
+      headless: 'new'
+    });
+  }
+
 
   const page = await browser.newPage();
-  console.log('another')
 
-  await page.goto(BOT_DETECT_ADDRESS, { waitUntil: 'load' });
+  await page.goto(BOT_DETECT_ADDRESS, { waitUntil: 'domcontentloaded' });
 
-  console.log('alright')
+  // SAVE IMAGES
+  // NO SOLUTION FOR NOW TO PRODUCCION ONLY IN LOCAL DEVELOPMENT
 
+  let capture;
+  if (isProd) {
+    const url = `/var/task/.next/static/public/`
+    await fs.promises.mkdir(url, { recursive: true });
+    await fs.promises.mkdir(`${url}/${ROUTE}/`)
+    const filePath = `${url}/${ROUTE}/${TWITHOUT_INPUT.BOT_DETECT as string}`;
+    capture = await page.screenshot({
+      path: filePath,
+      type: 'webp',
+      // to save mb size to each image
+      fullPage: false
+    })
 
+  } else {
 
-  // place to save the image
+    const rootUrl = process.cwd();
+    const folderPath = `${rootUrl}${DIR_IMAGES}/${ROUTE}/`;
+    const filePath = `${folderPath}${TWITHOUT_INPUT.BOT_DETECT as string}`;
 
-  // no solution????? for now
-  const rootUrl = process.cwd();
-  const folderPath = `${rootUrl}${DIR_IMAGES}/bot-detect/`;
-  const filePath = `${folderPath}${TWITHOUT_INPUT.BOT_DETECT}`;
+    // check if exists the folder
+    await fs.promises.mkdir(folderPath, { recursive: true });
 
-  // check if exists the folder
-  await fs.promises.mkdir(folderPath, { recursive: true });
-  const capture = await page.screenshot({
-    path: filePath,
-    type: 'webp',
-    fullPage: true
-  })
+    capture = await page.screenshot({
+      path: filePath,
+      type: 'webp',
+      // to save mb size to each image
+      fullPage: false
+    })
+  }
 
-  console.log("Chromium:", await browser.version());
 
   await page.close();
   if (!page.isClosed()) await page.close()
 
   await browser.disconnect()
   // if (browser.connected) await browser.disconnect()
-
 
   return capture;
 }

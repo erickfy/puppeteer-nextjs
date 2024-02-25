@@ -23,6 +23,7 @@ import { toast } from 'sonner';
 import Message from './message';
 import { TWITHOUT_INPUT } from '@/lib/constants';
 import { watch } from 'fs';
+import ButtonUI from '@/components/buttons/button-ui';
 
 /**
  * DOCS:
@@ -33,14 +34,14 @@ type Props<T> = {
     title: string;
     description: string;
     defaultInput?: string;
-    exampleInput: string;
+    exampleInput?: string;
     hiddenInput?: boolean;
     routeHandler:
     'instagram' | 'book-store' | 'amazon' | 'bot-detect' | 'mercado-libre'
     cardScrapping: React.ComponentType<{ data: T[] }>;
 }
 
-export default function ScrappingForm<T>({ title, description, exampleInput, hiddenInput = false, routeHandler, cardScrapping: CardScrapping, defaultInput = "" }: Props<T>) {
+export default function ScrappingForm<T>({ title, description, exampleInput = '', hiddenInput = false, routeHandler, cardScrapping: CardScrapping, defaultInput = "" }: Props<T>) {
     const route = useRouter()
     const { resetInstragramImage,
         setInstagramImage,
@@ -53,7 +54,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
     const [loading, setLoading] = useState<boolean>()
     const [isPending, startTransition] = useTransition()
 
-
+    console.log(defaultInput, 'is')
     const form = useForm<TSearchSchema>({
         resolver: zodResolver(SearchSchema),
         defaultValues: {
@@ -78,10 +79,12 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
         setLoading(true)
 
         startTransition(() => {
+            const urlCountWord = `/api/scrapping/count-word`
+            const urlHandler = `/api/scrapping/${routeHandler}`
 
             toast.promise(Promise.all([
-                axios.post(`/api/scrapping/${routeHandler}`, { searchInput: dt.search }),
-                axios.post(`/api/scrapping/count-word`, { searchInput: dt.search, type: routeHandler }),
+                axios.post(urlHandler, { searchInput: dt.search }),
+                axios.post(urlCountWord, { searchInput: dt.search, type: routeHandler }),
             ]), {
                 loading: "Scrapeando... ⌛",
                 success: async (requests) => {
@@ -131,9 +134,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
         }
     }
 
-    console.log('route is')
-    console.log(process.cwd(), __dirname)
-
+    console.log(form.watch('search'))
     return (
         <div className="flex h-full items-center justify-center">
 
@@ -161,11 +162,13 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                                                     <FormLabel>Busqueda</FormLabel>
                                                     <FormControl>
                                                         <Input
-                                                            placeholder={`Ej: ${exampleInput}`}  {...field}
+                                                            placeholder={`Ej: ${exampleInput}`}
+                                                            {...field}
                                                             type="text"
                                                             autoComplete="off"
                                                             id={routeHandler}
-                                                            defaultValue={form.watch('search')} />
+                                                        // defaultValue={form.watch('search')}
+                                                        />
                                                     </FormControl>
                                                     <FormMessage>
                                                         {form.formState.errors.search?.message}
@@ -175,7 +178,7 @@ export default function ScrappingForm<T>({ title, description, exampleInput, hid
                                         />
 
                                         <div className='flex w-full justify-end'>
-                                            <Button type="submit" id={`${routeHandler}-submit`}>Scrapear</Button>
+                                            <ButtonUI title='Scrapear' id={`${routeHandler}-submit`} type='submit' className='bg-primary font-medium transition-colors px-4 py-2 h-9' hasLoading={true} loading={loading} />
                                         </div>
                                     </form>
                                 </Form>

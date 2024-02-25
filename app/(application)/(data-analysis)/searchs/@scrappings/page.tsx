@@ -2,11 +2,12 @@ import { db } from '@/lib/db'
 import React from 'react'
 import Barchars, { TBarCharData } from '../../_components/barcharts';
 import dynamic from 'next/dynamic';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const DynamicBarchar = dynamic(
   () => import('../../_components/barcharts'),
   {
-    loading: () => <div>Cargando grafico...</div>,
+    loading: () => <Skeleton className='w-[730] h-[250]'>Cargando grafico...</Skeleton>,
     ssr: false
   }
 )
@@ -120,7 +121,7 @@ export default async function AdminPage() {
   const leastFrequentYearMonth = yearMonthArray.reduce((minYearMonth, currentYearMonth) => {
     return countMapBookStore[currentYearMonth] < countMapBookStore[minYearMonth] ? currentYearMonth : minYearMonth;
   }, yearMonthArray[0]);
-  
+
   // example print
   // console.log(`Año-mes más frecuente: ${mostFrequentYearMonth}, Repeticiones: ${countMapBookStore[mostFrequentYearMonth]}`);
   // console.log(`Año-mes menos frecuente: ${leastFrequentYearMonth}, Repeticiones: ${countMapBookStore[leastFrequentYearMonth]}`);
@@ -150,11 +151,11 @@ export default async function AdminPage() {
   // console.log(`Año más frecuente: ${getYearFromDate(mostFrequentYearMonth)}, Repeticiones: ${countMapBookStore[mostFrequentYearMonth]}`);
   // console.log(`Año menos frecuente: ${getYearFromDate(leastFrequentYearMonth)}, Repeticiones: ${countMapBookStore[leastFrequentYearMonth]}`);
 
-  
-  
-  
+
+
+
   // CLEAN DATA TO CHAR
-  
+
   // properties like
   // const maxCountingInstagram: [string, number]
   const [maxStringInstagram, maxInstagram] = maxCountingInstagram

@@ -150,35 +150,38 @@ export default function UserTable({ data }: Props) {
             },
             {
                 accessorKey: "instagramHistory",
-
                 header: () => <div className="text-right">Scrappings de Instagram</div>,
                 cell: ({ row }) => {
-                    const instagram = row.getValue('instagramHistory') as { list: string[] }
-                    return <div className="text-right font-medium">{instagram.list.length}</div>
+                    const instagram = (row.getValue('instagramHistory') as { list: string[] })?.list.length ?? 0
+                    console.log(instagram)
+                    return <div className="text-right font-medium">{instagram}</div>
                 },
             },
             {
                 accessorKey: "amazonHistory",
                 header: () => <div className="text-right">Scrappings de Amazon</div>,
                 cell: ({ row }) => {
-                    const amazon = row.getValue('amazonHistory') as { list: string[] }
-                    return <div className="text-right font-medium">{amazon.list.length}</div>
+                    const amazon = (row.getValue('amazonHistory') as { list: string[] })?.list.length ?? 0
+                    console.log(amazon)
+                    return <div className="text-right font-medium">{amazon}</div>
                 },
             },
             {
                 accessorKey: "bookStoreHistory",
                 header: () => <div className="text-right">Scrappings de Libros</div>,
                 cell: ({ row }) => {
-                    const bookStore = row.getValue('bookStoreHistory') as { list: string[] }
-                    return <div className="text-right font-medium">{bookStore.list.length}</div>
+                    const bookStore = (row.getValue('bookStoreHistory') as { list: string[] })?.list.length ?? 0
+                    console.log(bookStore)
+                    return <div className="text-right font-medium">{bookStore}</div>
                 },
             },
             {
                 accessorKey: "mercadoLibreHistory",
                 header: () => <div className="text-right">Scrappings de MercadoLibre</div>,
                 cell: ({ row }) => {
-                    const mercadoLibre = row.getValue('mercadoLibreHistory') as { list: string[] }
-                    return <div className="text-right font-medium">{mercadoLibre.list.length}</div>
+                    const mercadoLibre = (row.getValue('mercadoLibreHistory') as { list: string[] })?.list.length ?? 0
+                    console.log(mercadoLibre)
+                    return <div className="text-right font-medium">{mercadoLibre}</div>
                 },
             },
             {

@@ -8,9 +8,9 @@ import BookStoreCard from '../_components/cards/book-store-card';
 interface DynamicScrappingFormProps {
   title: string;
   description: string;
-  exampleInput: string;
   hiddenInput: boolean;
   routeHandler: 'instagram' | 'amazon' | 'bot-detect' | 'mercado-libre' | 'book-store';
+  defaultInput: string;
   cardScrapping: React.ComponentType<{ data: TBookStore[] }>;
 }
 
@@ -23,9 +23,9 @@ export default function BookStorePage() {
   const dynamicProps: DynamicScrappingFormProps = {
     title: "Scrapping una tienda de libros",
     description: "Extrae datos de la primera pagina",
-    exampleInput: "",
     hiddenInput: true,
     routeHandler: 'book-store',
+    defaultInput: 'trigger-default',
     cardScrapping: BookStoreCard,
   };
 

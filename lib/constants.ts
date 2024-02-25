@@ -1,7 +1,11 @@
+/**
+ * ONLY USE FOR SERVER PURPOSES
+ */
 export const DIR_IMAGES = '/public'
 
 export const OWNER = process.env.OWNER as string;
 export const APP_ENV = process.env.APP_ENV as string;
+export const TOKEN_BROWSERLESS = process.env.TOKEN_BROWSERLESS as string
 
 export const SECRET_HASH = process.env.SECRET_HASH as string;
 export const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET as string;

@@ -2,11 +2,12 @@ import { db } from '@/lib/db'
 import React from 'react'
 import { TBarCharData } from '../_components/barcharts';
 import dynamic from 'next/dynamic';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const DynamicBarchar = dynamic(
   () => import('../_components/barcharts'),
   {
-    loading: () => <div>Cargando grafico...</div>,
+    loading: () => <Skeleton className="h-full w-full">Cargando grafico...</Skeleton>,
     ssr: false
   }
 )

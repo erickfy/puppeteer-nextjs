@@ -56,8 +56,6 @@ export async function POST(req: Request) {
                 mercadoLibreHistory: typeSearch.mercadoLibre,
             }
         })
-        console.log(searchInput)
-        console.log(user)
 
         if (!user) {
             // NO CONTENT NOT FOUND USER

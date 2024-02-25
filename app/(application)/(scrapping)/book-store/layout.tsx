@@ -14,7 +14,7 @@ export const metadata = {
 }
 
 
-export default function Layout({ children, dialog, ...rest }: {
+export default function Layout({ children, dialog }: {
   children: React.ReactNode;
   dialog: React.ReactNode;
 }) {

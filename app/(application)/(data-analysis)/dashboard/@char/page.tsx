@@ -4,6 +4,10 @@ import { validateRequest } from '@/lib/auth'
 import { db } from '@/lib/db'
 import Recharts from '../../_components/recharts'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import ToolTip from '../../_components/tooltip'
+import dynamic from 'next/dynamic'
+import { ReloadIcon } from '@radix-ui/react-icons'
+import { Skeleton } from '@/components/ui/skeleton'
 
 enum TYPE_RADAR {
     INSTAGRAM = 'Instagram',
@@ -18,6 +22,28 @@ enum MAP_TYPE {
     MERCADO_LIBRE = "mercadoLibre",
     TOTAL_LENGTH = "total",
 }
+
+interface DynamicToolTipProps {
+    routeHandler: 'instagram' | 'amazon' | 'mercado-libre' | 'book-store'
+}
+
+const DynamicToolTip = dynamic<DynamicToolTipProps>(
+    () => import('../../_components/tooltip'),
+    {
+        loading: () =>
+            // <ReloadIcon className="h-4 w-4 animate-spin" />,
+            <Skeleton className='h-4 w-4' />,
+        ssr: false
+    }
+)
+
+const DynamicChar = dynamic(() => import('../../_components/recharts'),
+    {
+        loading: () => <Skeleton className='h-[250] w-[730]' />,
+        ssr: false
+    }
+)
+
 export default async function DashboardChar() {
     const { user, session } = await validateRequest()
     if (!session && !user) {
@@ -78,13 +104,37 @@ export default async function DashboardChar() {
                 <CardTitle>Mis busquedas</CardTitle>
             </CardHeader>
             <CardContent className='flex justify-center  items-center w-auto'>
-                <Recharts users={uniqueUser} data={cleanDataUsername} max={maxSearch === 0? 10: maxSearch} />
+                <DynamicChar users={uniqueUser} data={cleanDataUsername} max={maxSearch === 0 ? 10 : maxSearch} />
             </CardContent>
             <CardFooter className='gap-4 flex-col sm:flex-row justify-center items-center w-full'>
-                <p><span className='font-semibold'>Instagram: </span>{usernameSearch.instagram}</p>
-                <p><span className='font-semibold'>Amazon: </span>{usernameSearch.amazon}</p>
-                <p><span className='font-semibold'>Tienda de Libros: </span>{usernameSearch.bookStore}</p>
-                <p><span className='font-semibold'>Mercado Libre: </span>{usernameSearch.mercadoLibre}</p>
+                <p className='flex justify-center items-center'>
+                    <span className='font-semibold'>Instagram: </span>
+                    {usernameSearch.instagram}
+                    {usernameSearch.instagram !== 0 &&
+                        <DynamicToolTip routeHandler='instagram' />
+                    }
+                </p>
+                <p className='flex justify-center items-center'>
+                    <span className='font-semibold'>Amazon: </span>
+                    {usernameSearch.amazon}
+                    {usernameSearch.amazon !== 0 &&
+                        <DynamicToolTip routeHandler='amazon' />
+                    }
+                </p>
+                <p className='flex justify-center items-center'>
+                    <span className='font-semibold'>Tienda de Libros: </span>
+                    {usernameSearch.bookStore}
+                    {usernameSearch.bookStore !== 0 &&
+                        <DynamicToolTip routeHandler='book-store' />
+                    }
+                </p>
+                <p className='flex justify-center items-center'>
+                    <span className='font-semibold'>Mercado Libre: </span>
+                    {usernameSearch.mercadoLibre}
+                    {usernameSearch.mercadoLibre !== 0 &&
+                        <DynamicToolTip routeHandler='mercado-libre' />
+                    }
+                </p>
             </CardFooter>
         </Card>
     )

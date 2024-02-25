@@ -16,11 +16,8 @@ type Props = {
 
 export default async function InterceptDialogUserById({ searchParams, params }: Props) {
   const { changePassword } = ParamsEditUserSchema.parse(searchParams)
-  console.log(changePassword)
 
   const { user, session } = await validateRequest();
-  console.log(user)
-  console.log(session)
 
   if (!user && !session) {
     return redirect("/");
