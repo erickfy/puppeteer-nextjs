@@ -2,9 +2,7 @@ import React from 'react'
 import { redirect } from 'next/navigation'
 import { validateRequest } from '@/lib/auth'
 import { db } from '@/lib/db'
-import Recharts from '../../_components/recharts'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import ToolTip from '../../_components/tooltip'
 import dynamic from 'next/dynamic'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -24,22 +22,26 @@ enum MAP_TYPE {
 }
 
 interface DynamicToolTipProps {
-    routeHandler: 'instagram' | 'amazon' | 'mercado-libre' | 'book-store'
+    routeHandler: 'instagram' | 'amazon' | 'mercado-libre' | 'book-store';
+    titleToolTip: string;
 }
 
 const DynamicToolTip = dynamic<DynamicToolTipProps>(
     () => import('../../_components/tooltip'),
     {
         loading: () =>
-            // <ReloadIcon className="h-4 w-4 animate-spin" />,
-            <Skeleton className='h-4 w-4' />,
+            <Skeleton className='h-4 w-4 flex justify-center items-center'>
+                <ReloadIcon className="h-4 w-4 animate-spin" />
+            </Skeleton>,
         ssr: false
     }
 )
 
 const DynamicChar = dynamic(() => import('../../_components/recharts'),
     {
-        loading: () => <Skeleton className='h-[250] w-[730]' />,
+        loading: () => <Skeleton className='h-[250px] w-[730px] flex justify-center items-center'>
+            <ReloadIcon className='h-4 w-4 animate-spin' />
+        </Skeleton>,
         ssr: false
     }
 )
@@ -111,28 +113,28 @@ export default async function DashboardChar() {
                     <span className='font-semibold'>Instagram: </span>
                     {usernameSearch.instagram}
                     {usernameSearch.instagram !== 0 &&
-                        <DynamicToolTip routeHandler='instagram' />
+                        <DynamicToolTip routeHandler='instagram' titleToolTip='Instagram' />
                     }
                 </p>
                 <p className='flex justify-center items-center'>
                     <span className='font-semibold'>Amazon: </span>
                     {usernameSearch.amazon}
                     {usernameSearch.amazon !== 0 &&
-                        <DynamicToolTip routeHandler='amazon' />
+                        <DynamicToolTip routeHandler='amazon' titleToolTip='Amazon' />
                     }
                 </p>
                 <p className='flex justify-center items-center'>
                     <span className='font-semibold'>Tienda de Libros: </span>
                     {usernameSearch.bookStore}
                     {usernameSearch.bookStore !== 0 &&
-                        <DynamicToolTip routeHandler='book-store' />
+                        <DynamicToolTip routeHandler='book-store' titleToolTip='Tienda de Libros' />
                     }
                 </p>
                 <p className='flex justify-center items-center'>
                     <span className='font-semibold'>Mercado Libre: </span>
                     {usernameSearch.mercadoLibre}
                     {usernameSearch.mercadoLibre !== 0 &&
-                        <DynamicToolTip routeHandler='mercado-libre' />
+                        <DynamicToolTip routeHandler='mercado-libre' titleToolTip='Mercado Libre' />
                     }
                 </p>
             </CardFooter>

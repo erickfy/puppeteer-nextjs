@@ -22,10 +22,11 @@ const tags = Array.from({ length: 50 }).map(
     (_, i, a) => `v1.2.0-beta.${a.length - i}`
 )
 type Props = {
+    titleToolTip: string;
     routeHandler: 'instagram' | 'amazon' | 'mercado-libre' | 'book-store'
 }
 
-export default function ToolTip({ routeHandler }: Props) {
+export default function ToolTip({ routeHandler, titleToolTip }: Props) {
     const [values, setValues] = useState<string[]>([])
     const [loading, setLoading] = useState<boolean>(false)
 
@@ -33,7 +34,6 @@ export default function ToolTip({ routeHandler }: Props) {
         setLoading(true)
         const response = await axios.get(`/api/user/${routeHandler}`)
         if (response.status === 200) {
-            console.log(response.data.values)
             setValues(response.data.values)
             setLoading(false)
         } else {
@@ -60,7 +60,7 @@ export default function ToolTip({ routeHandler }: Props) {
                                 :
                                 <ScrollArea className="h-72 w-48">
                                     <div className="p-2">
-                                        <h4 className="mb-4 text-sm font-medium leading-none">Mercado Libre</h4>
+                                        <h4 className="mb-4 text-sm font-medium leading-none">{titleToolTip}</h4>
                                         {memoizedValues.map((tag) => (
                                             <div key={tag}>
                                                 <div key={tag} className="text-sm">

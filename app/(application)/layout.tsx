@@ -1,6 +1,7 @@
 import Container from "@/components/container";
 import { Skeleton } from "@/components/ui/skeleton";
 import { validateRequest } from "@/lib/auth";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 
@@ -14,7 +15,9 @@ const DynamicNavbar = dynamic(
 const DynamicSideBar = dynamic(
     () => import('@/components/sidebar'),
     {
-        loading: () => <Skeleton className="w-full h-full" />,
+        loading: () => <Skeleton className="w-full h-full flex justify-center items-center">
+            <ReloadIcon className="h-4 w-4 animate-spin" />
+        </Skeleton>,
         ssr: false
     }
 )

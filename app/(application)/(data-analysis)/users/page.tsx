@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import fs from 'fs'
 import path from 'path'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ReloadIcon } from '@radix-ui/react-icons'
 
 type Props = {}
 
@@ -91,11 +92,15 @@ export default async function UsersPage({ }: Props) {
 
 
 
-  
+
   return (
     <div className='flex gap-4 flex-col'>
 
-      <Suspense fallback={<Skeleton className='w-full h-full'>Cargando tabla de usuarios..</Skeleton>}>
+      <Suspense fallback={
+        <Card className='w-full min-h-screen flex gap-2 items-center justify-center'>
+          <span>Cargando tabla de usuarios..</span>
+          <ReloadIcon className='w-4 h-4 animate-spin' />
+        </Card>}>
         <Await promise={allUsers}>
           {(usersResolved) =>
             <Card>

@@ -17,7 +17,7 @@ type Props = {}
 const DynamicEditButton = dynamic(
     () => import('../../../../components/buttons/edit-button'),
     {
-        loading: () => <Skeleton className="h-5 w-5">
+        loading: () => <Skeleton className="h-5 w-5 flex justify-center items-center">
             <ReloadIcon className="h-4 w-4 animate-spin" />
         </Skeleton>,
         ssr: false

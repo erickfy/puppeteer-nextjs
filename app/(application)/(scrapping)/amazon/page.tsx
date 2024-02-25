@@ -4,6 +4,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
 import AmazonCard from '../_components/cards/amazon-card';
+import { ReloadIcon } from '@radix-ui/react-icons';
 
 interface DynamicScrappingFormProps {
   title: string;
@@ -14,7 +15,9 @@ interface DynamicScrappingFormProps {
 }
 
 const DynamicScrappingForm = dynamic<DynamicScrappingFormProps>(() => import('../_components/scrapping-form'), {
-  loading: () => <Skeleton className="w-[100px] h-[60px] rounded-full" />,
+  loading: () => <Skeleton className="w-full h-[60px] rounded-full flex justify-center items-center">
+    <ReloadIcon className="h-4 w-4 animate-spin" />
+  </Skeleton>,
   ssr: false
 });
 

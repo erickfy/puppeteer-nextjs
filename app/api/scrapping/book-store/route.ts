@@ -37,7 +37,6 @@ export async function POST(req: NextRequest) {
     // if (!searchInput) {
     //   return Response.json({ error: "No params provided", hasError: true })
     // }
-    console.log("is here")
 
     const isProd = APP_ENV === 'production'
     const ROUTE = 'amazon'

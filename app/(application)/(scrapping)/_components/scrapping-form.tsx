@@ -54,7 +54,6 @@ export default function ScrappingForm<T>({ title, description, exampleInput = ''
     const [loading, setLoading] = useState<boolean>()
     const [isPending, startTransition] = useTransition()
 
-    console.log(defaultInput, 'is')
     const form = useForm<TSearchSchema>({
         resolver: zodResolver(SearchSchema),
         defaultValues: {
@@ -89,7 +88,6 @@ export default function ScrappingForm<T>({ title, description, exampleInput = ''
                 loading: "Scrapeando... ⌛",
                 success: async (requests) => {
                     const request = requests[0]
-                    console.log(request.data)
                     if (request.status === 200 && request.data && !request.data.hasError) {
                         setData(request.data.data);
                         setLoading(false);
@@ -134,7 +132,6 @@ export default function ScrappingForm<T>({ title, description, exampleInput = ''
         }
     }
 
-    console.log(form.watch('search'))
     return (
         <div className="flex h-full items-center justify-center">
 

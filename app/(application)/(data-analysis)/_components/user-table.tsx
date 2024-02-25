@@ -43,6 +43,7 @@ import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { TTableSearchPage } from "../users/page"
+import { USER_ROLE } from "@prisma/client"
 
 type Props = {
     data: TTableSearchPage[]
@@ -126,7 +127,8 @@ export default function UserTable({ data }: Props) {
                         <CaretSortIcon className="ml-2 h-4 w-4" />
                     </Button>),
                 cell: ({ row }) => {
-                    return <div className="text-right font-medium">{row.getValue("role")}</div>
+                    const role = row.getValue("role") === USER_ROLE.ADMIN ? 'Admin' : 'Usuario'
+                    return <div className="text-right font-medium">{role}</div>
                 },
             },
             {
@@ -153,7 +155,6 @@ export default function UserTable({ data }: Props) {
                 header: () => <div className="text-right">Scrappings de Instagram</div>,
                 cell: ({ row }) => {
                     const instagram = (row.getValue('instagramHistory') as { list: string[] })?.list.length ?? 0
-                    console.log(instagram)
                     return <div className="text-right font-medium">{instagram}</div>
                 },
             },
@@ -162,7 +163,6 @@ export default function UserTable({ data }: Props) {
                 header: () => <div className="text-right">Scrappings de Amazon</div>,
                 cell: ({ row }) => {
                     const amazon = (row.getValue('amazonHistory') as { list: string[] })?.list.length ?? 0
-                    console.log(amazon)
                     return <div className="text-right font-medium">{amazon}</div>
                 },
             },
@@ -171,7 +171,6 @@ export default function UserTable({ data }: Props) {
                 header: () => <div className="text-right">Scrappings de Libros</div>,
                 cell: ({ row }) => {
                     const bookStore = (row.getValue('bookStoreHistory') as { list: string[] })?.list.length ?? 0
-                    console.log(bookStore)
                     return <div className="text-right font-medium">{bookStore}</div>
                 },
             },
@@ -180,7 +179,6 @@ export default function UserTable({ data }: Props) {
                 header: () => <div className="text-right">Scrappings de MercadoLibre</div>,
                 cell: ({ row }) => {
                     const mercadoLibre = (row.getValue('mercadoLibreHistory') as { list: string[] })?.list.length ?? 0
-                    console.log(mercadoLibre)
                     return <div className="text-right font-medium">{mercadoLibre}</div>
                 },
             },

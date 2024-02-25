@@ -17,7 +17,6 @@ export default function InstagramCard({ data }: Props) {
   const body = (<>
     {
       data.map((item, index) => {
-        console.log(item.src)
         return (
         <CarouselItem key={item.username}>
           <Card className="rounded-lg shadow-lg border-0">

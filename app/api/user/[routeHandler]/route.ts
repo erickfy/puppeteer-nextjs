@@ -22,7 +22,6 @@ export async function GET(req: Request, { params }: PropsParams) {
         const { routeHandler } = params
 
         const { user: currentUser } = await validateRequest()
-        console.log(routeHandler)
 
         if (!currentUser) {
             // NO CONTENT USER NEEDS TO BE LOG IN
@@ -36,38 +35,6 @@ export async function GET(req: Request, { params }: PropsParams) {
             mercadoLibre: TYPE.MERCADO_LIBRE === routeHandler,
         }
 
-        console.log(typeSearch)
-
-        // const user = await db.user.findFirst({
-        //     where: { id: currentUser.id },
-        //     include: {
-        //         instagramHistory: {
-        //             select: {
-        //                 list: typeSearch.instagram,
-        //             }
-        //         },
-        //         amazonHistory: {
-        //             select: {
-        //                 list: typeSearch.amazon,
-        //             }
-        //         },
-
-        //         bookStoreHistory:
-        //         {
-        //             select: {
-        //                 list: typeSearch.bookStore,
-        //             }
-        //         },
-
-        //         mercadoLibreHistory:
-        //         {
-        //             select: {
-        //                 list: typeSearch.mercadoLibre,
-        //             }
-        //         },
-
-        //     }
-        // })
 
         const user = await db.user.findFirst({
             where: { id: currentUser.id },
@@ -79,7 +46,6 @@ export async function GET(req: Request, { params }: PropsParams) {
             }
         })
 
-        console.log(user)
 
         let cleanData: string[] = [];
 
@@ -94,11 +60,7 @@ export async function GET(req: Request, { params }: PropsParams) {
         }
 
 
-        console.log("final")
-        console.log(cleanData)
         return NextResponse.json({ values: cleanData });
-
-
     } catch (error) {
         return Response.json({ hasError: true }, { status: 400 })
     }
@@ -119,8 +81,6 @@ function getRepeatedValues(arr: string[]): string[] {
         }
     }
 
-    console.log("Frequency Map:", frequencyMap);
-    console.log("Repeated Values:", repeatedValues);
 
     return repeatedValues;
 }

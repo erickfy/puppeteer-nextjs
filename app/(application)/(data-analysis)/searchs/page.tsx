@@ -3,11 +3,19 @@ import React from 'react'
 import { TBarCharData } from '../_components/barcharts';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ReloadIcon } from '@radix-ui/react-icons';
+import { MagicMotion } from 'react-magic-motion';
 
 const DynamicBarchar = dynamic(
   () => import('../_components/barcharts'),
   {
-    loading: () => <Skeleton className="h-full w-full">Cargando grafico...</Skeleton>,
+    loading: () =>
+      <Skeleton className="h-[250px] w-[730px] flex justify-center items-center gap-2">
+        <span>
+          Cargando grafico...
+        </span>
+        <ReloadIcon className='h-4 w-4 animate-spin' />
+      </Skeleton>,
     ssr: false
   }
 )
