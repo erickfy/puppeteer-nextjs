@@ -105,9 +105,13 @@ export default async function DashboardChar() {
             <CardHeader>
                 <CardTitle>Mis busquedas</CardTitle>
             </CardHeader>
+
             <CardContent className='flex justify-center  items-center w-auto'>
                 <DynamicChar users={uniqueUser} data={cleanDataUsername} max={maxSearch === 0 ? 10 : maxSearch} />
             </CardContent>
+
+
+
             <CardFooter className='gap-4 flex-col sm:flex-row justify-center items-center w-full'>
                 <p className='flex justify-center items-center'>
                     <span className='font-semibold'>Instagram: </span>
@@ -116,6 +120,7 @@ export default async function DashboardChar() {
                         <DynamicToolTip routeHandler='instagram' titleToolTip='Instagram' />
                     }
                 </p>
+
                 <p className='flex justify-center items-center'>
                     <span className='font-semibold'>Amazon: </span>
                     {usernameSearch.amazon}
@@ -123,6 +128,7 @@ export default async function DashboardChar() {
                         <DynamicToolTip routeHandler='amazon' titleToolTip='Amazon' />
                     }
                 </p>
+
                 <p className='flex justify-center items-center'>
                     <span className='font-semibold'>Tienda de Libros: </span>
                     {usernameSearch.bookStore}
@@ -130,6 +136,7 @@ export default async function DashboardChar() {
                         <DynamicToolTip routeHandler='book-store' titleToolTip='Tienda de Libros' />
                     }
                 </p>
+                
                 <p className='flex justify-center items-center'>
                     <span className='font-semibold'>Mercado Libre: </span>
                     {usernameSearch.mercadoLibre}

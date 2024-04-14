@@ -202,7 +202,9 @@ export default function UserTable({ data }: Props) {
                                     onClick={() => {
                                         // navigator.clipboard.writeText(currentUser.username)
                                         startTransition(async () => {
-                                            toast.promise(fetch('/api/user', {
+                                            toast.promise(
+                                                fetch('/api/user',
+                                                    {
                                                 method: 'POST', body: JSON.stringify({
                                                     userId: currentUser.id,
                                                     active: currentUser.active

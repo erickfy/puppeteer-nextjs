@@ -8,7 +8,8 @@ const isKnownProvider = (imageUrl: string) => {
 };
 function ImageProvider({ imageUrl, alt, className }: { imageUrl: string, alt: string, className?: string }) {
   const hasProvider = isKnownProvider(imageUrl);
-
+  console.log(hasProvider)
+console.log('current image: ', imageUrl)
   if (hasProvider) {
     // WITH PROVIDER
     return (
@@ -29,15 +30,16 @@ function ImageProvider({ imageUrl, alt, className }: { imageUrl: string, alt: st
     // NOT PROVIDER
     return (
       <img
-        src={imageUrl}
+        src={`${imageUrl}`}
         alt={alt}
         className={cn("w-full h-full", className)}
-        width={"100%"}
-        height={"100%"}
+        width={100}
+        height={100}
         onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
           const target = event.target as HTMLImageElement;
           // prevent broken image
           target.src = '/user-empty.webp';
+          // target.src = `${imageUrl}`;
         }}
       />
     );
@@ -58,6 +60,7 @@ export const knownDomains = [
   "books.toscrape.com",
   "cloudflare-ipfs.com",
   "avatars.githubusercontent.com",
+  'instagram.fuio32-1.fna.fbcdn.net'
 ];
 
 export default ImageProvider;

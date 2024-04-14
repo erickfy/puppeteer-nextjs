@@ -2,6 +2,7 @@ import puppeteer from "puppeteer";
 import { NextRequest } from "next/server";
 import { APP_ENV, DIR_IMAGES, INSTAGRAM, TOKEN_BROWSERLESS } from "@/lib/constants";
 import fs from 'fs'
+import axios from "axios";
 
 /**
  * Scrapping values from Instagram
@@ -92,6 +93,9 @@ export async function POST(req: NextRequest) {
       // check if exists the folder
       await fs.promises.mkdir(folderPath, { recursive: true });
 
+
+
+      
       await page.screenshot({
         path: filePath,
         type: 'webp',
@@ -144,6 +148,16 @@ export async function POST(req: NextRequest) {
     );
 
     const cleanData = cards.filter(val => val.username !== '')
+
+    // const reCleanData = await axios.get(cleanData[0].src, { responseType: 'arraybuffer' })
+
+    // const cleanGettingImage = [{
+    //   username: cleanData[0].username,
+    //   posts: cleanData[0].posts,
+    //   followers: cleanData[0].followers,
+    //   following: cleanData[0].following,
+    //   src: reCleanData.data
+    // }]
 
     await page.close();
     if (!page.isClosed()) await page.close()
